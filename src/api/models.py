@@ -30,7 +30,6 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     district = db.Column(db.String(20), unique=False, nullable=True)
-    district = db.Column(db.String(12), unique=False, nullable=True)
     phone = db.Column(db.String(12), unique=False, nullable=True)
     date_of_birth = db.Column(db.DateTime, nullable=True)
     purchase = db.relationship("Purchase", backref="user", lazy=True)
