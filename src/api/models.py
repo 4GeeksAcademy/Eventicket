@@ -51,7 +51,7 @@ class Event(db.Model):
     date = db.Column(db.DateTime, default=datetime.now)
     place = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(250), nullable=False)
-    kind = db.Column(db.String(250), nullable=False)
+    category = db.Column(db.String(250), nullable=False)
     stock = db.Column(db.Integer,nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey("administrator.id"))
     purchase = db.relationship("Purchase", backref="event", lazy=True)
