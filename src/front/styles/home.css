@@ -5,3 +5,44 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.navbar {
+    background-color: #202526;
+
+}
+.dropdown-menu {
+    background-color: #4038E6;
+    color: #fff;
+}
+.dropdown-item {
+    color: #fff;
+
+}
+.dropdown-toggle {
+    color: #fff;
+
+}
+
+.nav-link:hover {
+    color: #fff; 
+}
+/* Para el estado de hover del menú desplegable */
+.dropdown-toggle:focus, .dropdown-toggle:hover {
+    color: #fff !important;
+}
+
+/* Para asegurar que el enlace "Categorías" se mantenga en blanco cuando el menú esté abierto*/
+.dropdown-toggle[aria-expanded="true"] {
+    color: #fff !important;
+}
+.nav-item-login .nav-link.active{
+    color: #000; 
+    background-color: #C8EE55 !important;
+}
+.nav-item-register  .nav-link.active{
+    color:#fff;
+    background-color: #4038E6 !important;
+
+}
+.carrito {
+    color: #fff;
+}
