@@ -34,15 +34,23 @@
 .dropdown-toggle[aria-expanded="true"] {
     color: #fff !important;
 }
-.nav-item-login .nav-link.active{
+.nav-item-login {
     color: #000; 
     background-color: #C8EE55 !important;
+    
 }
-.nav-item-register  .nav-link.active{
+.nav-item-register  {
     color:#fff;
     background-color: #4038E6 !important;
 
 }
 .carrito {
     color: #fff;
+    font-size: 2rem;
+}
+.form-control {
+    width: 170%;
+}
+.formulario-container {
+    width: 45rem;
 }

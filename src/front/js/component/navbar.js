@@ -19,63 +19,66 @@ export const Navbar = () => {
 		// );
 
 
+        <nav className="navbar navbar-expand-lg ">
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+                {/* Logo(aun no aplicado) y name */}
+				<Link to="/">
+                	<a className="navbar-brand" href="#">Logo</a>
+				</Link>
+                
+                {/* Formulario de búsqueda */}
+                <form className="d-flex formulario-container" role="search">
+                    <input className="form-control rounded-pill" type="search" placeholder="Buscar" aria-label="Search" />
+                    {/* <button className="btn btn-outline-success" type="submit">Buscar</button> */}
+                </form>
 
+                {/* Categorías */}
+                <ul className="navbar-nav">
+                    
+                </ul>
 
-
-		<nav className="navbar navbar-expand-lg bg-body-tertiary">
-			<div className="container-fluid">
-				<a className="navbar-brand" href="#">Logo</a>
-				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarSupportedContent">
-					
-
-
-					<form className="d-flex" role="search">
-						<input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-						<button className="btn btn-outline-success" type="submit">Search</button>
-					</form>
-
-
-					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-						
-
-						<li className="nav-item dropdown">
+               
+                {/* Botones de Iniciar sesión y Registrarse */}
+                <ul className="nav nav-pills gap-3">
+					<li className="nav-item dropdown">
 							<a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Categorias
+								Categorías
 							</a>
-
 							<ul className="dropdown-menu">
-								<li><a className="dropdown-item" href="#">Conciertos</a></li>
-								<li><a className="dropdown-item" href="#">Deportes</a></li>
-								<li><a className="dropdown-item" href="#">Entretenimiento</a></li>
-								<li><a className="dropdown-item" href="#">Cursos</a></li>
-								{/* <li><hr className="dropdown-divider" />Cursos</li> */}
+								<Link to="/conciertos">
+									<li><a className="dropdown-item" href="#">Conciertos</a></li>
+								</Link>
+								<Link to="/deportes">
+									<li><a className="dropdown-item" href="#">Deportes</a></li>
+								</Link>
+								<Link to="/entrenenimiento">
+									<li><a className="dropdown-item" href="#">Entretenimiento</a></li>
+								</Link>
+								<Link to="/cursos">
+									<li><a className="dropdown-item" href="#">Cursos</a></li>
+								</Link>
 							</ul>
+					</li>
+					{/* Carrito de compras */}
+					<i className="fa-solid fa-cart-shopping carrito text-align-center"></i>
+					<Link to="/demo">
+						<li className="nav-item ">
+							<a className="nav-link nav-item-login" aria-current="page" href="#">Iniciar Sesión</a>
 						</li>
+					</Link>
+					<Link to="/register">
 
-					</ul>
-					<div>
-						<i className="fa-solid carrito fa-cart-shopping"></i>
-					</div>
-
-
-					<ul className="nav nav-pills">
-						<li className="nav-item nav-item-login">
-							<a className="nav-link active" aria-current="page" href="#">Iniciar Sesion</a>
-						</li>
-						<li className="nav-item nav-item-register">
-							<a className="nav-link active" aria-current="page" href="#">Registrarse</a>
-						</li>
-					</ul>
-
-
-				</div>
-			</div>
-		</nav>
-	);
+                    <li className="nav-item ">
+                        <a className="nav-link nav-item-register" href="#">Registrarse</a>
+						{/* rounded-lg */}
+                    </li>
+					</Link>
+                </ul>
+            </div>
+        </nav>
+    );
 };
+
 
 
 
