@@ -23,7 +23,7 @@ export const Navbar = () => {
             <div className="container-fluid d-flex justify-content-between align-items-center">
                 {/* Logo(aun no aplicado) y name */}
 				<Link to="/">
-                	<a className="navbar-brand" href="#">Logo</a>
+                	<a className="navbar-brand" href="#">EvenTTicket</a>
 				</Link>
                 
                 {/* Formulario de búsqueda */}
@@ -41,10 +41,10 @@ export const Navbar = () => {
                 {/* Botones de Iniciar sesión y Registrarse */}
                 <ul className="nav nav-pills gap-3">
 					<li className="nav-item dropdown">
-							<a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<a className="nav-link dropdown-toggle px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Categorías
 							</a>
-							<ul className="dropdown-menu">
+							<ul className="dropdown-menu py-0">
 								<Link to="/conciertos">
 									<li><a className="dropdown-item" href="#">Conciertos</a></li>
 								</Link>
@@ -60,7 +60,9 @@ export const Navbar = () => {
 							</ul>
 					</li>
 					{/* Carrito de compras */}
-					<i className="fa-solid fa-cart-shopping carrito text-align-center"></i>
+					<div className="mt-1">
+						<i className="fa-solid fa-cart-shopping carrito text-align-center"></i>
+					</div>
 					<Link to="/demo">
 						<li className="nav-item ">
 							<a className="nav-link nav-item-login" aria-current="page" href="#">Iniciar Sesión</a>
