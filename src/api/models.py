@@ -49,10 +49,11 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     date = db.Column(db.DateTime, default=datetime.now)
+    image_url = db.Column(db.String(250), nullable=True)
     place = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(250), nullable=False)
     category = db.Column(db.String(250), nullable=False)
-    stock = db.Column(db.Integer,nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey("administrator.id"))
     purchase = db.relationship("Purchase", backref="event", lazy=True)
     ticket = db.relationship("Ticket", backref="event", lazy=True)
@@ -65,7 +66,15 @@ class Event(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "date": self.date.isoformat() if self.date else None,
+            "image_url": self.image_url,
+            "place": self.place,
+            "description": self.description,
+            "category": self.category,
+            "stock": self.stock,
+            "admin_id": self.admin_id
         }
+
 
 
 class Ticket(db.Model):
