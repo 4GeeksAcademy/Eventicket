@@ -41,7 +41,16 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "dni": self.dni,
+            "name": self.name,
+            "last_name": self.last_name,
             "email": self.email,
+            "password": self.password,
+            "district": self.district,
+            "phone": self.phone,
+            "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
+            "purchases": [purchase.serialize() for purchase in self.purchase],
+            "favourites": [favourite.serialize() for favourite in self.favourite]
         }
 
 

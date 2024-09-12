@@ -28,7 +28,8 @@ def handle_users():
         users = User.query.all()  
         users_serialized = [user.serialize() for user in users]  
         return jsonify(users_serialized), 200
-
+    
+#EVENTS
 #READ EVENTS
 @api.route('/events', methods=['GET'])
 def handle_events():
@@ -106,3 +107,4 @@ def delete_event(event_id):
             return jsonify({"error": str(e)}), 400
     else:
         return jsonify({"error": "Event not found"}), 404
+    
