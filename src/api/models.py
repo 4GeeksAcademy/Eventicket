@@ -48,10 +48,10 @@ class User(db.Model):
             "password": self.password,
             "district": self.district,
             "phone": self.phone,
-            "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
-            "purchases": [purchase.serialize() for purchase in self.purchase],
-            "favourites": [favourite.serialize() for favourite in self.favourite]
-        }
+            "date_of_birth": self.date_of_birth.isoformat(),
+            "purchases":list(map(lambda purchase:purchase.serialize() ,self.purchase)) ,
+            "favourites":list(map(lambda favourite:favourite.serialize() ,self.favourite)) ,
+            }
 
 
 class Event(db.Model):
@@ -62,7 +62,7 @@ class Event(db.Model):
     place = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(250), nullable=False)
     category = db.Column(db.String(250), nullable=False)
-    stock = db.Column(db.Integer, nullable=False)
+    capacity = db.Column(db.Integer, nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey("administrator.id"))
     purchase = db.relationship("Purchase", backref="event", lazy=True)
     ticket = db.relationship("Ticket", backref="event", lazy=True)
@@ -75,12 +75,12 @@ class Event(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "date": self.date.isoformat() if self.date else None,
+            "date": self.date.isoformat(),
             "image_url": self.image_url,
             "place": self.place,
             "description": self.description,
             "category": self.category,
-            "stock": self.stock,
+            "capacity": self.capacity,
             "admin_id": self.admin_id
         }
 
@@ -91,7 +91,7 @@ class Ticket(db.Model):
     availability = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-
+    
     def __repr__(self):
         return f"<Ticket ID {self.id}>"
 
@@ -107,8 +107,22 @@ class Favourite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
 
+    def serialize(self):
+        return {
+            "owner": self.user.name,
+            "event": {
+                "id": self.event.id,
+                "name": self.event.name
+                }
+            }
+
 
 class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    def serialize(self):
+        return {
+            "Shopper": self.user.name,
+            "event": self.event.name,
+        }   
