@@ -46,7 +46,7 @@ def read_event(event_id):
         return jsonify({"error": str(e)}), 400
 
 
-# CREATE EVENTS
+# CREATE EVENT
 @api.route("/events", methods=["POST"])
 def create_event():
     body = request.get_json()
@@ -85,7 +85,7 @@ def update_event(event_id):
         event.stock = body.get("stock", event.stock)
         event.admin_id = body.get("admin_id", event.admin_id)
         db.session.commit()
-        
+
         return jsonify(event.serialize()), 200
     except Exception as e:
         db.session.rollback()
