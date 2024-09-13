@@ -49,8 +49,8 @@ class User(db.Model):
             "district": self.district,
             "phone": self.phone,
             "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
-            "purchases": [purchase.serialize() for purchase in self.purchase],
-            "favourites": [favourite.serialize() for favourite in self.favourite]
+            "purchases":list(map(lambda purchase:purchase.serialize(),self.purchase)),
+            "favourites": list(map(lambda favourite:favourite.serialize(),self.favourite))
         }
 
 
@@ -108,7 +108,15 @@ class Favourite(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
 
 
+
+
 class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "owner": self.user.id,
+        }
