@@ -1,3 +1,180 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.navbar {
+    background-color: #202526;
+
+}
+
+.dropdown-menu {
+    background-color: #4038E6;
+    color: #fff;
+}
+
+.dropdown-item {
+    color: #fff;
+
+}
+
+.dropdown-toggle {
+    color: #fff;
+
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+/* Para el estado de hover del menú desplegable */
+.dropdown-toggle:focus,
+.dropdown-toggle:hover {
+    color: #fff !important;
+}
+
+/* Para asegurar que el enlace "Categorías" se mantenga en blanco cuando el menú esté abierto*/
+.dropdown-toggle[aria-expanded="true"] {
+    color: #fff !important;
+}
+
+.nav-item-login {
+    color: #000;
+    background-color: #C8EE55 !important;
+
+}
+
+/* button login and register  */
+
+
+.nav-item-register {
+    color: #fff;
+    background-color: #4038E6 !important;
+
+}
+
+.carrito {
+    color: #fff;
+    font-size: 2rem;
+
+}
+
+.form-control {
+    width: 170%;
+}
+
+.formulario-container {
+    width: 58%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar-title {
+    color: #fff;
+}
+
+/* flecha ">" */
+.fa-angle-right {
+    position: absolute;
+    top: 50%;
+    /* Centra verticalmente el ícono */
+    right: 0px;
+    /* Ajusta la posición desde el borde derecho */
+    transform: translateY(-50%);
+    /* Asegura que esté centrado verticalmente */
+    color: #fff;
+    z-index: 5;
+
+}
+
+/* flecha "<" */
+.fa-angle-left {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    /* Posicionado a la izquierda */
+    transform: translateY(-50%) rotate(360deg);
+    /* Rotación 180 grados para apuntar a la izquierda */
+    color: #fff;
+    z-index: 5;
+    font-size: 140rem;
+    /* font-size: 100%;
+    height: 100%; */
+}
+
+/* .fa-solid {
+    font-size: 10rem;
+} */
+img {
+    width: 100%;
+    height: 93vh;
+    z-index: 1;
+}
+
+.img-container {
+    position: relative;
+    width: 100%;
+}
+
+/* botonoes para cambiar de imagen en los carruseles */
+/* Estilos existentes ... */
+
+.icon-button {
+    background-color: #C8EE55;
+    color: #fff;
+    /* Cambiado a un color oscuro para contraste */
+    border: none;
+    padding: 0;
+    border-radius: 15%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 6rem;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-button-left {
+    left: 40px;
+}
+
+.icon-button-right {
+    right: 40px;
+}
+
+.icon-button:hover {
+    background-color: #b8de45;
+}
+
+.fa-angle-left,
+.fa-angle-right {
+    font-size: 5rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+/* Restaurar el contenido del pseudo-elemento */
+.fa-angle-left::before {
+    content: "\f104";
+    /* Código Unicode para el ícono de ángulo izquierdo */
+}
+
+.fa-angle-right::before {
+    content: "\f105";
+    /* Código Unicode para el ícono de ángulo derecho */
+}
+
+/* Asegurar que el ícono tenga el color correcto */
+.icon-button i {
+    color: inherit;
+}
