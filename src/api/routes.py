@@ -6,8 +6,13 @@ from api.models import db, User, Event
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
+from flask_jwt_extended import   create_access_token,get_jwt_identity,jwt_required,JWTManager
+from flask_bcrypt import Bcrypt
+
 
 api = Blueprint("api", __name__)
+bcrypt = Bcrypt()
+jwt = JWTManager()
 
 # Allow CORS requests to this API
 CORS(api)
@@ -97,7 +102,85 @@ def delete_event(event_id):
         return jsonify({"error": str(e)}), 400
 
 
-# ENDPOINTS DE USERS
+# ENDPOINTS DE USERS CAMBIO 1  ,CAMIBE DE POSICION EL CREATE USER AL PRIMERO EN VEZ DEL 2DO O 3ERO YA QUE ES EL PRIMERO QUE SE VA  A USAR
+# CREATE USER
+@api.route("/users", methods=["POST"])
+def create_user():
+    try:
+        body = request.get_json()
+        if not body.get("dni") or body.get("name") or body.get("email"):
+            return jsonify({"message": "Error all inputs has to be completed"}),200
+        new_user = User(
+            dni=body.get("dni"),
+            name=body.get("name"),
+            last_name=body.get("last_name"),
+            email=body.get("email"),
+            password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'), 
+            district=body.get("district"),
+            phone=body.get("phone"),
+            date_of_birth=datetime.fromisoformat(body.get("date_of_birth")),
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"message": "New User Created", "user": f"{new_user.serialize()}"}),200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+#Login de usuario ,paso 2,esto es despues de crearse una cuenta o cuando se vuelva a conectar,probado
+@api.route("/login", methods=["POST"])
+def log_in_user():
+    try:
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
+
+        if not email or not password:
+            return jsonify({"error": "data have to be complete"}), 400
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        user_password = user.password
+
+        checking_password = bcrypt.check_password_hash(user_password, password)
+
+        if not checking_password:
+            return jsonify({"error": "Contraseña incorrecta o usuario no existente"}),404
+
+        access_token = create_access_token(identity=user.id)
+        response={"access_token": access_token,
+                   "id": user.id,
+                   "dni": user.dni,
+                   "name": user.name,
+                   "last_name": user.last_name,
+                   "email": user.email,
+                   "password": user.password,
+                   "district": user.district,
+                   "phone": user.phone,
+                   "date_of_birth": user.date_of_birth.isoformat()}
+        return jsonify(response),200
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+
+#Este endpoint solo ingresara el user para poder ver sus datos
+#READ USER BY ID
+@api.route("/user/", methods=["GET"])
+@jwt_required()
+def read_user_data():
+    try:
+        current_user = get_jwt_identity()
+        user = User.query.get(current_user)
+        if user:
+            return jsonify({"loggeb_by_user": user.serialize()}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+#Este Endpoint unicamente puede ser para el administrador
 # READ USERS
 @api.route("/users", methods=["GET"])
 def handle_users():
@@ -118,29 +201,6 @@ def read_user(user_id):
         else:
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-
-# CREATE USER
-@api.route("/users", methods=["POST"])
-def create_user():
-    try:
-        body = request.get_json()
-        new_user = User(
-            dni=body.get("dni"),
-            name=body.get("name"),
-            last_name=body.get("last_name"),
-            email=body.get("email"),
-            password=body.get("password"),
-            district=body.get("district"),
-            phone=body.get("phone"),
-            date_of_birth=datetime.fromisoformat(body.get("date_of_birth")),
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify({"message": "New User Created", "user": f"{new_user.serialize()}"}),200
-    except Exception as e:
-        db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
 
