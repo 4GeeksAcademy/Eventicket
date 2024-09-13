@@ -16,6 +16,8 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import { Login } from "./pages/Login.jsx";
+import { Registro } from "./pages/Registro.jsx";
 
 // import { Footer } from "./component/footer";
 
@@ -25,7 +27,7 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
 
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
@@ -33,16 +35,17 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
-                        <Route element={<Home/>} path="/" />
-                        <Route element={<Conciertos/>} path="/conciertos" />
-                        <Route element={<Deportes/>} path="/deportes" />
-                        <Route element={<Entrenenimiento/>} path="/entrenenimiento" />
-                        <Route element={<Cursos/>} path="/cursos" />
-                        <Route element={<Register/>} path="/register" />
+                        <Route element={<Home />} path="/" />
+                        <Route element={<Conciertos />} path="/conciertos" />
+                        <Route element={<Deportes />} path="/deportes" />
+                        <Route element={<Entrenenimiento />} path="/entrenenimiento" />
+                        <Route element={<Cursos />} path="/cursos" />
+                        <Route element={<Register />} path="/register" />
                         <Route element={<HomePage />} path="/homepage" />
-
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Registro />} path="/registro" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
