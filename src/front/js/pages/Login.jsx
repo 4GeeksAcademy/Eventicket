@@ -17,7 +17,7 @@ export const Login = () => {
         }}>
             <div className="container w-75 mt-5 shadow">
                 <div className="row align-items-stretch">
-                    <div className="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded" style={{ backgroundImage: `url(${people})`, height: "80vh", width: "100%" }}>
+                    <div className="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded" style={{ backgroundImage: `url(${people})`, height: "80vh", gi }}>
                     </div>
 
                     <div className="col bg-white p-5  rounded-end">
