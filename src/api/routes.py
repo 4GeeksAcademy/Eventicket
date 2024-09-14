@@ -253,7 +253,7 @@ def delete_user(user_id):
         return jsonify({"error": str(e)}), 400
 
 
-###VALIDADOS"""2
+###VALIDADOS"""2111
 # CREATE EVENTS ADMINISTRADOR NADA MÁS PUEDE INGRESAR
 @api.route("/events", methods=["POST"])
 @jwt_required()
