@@ -34,6 +34,7 @@ class User(db.Model):
     date_of_birth = db.Column(db.DateTime, nullable=True)
     purchase = db.relationship("Purchase", backref="user", lazy=True)
     favourite = db.relationship("Favourite", backref="user", lazy=True)
+    tickets = db.relationship("Ticket", backref="user", lazy=True)  
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -49,10 +50,10 @@ class User(db.Model):
             "district": self.district,
             "phone": self.phone,
             "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
-            "purchases":list(map(lambda purchase:purchase.serialize(),self.purchase)),
-            "favourites": list(map(lambda favourite:favourite.serialize(),self.favourite))
+            "purchases": list(map(lambda purchase: purchase.serialize(), self.purchase)),
+            "favourites": list(map(lambda favourite: favourite.serialize(), self.favourite)),
+            "tickets": list(map(lambda ticket: ticket.serialize(), self.tickets))  
         }
-
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -91,6 +92,7 @@ class Ticket(db.Model):
     availability = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)  
 
     def __repr__(self):
         return f"<Ticket ID {self.id}>"
@@ -99,8 +101,9 @@ class Ticket(db.Model):
         return {
             "id": self.id,
             "price": self.price,
+            "event_id": self.event_id,
+            "user_id": self.user_id  
         }
-
 
 class Favourite(db.Model):
     id = db.Column(db.Integer, primary_key=True)

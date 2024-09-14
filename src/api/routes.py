@@ -336,3 +336,204 @@ def delete_event(event_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
+
+#############################################################
+#############################################################
+##ENDPOINTS PARA TICKET##
+#############################################################
+#############################################################
+# ENDPOINT PARA LEER TICKETS DE UN USUARIO
+@api.route('/tickets/users/<int:user_id>', methods=['GET'])
+@jwt_required()
+def read_user_tickets(user_id):
+    try:
+        tickets = Ticket.query.filter_by(user_id=user_id).all() 
+        if not tickets:
+            return jsonify({"message": "No tickets found for this user"}), 404
+        
+        serialized_tickets = [ticket.serialize() for ticket in tickets]
+        return jsonify(serialized_tickets), 200
+    except Exception as e:
+         return jsonify({"error": str(e)}), 400
+
+# ENDPOINT PARA LEER TICKETS DE UN EVENTO
+@api.route('/tickets/events/<int:event_id>', methods=['GET'])
+@jwt_required()
+def read_event_tickets(event_id):
+    try:
+        tickets = Ticket.query.filter_by(event_id=event_id).all()
+        if not tickets:
+            return jsonify({"message": "No tickets found for this event"}), 404
+        
+        serialized_tickets = [ticket.serialize() for ticket in tickets]
+        return jsonify(serialized_tickets), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+# ENDPOINT PARA LEER UN TICKET POR ID
+@api.route('/tickets/<int:ticket_id>', methods=['GET'])
+@jwt_required()
+def read_ticket(ticket_id):
+    try:
+        ticket = Ticket.query.get(ticket_id)
+        if ticket:
+            return jsonify(ticket.serialize()), 200
+        else:
+            return jsonify({"error": "Ticket not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
+####################################################################################################################################################
+###################################################################################################################################################
+#ENDPOINTS EXTRA
+####################################################################################################################################################
+###################################################################################################################################################
+
+   
+                        
+# # ENDPOINT PARA CREAR TICKETS
+# @api.route('/tickets', methods=['POST'])
+# @jwt_required()
+# def create_ticket():
+#     body = request.get_json()
+#     try:
+#         user_id = body.get('user_id')
+#         event_id = body.get('event_id')
+#         quantity = body.get('quantity')
+
+#         if not user_id or not event_id or not quantity:
+#             return jsonify({"error": "user_id, event_id, and quantity are required"}), 400
+
+#         event = Event.query.get(event_id)
+#         if not event:
+#             return jsonify({"error": "Event not found"}), 404
+
+#         if event.stock < quantity:
+#             return jsonify({"error": "Not enough tickets available"}), 400
+
+#         new_ticket = Ticket(
+#             user_id=user_id,
+#             event_id=event_id,
+#             quantity=quantity
+#         )
+#         event.stock -= quantity
+#         db.session.add(new_ticket)
+#         db.session.commit()
+#         return jsonify({"message": "Tickets purchased successfully", "ticket": new_ticket.serialize()}), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 400
+
+
+
+# # ENDPOINT PARA ELIMINAR UN TICKET
+# @api.route('/tickets/<int:ticket_id>', methods=['DELETE'])
+# @jwt_required()
+# def delete_ticket(ticket_id):
+#     try:
+#         ticket = Ticket.query.get(ticket_id)
+#         if ticket:
+#             event = Event.query.get(ticket.event_id)
+#             event.stock += ticket.quantity
+#             db.session.delete(ticket)
+#             db.session.commit()
+#             return jsonify({"message": "Ticket canceled successfully"}), 200
+#         else:
+#             return jsonify({"error": "Ticket not found"}), 404
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 400
+
+
+
+
+# # READ PURCHASES
+# @api.route('/purchases', methods=['GET'])
+# def handle_purchases():
+#     purchases = Purchase.query.all()
+#     return jsonify(list(map(lambda purchase: purchase.serialize(), purchases))), 200
+
+# # READ PURCHASE BY ID
+# @api.route('/purchases/<int:purchase_id>', methods=['GET'])
+# def read_purchase(purchase_id):
+#     purchase = Purchase.query.get(purchase_id)
+#     if purchase:
+#         return jsonify(purchase.serialize()), 200
+#     else:
+#         return jsonify({"error": "Purchase not found"}), 404
+
+# # CREATE PURCHASE
+# @api.route('/purchases', methods=['POST'])
+# def create_purchase():
+#     body = request.get_json()
+#     try:
+#         new_purchase = Purchase(
+#             user_id=body.get('user_id'),
+#             event_id=body.get('event_id')
+#         )
+#         db.session.add(new_purchase)
+#         db.session.commit()
+#         return jsonify(new_purchase.serialize()), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 400
+
+# # UPDATE PURCHASE
+# @api.route('/purchases/<int:purchase_id>', methods=['PUT'])
+# def update_purchase(purchase_id):
+#     body = request.get_json()
+#     purchase = Purchase.query.get(purchase_id)
+#     if purchase:
+#         try:
+#             purchase.user_id = body.get('user_id', purchase.user_id)
+#             purchase.event_id = body.get('event_id', purchase.event_id)
+#             db.session.commit()
+#             return jsonify(purchase.serialize()), 200
+#         except Exception as e:
+#             db.session.rollback()
+#             return jsonify({"error": str(e)}), 400
+#     else:
+#         return jsonify({"error": "Purchase not found"}), 404
+
+# # DELETE PURCHASE
+# @api.route('/purchases/<int:purchase_id>', methods=['DELETE'])
+# def delete_purchase(purchase_id):
+#     purchase = Purchase.query.get(purchase_id)
+#     if purchase:
+#         try:
+#             db.session.delete(purchase)
+#             db.session.commit()
+#             return jsonify({"message": "Purchase deleted successfully"}), 204
+#         except Exception as e:
+#             db.session.rollback()
+#             return jsonify({"error": str(e)}), 400
+#     else:
+#         return jsonify({"error": "Purchase not found"}), 404
+
+
+# # ENDPOINT PARA AGREGAR FAVORITOS
+# @api.route('/favorites', methods=['POST'])
+# @jwt_required()
+# def add_favorite():
+#     body = request.get_json()
+#     try:
+#         user_id = body.get('user_id')
+#         event_id = body.get('event_id')
+        
+#         if not user_id or not event_id:
+#             return jsonify({"error": "user_id and event_id are required"}), 400
+        
+#         existing_favorite = Favourite.query.filter_by(user_id=user_id, event_id=event_id).first()
+#         if existing_favorite:
+#             return jsonify({"message": "Event already in favorites"}), 400
+        
+#         new_favorite = Favourite(user_id=user_id, event_id=event_id)
+#         db.session.add(new_favorite)
+#         db.session.commit()
+#         return jsonify({"message": "Favorite added successfully", "favorite": new_favorite.serialize()}), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 400
+
