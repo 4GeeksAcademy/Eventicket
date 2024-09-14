@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import '../../styles/index.css';
+import '../../styles/home.css';
 
 export const Navbar = () => {
 	return (
@@ -13,7 +13,7 @@ export const Navbar = () => {
 
 				{/* Formulario de búsqueda */}
 				<form className="d-flex formulario-container" role="search">
-					<input className="form-control rounded-pill" type="search" placeholder="Buscar" aria-label="Search" />
+					<input className="form-control-busquedad rounded-pill" type="search" placeholder="Buscar" aria-label="Search" />
 					{/* <button className="btn btn-outline-success" type="submit">Buscar</button> */}
 				</form>
 
@@ -48,12 +48,12 @@ export const Navbar = () => {
 					<div className="mt-1">
 						<i className="fa-solid fa-cart-shopping carrito text-align-center"></i>
 					</div>
-					<Link to="/demo">
+					<Link to="/login">
 						<li className="nav-item ">
 							<a className="nav-link nav-item-login" aria-current="page" href="#">Iniciar Sesión</a>
 						</li>
 					</Link>
-					<Link to="/register">
+					<Link to="/registro">
 
 						<li className="nav-item ">
 							<a className="nav-link nav-item-register" href="#">Registrarse</a>
