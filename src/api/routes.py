@@ -56,32 +56,36 @@ def create_user():
     try:
         body = request.get_json()
         filter_user = User.query.filter_by(email=body.get("email")).first()
-        
         if filter_user:
             return jsonify({"message": "User already exists"}), 400
-        
-        if  not body.get("name") or not body.get("email") or not body.get("password"):
-            return jsonify({"message": "Error, all inputs must be completed"}), 400
+
+        if not body.get("name") or not body.get("email") or not body.get("password"):
+            return jsonify({"message": "Error, name, email, and password must be completed"}), 400
         
         new_user = User(
-            dni=body.get("dni"),
+            dni=body.get("dni", None),
             name=body.get("name"),
-            last_name=body.get("last_name"),
+            last_name=body.get("last_name", ""),
             email=body.get("email"),
             password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'),
-            district=body.get("district"),
-            phone=body.get("phone"),
-            date_of_birth=datetime.fromisoformat(body.get("date_of_birth")),
+            district=body.get("district", None),
+            phone=body.get("phone", None),       
+            date_of_birth=datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else None
         )
         
         db.session.add(new_user)
         db.session.commit()
-        
-        return jsonify({"message": "New User Created", "user": new_user.serialize()}), 200
+        print (body)
+        print (new_user.serialize())
 
-    except Exception as e:
+        return jsonify({
+            "message": "New User Created",
+            "user": new_user.serialize()
+        }), 200
+
+    except Exception as er:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": str(er)}), 400
 
 
 #Login de usuario ,paso 2,esto es despues de crearse una cuenta o cuando se vuelva a conectar,probado
@@ -115,8 +119,7 @@ def log_in_user():
                    "email": user.email,
                    "password": user.password,
                    "district": user.district,
-                   "phone": user.phone,
-                   "date_of_birth": user.date_of_birth.isoformat()}
+                   "phone": user.phone}
         return jsonify(response),200
 
     except Exception as e:

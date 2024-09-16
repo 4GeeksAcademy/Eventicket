@@ -24,7 +24,7 @@ class Administrator(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    dni = db.Column(db.Integer, nullable=False)
+    dni = db.Column(db.Integer, nullable=True)
     name = db.Column(db.String(250), nullable=False)
     last_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
