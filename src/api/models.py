@@ -111,7 +111,12 @@ class Favourite(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
 
 
-
+    def serialize(self):
+        return {
+            "id": self.id,
+            "event_id": self.event_id,
+            "user_id": self.user_id  
+        }
 
 class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
