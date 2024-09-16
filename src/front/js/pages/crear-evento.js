@@ -6,7 +6,7 @@ import '../../styles/creacion-evento.css';
 export const VistaEvento = () => {
     // const { store, actions } = useContext(Context);
     return (
-        <div className="crear-eventos d-flex justify-content-center align-items-center vh-100">
+        <div className="crear-eventos d-flex justify-content-center align-items-center col-10 mx-auto">
             <div className="d-flex flex-column vh-100 p-3 bg-dark text-white">
                 <div className="d-flex flex-column align-items-center mb-3">
                     <h5>Pepito Juanjo</h5>
@@ -30,9 +30,8 @@ export const VistaEvento = () => {
 
             <div className="row w-100" style={{ maxWidth: "1200px" }}>
 
-                {/* <div className="col-12 text-start mb-4 ms-4">
-                    <p className="titulo">L<span>ista de eventos</span></p>
-                </div> */}
+                    <p className="titulo m-0">L<span>ista de eventos</span></p>
+               
 
                 {/* Estructura de dos columnas dentro del formulario */}
                 <form className="col-12 d-flex justify-content-between align-items-start">
