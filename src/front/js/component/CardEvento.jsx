@@ -6,7 +6,7 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
-  });
+  }, []);
 
   const events = store.events || [];
 
