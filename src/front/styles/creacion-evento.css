@@ -1,0 +1,237 @@
+.crear-eventos {
+    background-color: #000;
+}
+.button-add-event {
+    background-color: #433DF2;
+}
+.input-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    background: #000;
+    outline: none;
+    color: #dddddd;
+
+}
+.input-container label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container input:valid ~ label,
+.input-container input:focus ~ label {
+    top: -12px;
+    color: rbg(228,228,228);
+    background-color: #000;
+    padding: 0 5px;
+}
+/* 2 */
+.input-container2 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container2 input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    background: #000;
+    outline: none;
+    color: #dddddd;
+
+}
+.input-container2 label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container2 input:valid ~ label,
+.input-container2 input:focus ~ label {
+    top: -12px;
+    color: rbg(228,228,228);
+    background-color: #000;
+    padding: 0 5px;
+}
+.form-select-edit {
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+}
+.form-control-edit {
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+}
+
+.titulo {
+    color:#433DF2;
+    font-size: 3rem;
+}
+span {
+    font-size: 2.5rem;
+}
+/* calendario */
+.input-container-calendario {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container-calendario input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    background: #000;
+    outline: none;
+    color: #dddddd;
+
+}
+.input-container-calendario label {
+    position:absolute;
+    font-size: 16px;
+    top: 7rem ;
+    left: 55px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container-calendario input:valid ~ label,
+.input-container-calendario input:focus ~ label {
+    top: -12px;
+    color: rbg(228,228,228);
+    background-color: #000;
+    padding: 0 5px;
+}
+.form-select-edit {
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+}
+
+.img-evento {
+    width: 100%;
+}
+.p-img-event {
+    color: white;
+    font-size:1.5rem;
+}
+.container-img-event {
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    padding: 1.5rem;
+    width: 80%;
+}
+/* img */
+.container-img-event p {
+    position:absolute;
+    font-size: 16px;
+    top: -13px;
+    left: 2rem;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+    background-color: #000;
+    padding: 0 1rem;
+
+
+}
+.container-img-event {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+/* select */
+.container-select{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.container-select p {
+    position:absolute;
+    font-size: 16px;
+    top: -13px;
+    left: 2rem;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+    background-color: #000;
+    padding: 0 1rem;
+}
+.container-select  {
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    padding: 1.5rem;
+    width: 80%;
+}
+
+
+/* stock */
+
+
+.input-container-stock  {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container-stock  input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    background: #000;
+    outline: none;
+    color: #fff;
+
+}
+.input-container-stock  label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container-stock  input:valid ~ label,
+.input-container-stock  input:focus ~ label {
+    top: -12px;
+    background-color: #000;
+    padding: 0 5px;
+}

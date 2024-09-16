@@ -89,7 +89,9 @@ export const Login = () => {
                                     Aún no tienes cuenta? <a href="#">Regístrate</a>
                                 </Link>
                                 <br />
-                                <span><a href="#">Ingresar como Administrador</a></span> <br />
+
+
+                                <span><Link to="/login-admin">Ingresar como Administrador</Link></span> <br />
                                 <span><a href="#">¿Olvidaste tu contraseña?</a></span>
                             </div>
                         </form>
