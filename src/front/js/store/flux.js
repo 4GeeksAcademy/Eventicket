@@ -1,51 +1,53 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			events: [],
+			users: [],
+			ticket: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+			getEvents: async () => {
+				try {
+					// Llamada al backend
+					const response = await fetch(process.env.BACKEND_URL + '/api/events', {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
 
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
+					// Verifica si la respuesta es correcta
+					if (response.ok) {
+						const events = await response.json();  // Parsear los eventos
+						setStore({ events: [...events] });  // Guardar los eventos en el store
+					} else {
+						console.error("Error al obtener los eventos:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error en la llamada fetch de eventos:", error);
 				}
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			getUsers: async () => {
+				try {
+					// Llamada al backend
+					const response = await fetch(process.env.BACKEND_URL + '/api/users', {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+					// Verifica si la respuesta es correcta
+					if (response.ok) {
+						const users = await response.json();  // Parsear los eventos
+						setStore({ users: [...users] });  // Guardar los eventos en el store
+					} else {
+						console.error("Error al obtener los eventos:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error en la llamada fetch de eventos:", error);
+				}
 			}
 		}
 	};
