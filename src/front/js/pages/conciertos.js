@@ -1,14 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { VistaEvento } from "./crear-evento"
 
 export const Conciertos = () => {
    
    
     return(
         <div>
-            <div>
-                <h1>Conciertos</h1>
-            </div>
+            <VistaEvento/>
         </div>
     )
 

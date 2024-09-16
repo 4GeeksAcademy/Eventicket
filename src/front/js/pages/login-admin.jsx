@@ -5,7 +5,7 @@ import fondo from "../../img/fondo.png";
 import { Link } from "react-router-dom"
 import "../../styles/login.css";
 
-export const Login = () => {
+export const LoginAdmin = () => {
     return (
         <div style={{
             backgroundImage: `url(${fondo})`, backgroundColor: "#4038E6", height: "100vh", backgroundSize: 'cover',
@@ -26,7 +26,7 @@ export const Login = () => {
                         </div>
 
                         <h2 className="fw-bold text-center py-3 text-primary text-info-emphasis fw-light display-6">
-                            Bienvenidos a Eventicket
+                            Bienvenido Administrador!
                         </h2>
 
                         <form action="#">
@@ -58,10 +58,7 @@ export const Login = () => {
                                     Aún no tienes cuenta?<a href="#">Regístrate</a>
                                 </Link>
                                 <br />
-
-
-                                <span><Link to="/login-admin">Ingresar como Administrador</Link></span> <br />
-                                <span><a href="#">¿Olvidaste tu contraseña?</a></span>
+                                <span><a href="#">Ingresar como usuario</a></span> <br />
                             </div>
                         </form>
                     </div>
