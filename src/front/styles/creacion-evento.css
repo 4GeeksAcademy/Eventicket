@@ -117,8 +117,8 @@ span {
 .input-container-calendario label {
     position:absolute;
     font-size: 16px;
-    top: 14px;
-    left: 15px;
+    top: 7rem ;
+    left: 55px;
     color: #fff;
     transition: ease-in .18s;
     letter-spacing: 2px;
@@ -152,23 +152,6 @@ span {
     width: 80%;
 }
 /* img */
-/* .container-img-event {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.container-img-event img {
-    width: 300px;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 6px;
-    border: solid 2px #433DF2;
-    background: #000;
-    outline: none;
-    color: #dddddd;
-
-} */
 .container-img-event p {
     position:absolute;
     font-size: 16px;
@@ -187,21 +170,14 @@ span {
     flex-direction: column;
     position: relative;
 }
-
-/* .container-img-event img:valid ~ p,
-.container-img-event img:focus ~ p {
-    top: -12px;
-    color: rbg(228,228,228);
-    background-color: #fff;
-    padding: 0 5px;
-} */
+/* select */
 .container-select{
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
- .container-select p {
+.container-select p {
     position:absolute;
     font-size: 16px;
     top: -13px;
@@ -217,4 +193,45 @@ span {
     border: solid 2px #433DF2;
     padding: 1.5rem;
     width: 80%;
+}
+
+
+/* stock */
+
+
+.input-container-stock  {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container-stock  input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #433DF2;
+    background: #000;
+    outline: none;
+    color: #fff;
+
+}
+.input-container-stock  label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container-stock  input:valid ~ label,
+.input-container-stock  input:focus ~ label {
+    top: -12px;
+    background-color: #000;
+    padding: 0 5px;
 }
