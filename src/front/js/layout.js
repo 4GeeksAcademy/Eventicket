@@ -9,7 +9,6 @@ import { LoginAdmin } from "./pages/login-admin.jsx";
 import { Conciertos } from "./pages/conciertos";
 import { Deportes } from "./pages/deportes";
 import { Entrenenimiento } from "./pages/entretenimiento";
-import { Register } from "./pages/register";
 import { Cursos } from "./pages/cursos";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
@@ -41,7 +40,6 @@ const Layout = () => {
                         <Route element={<Deportes />} path="/deportes" />
                         <Route element={<Entrenenimiento />} path="/entrenenimiento" />
                         <Route element={<Cursos />} path="/cursos" />
-                        <Route element={<Register />} path="/register" />
                         <Route element={<HomePage />} path="/homepage" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
