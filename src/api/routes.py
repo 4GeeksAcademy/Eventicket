@@ -266,7 +266,7 @@ def create_event():
         administrator = Administrator.query.get(current_admin)
         if administrator:
             body = request.get_json()
-            if (body.get("name") and body.get("date") and body.get("image_url") and body.get("place") and body.get("description") and body.get("category") and body.get("stock") and body.get("admin_id")):
+            if (body.get("name") and body.get("date") and body.get("place") and body.get("description") and body.get("category") and body.get("stock") and body.get("admin_id")):
                 event_date = datetime.fromisoformat(body.get("date"))
                 new_event = Event(
                     name=body.get("name"),

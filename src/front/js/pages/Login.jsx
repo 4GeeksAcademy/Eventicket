@@ -18,7 +18,7 @@ export const Login = () => {
         const success = await actions.loginUser(email, password); // Llamar a la acción del flux
         if (success) {
             alert("Inicio de sesión exitoso");
-            navigate("/dashboard"); // Redirigir al usuario después del login
+            navigate("/"); // Redirigir al usuario después del login
         } else {
             alert("Error al iniciar sesión. Verifica tus credenciales.");
         }
@@ -86,12 +86,11 @@ export const Login = () => {
                             </div>
                             <div className="my-3">
                                 <Link to="/registro">
-                                    Aún no tienes cuenta? <a href="#">Regístrate</a>
+                                    Aún no tienes cuenta? Regístrate aqui.
                                 </Link>
                                 <br />
-
-
-                                <span><Link to="/login-admin">Ingresar como Administrador</Link></span> <br />
+                                <Link to="/login-admin">Ingresar como Administrador</Link>
+                                <br />
                                 <span><a href="#">¿Olvidaste tu contraseña?</a></span>
                             </div>
                         </form>

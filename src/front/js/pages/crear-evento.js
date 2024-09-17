@@ -30,8 +30,8 @@ export const VistaEvento = () => {
 
             <div className="row w-100" style={{ maxWidth: "1200px" }}>
 
-                    <p className="titulo m-0">L<span>ista de eventos</span></p>
-               
+                <p className="titulo m-0">L<span>ista de eventos</span></p>
+
 
                 {/* Estructura de dos columnas dentro del formulario */}
                 <form className="col-12 d-flex justify-content-between align-items-start">
