@@ -69,7 +69,8 @@ def create_user():
             email=body.get("email"),
             password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'),
             district=body.get("district", None),
-            phone=body.get("phone", None),       
+            phone=body.get("phone", None),
+            image_ur=body.get("image_url"),
             date_of_birth=datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else None
         )
         
@@ -175,6 +176,7 @@ def log_in_admin():
 @jwt_required()
 def handle_users():
     try:
+        print("llamando a get user")
         current_admin = get_jwt_identity()
         administrator=Administrator.query.get(current_admin)
         if administrator:
@@ -266,6 +268,8 @@ def create_event():
         administrator = Administrator.query.get(current_admin)
         if administrator:
             body = request.get_json()
+            image=body.get("image_url")
+
             if (body.get("name") and body.get("date") and body.get("place") and body.get("description") and body.get("category") and body.get("stock") and body.get("admin_id")):
                 event_date = datetime.fromisoformat(body.get("date"))
                 new_event = Event(
@@ -276,7 +280,7 @@ def create_event():
                     description=body.get("description"),
                     category=body.get("category"),
                     stock=body.get("stock"),
-                    admin_id=body.get("admin_id"),
+                    admin_id=body.get("admin_id")
                 )
                 
                 db.session.add(new_event)

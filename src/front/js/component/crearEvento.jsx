@@ -10,9 +10,43 @@ const CrearEvento = () => {
         category: "",
         stock: "",
         description: "",
+        image_url: "",
         date: "",
         admin_id: 1  // El ID del administrador, puedes adaptarlo según tu lógica de autenticación
     });
+    const preset_name = "yu1h90st";                         // Nombre del preset de carga
+    const cloud_name = "drlqmol4c";                          // Nombre del cloud en Cloudinary
+    const [image, setImage] = useState('');       // Estado para guardar la URL de la imagen subida
+    const [loading, setLoading] = useState(false); // Estado para mostrar si la imagen está cargando
+
+    // Función para subir la imagen
+    const uploadImage = async (e) => {
+        const files = e.target.files;
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('upload_preset', preset_name);
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+                method: 'POST',
+                body: data
+            });
+
+            const file = await response.json();
+            setImage(file.secure_url);
+            setFormData({
+                ...formData,
+                image_url: file.secure_url
+            });
+            setLoading(false);
+            console.log("URL de la imagen subida:", file.secure_url);
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+            setLoading(false);
+        }
+    };
 
     // Manejar los cambios en los inputs
     const handleChange = (e) => {
@@ -26,9 +60,8 @@ const CrearEvento = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación básica
-        if (!formData.name || !formData.place || !formData.category || !formData.date) {
-            alert("Por favor completa todos los campos obligatorios.");
+        if (!formData.name || !formData.place || !formData.category || !formData.date || !formData.image_url) {
+            alert("Por favor completa todos los campos obligatorios, incluyendo la imagen.");
             return;
         }
 
@@ -37,24 +70,15 @@ const CrearEvento = () => {
             return;
         }
 
-        // Log formData to check its content
-        console.log("Form Data:", formData);
-
         try {
-            // Llamar a la acción createEvent
-            const result = await actions.createEvent({
-                ...formData,
-                image_url: null // Por ahora omitimos la imagen, puedes dejarla en null
-            });
+            const result = await actions.createEvent(formData);
 
-            // Mostrar mensaje de éxito
             if (result) {
                 alert("Evento creado con éxito");
             } else {
                 alert("Error al crear el evento");
             }
         } catch (error) {
-            // Mostrar mensaje de error
             alert(`Error: ${error.message}`);
         }
     };
@@ -149,6 +173,30 @@ const CrearEvento = () => {
                             onChange={handleChange}
                         />
                         <p className="form-label">Fecha</p>
+
+                        <div>
+                            <h1>Subir Imagen</h1>
+
+                            <input
+                                type="file"
+                                name="file"
+                                placeholder='Sube una imagen'
+                                onChange={(e) => uploadImage(e)}
+                            />
+
+                            <div className="d-flex flex-column align-items-center justify-content-center h-100 bg-dark">
+                                {loading ? (
+                                    <h3 className="text-light">Cargando...</h3>
+                                ) : (
+                                    <img
+                                        src={image ? image : "https://previews.123rf.com/images/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-sin-foto-o-icono-de-imagen-en-blanco-cargando-im%C3%A1genes-o-marca-de-imagen-faltante-imagen-no.jpg"}
+                                        alt="imagen subida"
+                                        className="img-fluid rounded shadow-lg"
+                                        style={{ maxWidth: '100%', height: 'auto', maxHeight: '500px' }}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     </div>
                     <br />
                     <button type="submit" className="btn btn-primary button-add-event">Agregar evento</button>

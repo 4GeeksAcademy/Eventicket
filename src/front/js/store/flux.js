@@ -41,6 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUsers: async () => {
 				const store = getStore();
 				try {
+					console.log("llamando a getusers")
 					const response = await fetch(process.env.BACKEND_URL + "/api/getusers", {
 						method: "GET",
 						headers: {
