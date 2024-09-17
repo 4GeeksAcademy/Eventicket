@@ -6,7 +6,7 @@ const UserList = () => {
 
   useEffect(() => {
     actions.getUsers(); // Llamar al fetch para obtener los usuarios
-  }, []);
+  }, [actions]);
 
   // Acceder a los usuarios del store
   const users = store.users || []; // Asegurarse de que users esté definido como un array

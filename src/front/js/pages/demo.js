@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import Sidebar from "../component/sidebar.jsx";
 import EventList from "../component/eventList.jsx";
 import UserList from "../component/userList.jsx";
+import CrearEvento from "../component/crearEvento.jsx";
 
 export const Demo = () => {
   const { store, actions } = useContext(Context);
@@ -16,7 +17,7 @@ export const Demo = () => {
 
       {/* Main content */}
       <div className="col-10">
-        {activeList === "events" ? <EventList /> : <UserList />}
+        {activeList === "events" ? <div><EventList /><br /><CrearEvento /></div> : <UserList />}
       </div>
     </div>
   );

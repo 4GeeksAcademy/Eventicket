@@ -3,9 +3,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			events: [],
 			users: [],
+			usersError: null,
 			ticket: [],
 			currentUser: null,
 			accessToken: null,
+			admin: null,
+			adminToken: null,
+			adminError: null,
+			events: [],
+			eventCreationMessage: null,
+			eventCreationError: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -30,27 +37,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la llamada fetch de eventos:", error);
 				}
 			},
+
 			getUsers: async () => {
+				const store = getStore();
 				try {
-					// Llamada al backend
-					const response = await fetch(process.env.BACKEND_URL + '/api/users', {
-						method: 'GET',
+					const response = await fetch(process.env.BACKEND_URL + "/api/getusers", {
+						method: "GET",
 						headers: {
-							'Content-Type': 'application/json',
-						},
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.adminToken || store.accessToken}`  // Agrega el token de autenticación
+						}
 					});
 
-					// Verifica si la respuesta es correcta
-					if (response.ok) {
-						const users = await response.json();  // Parsear los eventos
-						setStore({ users: [...users] });  // Guardar los eventos en el store
-					} else {
-						console.error("Error al obtener los eventos:", response.statusText);
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(`Error: ${errorData.error || response.statusText}`);
 					}
+
+					const data = await response.json();
+					setStore({ users: data });
+					return true;
 				} catch (error) {
-					console.error("Error en la llamada fetch de eventos:", error);
+					console.error("Error al obtener los usuarios", error);
+					setStore({ usersError: "Error al obtener los usuarios" });
+					return false;
 				}
-			}, createUser: async (userData) => {
+			},
+
+			createUser: async (userData) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/users', {
 						method: 'POST',
@@ -73,7 +87,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la solicitud para crear usuario:", error);
 					return false; // Indica que hubo un error en la solicitud
 				}
-			}, loginUser: async (email, password) => {
+			},
+
+			loginUser: async (email, password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/login', {
 						method: 'POST',
@@ -123,6 +139,85 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ accessToken: token });
 				}
 			},
+
+			// Acción para login del administrador
+			loginAdmin: async (email, password) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/loginadmin", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							email: email,
+							password: password
+						})
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						// Guarda el token y los datos del administrador en el store
+						localStorage.setItem("adminToken", data.access_token);
+						setStore({
+							admin: data,
+							adminToken: data.access_token,
+							adminError: null // Limpia cualquier error previo
+						});
+						return true; // Devuelve éxito
+					} else {
+						const errorData = await response.json();
+						setStore({ adminError: errorData.message || "Error en el inicio de sesión" });
+						return false; // Devuelve fallo
+					}
+				} catch (error) {
+					setStore({ adminError: "Error de conexión con el servidor" });
+					return false;
+				}
+			},
+
+			// Método para verificar si el administrador está autenticado
+			isAdminAuthenticated: () => {
+				const store = getStore();
+				return !!store.adminToken; // Retorna true si hay un token en el store
+			},
+
+			// Método para logout del administrador
+			logoutAdmin: () => {
+				localStorage.removeItem("adminToken");
+				setStore({
+					admin: null,
+					adminToken: null,
+					adminError: null
+				});
+			},
+
+			// Acción para crear un evento
+			createEvent: async (eventData) => {
+				const store = getStore();  // Obtén el store actual
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/events", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.adminToken || store.accessToken}`  // Agrega el token de autenticación
+						},
+						body: JSON.stringify(eventData)
+					});
+
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(`Error: ${errorData.error || response.statusText}`);
+					}
+
+					const data = await response.json();
+					setStore({ eventCreationMessage: "Evento creado con éxito" });
+					return true;
+				} catch (error) {
+					console.error("Error al crear el evento", error);
+					setStore({ eventCreationError: "Error al crear el evento" });
+					return false;
+				}
+			}
 		}
 	};
 };

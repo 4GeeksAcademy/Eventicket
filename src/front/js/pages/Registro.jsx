@@ -127,6 +127,11 @@ export const Registro = () => {
                                     Registrate
                                 </button>
                             </div>
+                            <div className="my-3">
+                                <Link to="/login">
+                                    Ya tienes cuenta? Ingresa aqui.
+                                </Link>
+                            </div>
                         </form>
                     </div>
                 </div>
