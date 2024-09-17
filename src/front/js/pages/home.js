@@ -14,7 +14,6 @@ export const Home = () => {
 		<div>
 			<Carrusel />
 			<CardEvento />
-
 		</div>
 
 	);
