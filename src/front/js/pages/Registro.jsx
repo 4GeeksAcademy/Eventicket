@@ -52,7 +52,7 @@ export const Registro = () => {
                 <div className="row align-items-stretch">
                     <div className="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded" style={{
                         backgroundImage: `url(${registro})`,
-                        height: "80vh",
+                        height: "90vh",
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',

@@ -1,6 +1,6 @@
 /* Estilos del carusel de imagenes */
 .carousel-indicators img {
-    width: 100px;
+    width: 140px;
     display: block;
 }
 
@@ -8,9 +8,9 @@
     width: max-content !important;
 }
 
-
-
-
+.carousel-indicators.spacing {
+    position: unset
+}
 
 /* Estilos de la sección de compra */
 .buy-section {
@@ -23,6 +23,16 @@
 .buy-section h3 {
     color: #54ea40;
 }
+
+.carousel-control-next-icon.green,
+.carousel-control-prev-icon.green {
+    border: #ffffff solid 2px;
+    border-radius: 50%;
+    height: 1.3em;
+    width: 1.3em;
+    background-color: #C8EE55;
+}
+
 
 /* Estilo de los inputs y botones */
 input,
@@ -48,7 +58,6 @@ button {
     color: #71ee55;
     margin-right: 10px;
 }
-
 
 .carousel,
 .buy-section {

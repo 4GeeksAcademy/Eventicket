@@ -40,7 +40,7 @@ export const CardEvento = () => {
                 </div>
                 <div className="mb-5 d-flex justify-content-around">
                   <h3>s/{event.ticket}</h3>
-                  <Link to="/detalle-evento">
+                  <Link to="/detalle">
                     <button className="btn boton-verde rounded-pill fs-5 fw-bold">
                       Ver detalles
                     </button>

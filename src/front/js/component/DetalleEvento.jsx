@@ -36,15 +36,15 @@ export const DetalleEvento = () => {
 
                         <button className="carousel-control-prev" type="button" data-bs-target="#carouselDemo"
                             data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon"></span>
+                            <span className="carousel-control-prev-icon green"></span>
                         </button>
 
                         <button className="carousel-control-next" type="button" data-bs-target="#carouselDemo"
                             data-bs-slide="next">
-                            <span className="carousel-control-next-icon"></span>
+                            <span className="carousel-control-next-icon green"></span>
                         </button>
 
-                        <div className="carousel-indicators">
+                        <div className="carousel-indicators spacing">
                             <button type="button" className="active" data-bs-target="#carouselDemo" data-bs-slide-to="0">
                                 <img
                                     src="https://i0.wp.com/iopera.es/wp-content/uploads/2018/10/Tosca-de-Puccini-desde-Helsinki-desde-la-%C3%93pera-Nacional-de-Finlandia-v%C3%ADdeo-de-la-%C3%B3pera-en-la-representaci%C3%B3n-en-directo-del-7-de-octubre-de-2018-giacomo.jpg?fit=901%2C585" />
