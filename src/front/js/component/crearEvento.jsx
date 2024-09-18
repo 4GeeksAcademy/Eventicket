@@ -49,6 +49,7 @@ const CrearEvento = () => {
     };
 
     // Manejar los cambios en los inputs
+    //
     const handleChange = (e) => {
         setFormData({
             ...formData,
