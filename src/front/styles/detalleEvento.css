@@ -8,18 +8,7 @@
     width: max-content !important;
 }
 
-.carousel-indicators {
-    position: unset;
-}
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    border: #ffffff solid 2px;
-    border-radius: 50%;
-    height: 1.3em;
-    width: 1.3em;
-    background-color: #C8EE55;
-}
 
 
 

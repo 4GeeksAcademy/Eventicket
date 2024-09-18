@@ -1,30 +1,3 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
-.navbar {
-    background-color: #202526;
-    height: 10vh;
-
-}
-
-.dropdown-menu {
-    background-color: #4038E6;
-    color: #fff;
-}
-
-.dropdown-item {
-    color: #fff;
-
-}
-
-.dropdown-toggle {
-    color: #fff;
-
-}
-
-.nav-link:hover {
-    color: #fff;
-}
 
 /* Para el estado de hover del menú desplegable */
 .dropdown-toggle:focus,
@@ -71,9 +44,6 @@ a {
     text-decoration: none;
 }
 
-.navbar-title {
-    color: #fff;
-}
 
 /* flecha ">" */
 .fa-angle-right {
@@ -118,65 +88,3 @@ a {
     width: 100%;
 }
 
-/* botonoes para cambiar de imagen en los carruseles */
-/* Estilos existentes ... */
-
-.icon-button {
-    background-color: #C8EE55;
-    color: #fff;
-    /* Cambiado a un color oscuro para contraste */
-    border: none;
-    padding: 0;
-    border-radius: 15%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    height: 6rem;
-    width: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-button-left {
-    left: 40px;
-}
-
-.icon-button-right {
-    right: 40px;
-}
-
-.icon-button:hover {
-    background-color: #b8de45;
-}
-
-.fa-angle-left,
-.fa-angle-right {
-    font-size: 5rem;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-
-}
-
-/* Restaurar el contenido del pseudo-elemento */
-.fa-angle-left::before {
-    content: "\f104";
-    /* Código Unicode para el ícono de ángulo izquierdo */
-}
-
-.fa-angle-right::before {
-    content: "\f105";
-    /* Código Unicode para el ícono de ángulo derecho */
-}
-
-/* Asegurar que el ícono tenga el color correcto */
-.icon-button i {
-    color: inherit;
-}
