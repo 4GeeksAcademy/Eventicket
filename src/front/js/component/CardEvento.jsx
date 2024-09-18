@@ -20,7 +20,7 @@ export const CardEvento = () => {
             <div className="col-md-4 mb-4" key={event.id}>
               <div className="card">
                 <img
-                  src={event.imageUrl || "https://picsum.photos/300/200/"}
+                  src={event.image_url || "https://picsum.photos/300/200/"}
                   className="card-img-top"
                   alt={event.name}
                   style={{ height: "200px" }}
