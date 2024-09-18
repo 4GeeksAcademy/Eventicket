@@ -1,29 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import '../../styles/navbar.css'; // Asegúrate de que este archivo esté incluido
+import '../../styles/navbar.css'; 
 import loguito2 from "../../img/logito2.png";
 
 export const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (window.scrollY > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
-    <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${scrolled ? 'scrolled' : ''}`}>
+    <nav className="navbar navbar-expand-lg navbar-dark ">
       <Link className="navbar-brand d-flex align-items-center" to="/">
         <img src={loguito2} style={{ height: '40px', marginRight: '10px' }} alt="EvenTicket Logo" />
         <span className="navbar-brand-text">EvenTicket</span>

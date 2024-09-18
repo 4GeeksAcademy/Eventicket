@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const CardEvento = () => {
   const { store, actions } = useContext(Context);
@@ -39,9 +40,12 @@ export const CardEvento = () => {
                 </div>
                 <div className="mb-5 d-flex justify-content-around">
                   <h3>s/{event.ticket}</h3>
-                  <button className="btn boton-verde rounded-pill fs-5 fw-bold">
-                    Ver detalles
-                  </button>
+                  <Link to="/detalle-evento">
+                    <button className="btn boton-verde rounded-pill fs-5 fw-bold">
+                      Ver detalles
+                    </button>
+                  </Link>
+
                 </div>
               </div>
             </div>

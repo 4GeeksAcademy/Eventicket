@@ -41,21 +41,6 @@
 .navbar-brand-text {
   margin-bottom: 5px;
 }
-
-/* navbar.css */
-
-.navbar {
-  background-color: rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease;
-  height: 60px;
-  /* Ajusta esta altura según tus necesidades */
-  padding: 1rem 2rem;
-  position: relative;
-  /* Asegura que el navbar esté en su posición original */
-  z-index: 1;
-  /* Asegura que el navbar esté por encima de otros elementos si es necesario */
-}
-
-.navbar.scrolled {
+.navbar{
   background-color: #212529;
 }
