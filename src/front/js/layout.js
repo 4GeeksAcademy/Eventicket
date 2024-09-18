@@ -18,7 +18,7 @@ import { Footer } from "./component/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Registro } from "./pages/Registro.jsx";
-import { DetalleEvento } from "./pages/DetalleEvento.jsx";
+import { Detalle } from "./pages/Detalle.jsx";
 
 
 // import { Footer } from "./component/footer";
@@ -48,7 +48,7 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<LoginAdmin />} path="/login-admin" />
                         <Route element={<Registro />} path="/registro" />
-                        <Route element={<DetalleEvento />} path="/detalle-evento" />
+                        <Route element={<Detalle />} path="/detalle" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
