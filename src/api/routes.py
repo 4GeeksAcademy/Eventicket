@@ -1,12 +1,15 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+"""
+This module takes care of starting the API Server, Loading the DB and Adding the endpoints
+"""
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Administrator,User,Event,Ticket,Favourite,Purchase
+from api.models import db, Administrator, User, Event, Ticket, Favourite, Purchase
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
-from flask_jwt_extended import   create_access_token,get_jwt_identity,jwt_required,JWTManager
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_bcrypt import Bcrypt
 
 
@@ -25,7 +28,7 @@ CORS(api)
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
-@api.route("/events", methods=["GET"])  
+@api.route("/events", methods=["GET"])
 def handle_events():
     try:
         events = list(map(lambda event: event.serialize(), Event.query.all()))
@@ -61,7 +64,7 @@ def create_user():
 
         if not body.get("name") or not body.get("email") or not body.get("password"):
             return jsonify({"message": "Error, name, email, and password must be completed"}), 400
-        
+
         new_user = User(
             dni=body.get("dni", None),
             name=body.get("name"),
@@ -70,14 +73,13 @@ def create_user():
             password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'),
             district=body.get("district", None),
             phone=body.get("phone", None),
-            image_ur=body.get("image_url"),
             date_of_birth=datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else None
         )
-        
+
         db.session.add(new_user)
         db.session.commit()
-        print (body)
-        print (new_user.serialize())
+        print(body)
+        print(new_user.serialize())
 
         return jsonify({
             "message": "New User Created",
@@ -89,7 +91,7 @@ def create_user():
         return jsonify({"error": str(er)}), 400
 
 
-#Login de usuario ,paso 2,esto es despues de crearse una cuenta o cuando se vuelva a conectar,probado
+# Login de usuario, paso 2, esto es después de crearse una cuenta o cuando se vuelva a conectar, probado
 @api.route("/login", methods=["POST"])
 def log_in_user():
     try:
@@ -109,24 +111,26 @@ def log_in_user():
         checking_password = bcrypt.check_password_hash(user_password, password)
 
         if not checking_password:
-            return jsonify({"error": "Contraseña incorrecta o usuario no existente"}),404
+            return jsonify({"error": "Contraseña incorrecta o usuario no existente"}), 404
 
         access_token = create_access_token(identity=user.id)
-        response={"access_token": access_token,
-                   "id": user.id,
-                   "dni": user.dni,
-                   "name": user.name,
-                   "last_name": user.last_name,
-                   "email": user.email,
-                   "password": user.password,
-                   "district": user.district,
-                   "phone": user.phone}
-        return jsonify(response),200
+        response = {
+            "access_token": access_token,
+            "id": user.id,
+            "dni": user.dni,
+            "name": user.name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "password": user.password,
+            "district": user.district,
+            "phone": user.phone
+        }
+        return jsonify(response), 200
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-#Este endpoint solo ingresara el user para poder ver sus datos estando logeado y nadie más pueda buscar su usuario por ID
+# Este endpoint solo ingresará el user para poder ver sus datos estando logeado y nadie más pueda buscar su usuario por ID
 @api.route("/user/", methods=["GET"])
 @jwt_required()
 def read_user_data():
@@ -145,42 +149,44 @@ def read_user_data():
 ###############################################################3
 ###################################################################
 ###############################################################3333
-##PARTE ADMIN##
+## PARTE ADMIN ##
 ############################################3
 #######################################3333
 @api.route("/loginadmin", methods=["POST"])
 def log_in_admin():
     try:
-        data=request.get_json()
-        email=data.get("email")
-        password=data.get("password")
-        administrator=Administrator.query.filter_by(email=email).first()
-        if administrator.email==email and administrator.password==password:
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
+        administrator = Administrator.query.filter_by(email=email).first()
+        if administrator and bcrypt.check_password_hash(administrator.password, password):
             access_token = create_access_token(identity=administrator.id)
-            response={"access_token": access_token,
-                   "id": administrator.id,
-                   "name": administrator.name,
-                   "last_name": administrator.last_name,
-                   "email": administrator.email,
-                   "password": administrator.password
-                   }
-        return jsonify(response),200
+            response = {
+                "access_token": access_token,
+                "id": administrator.id,
+                "name": administrator.name,
+                "last_name": administrator.last_name,
+                "email": administrator.email,
+                "password": administrator.password
+            }
+            return jsonify(response), 200
+        else:
+            return jsonify({"error": "Invalid email or password"}), 401
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
 
-#Este Endpoint unicamente puede ser para el administrador
+# Este Endpoint únicamente puede ser para el administrador
 # READ USERS
 @api.route("/getusers", methods=["GET"])
 @jwt_required()
 def handle_users():
     try:
-        print("llamando a get user")
         current_admin = get_jwt_identity()
-        administrator=Administrator.query.get(current_admin)
+        administrator = Administrator.query.get(current_admin)
         if administrator:
-            users = list(map(lambda event: event.serialize(), User.query.all()))
+            users = list(map(lambda user: user.serialize(), User.query.all()))
             return jsonify(users), 200
         else:
             return jsonify({"error": "Unauthorized"}), 400
@@ -195,18 +201,18 @@ def read_user(user_id):
     try:
         user = User.query.get(user_id)
         current_admin = get_jwt_identity()
-        administrator=Administrator.query.get(current_admin)
+        administrator = Administrator.query.get(current_admin)
         if administrator:
             if user:
                 return jsonify(user.serialize()), 200
             else:
                 return jsonify({"error": "User not found"}), 404
         else:
-            return jsonify({"error": "Unauthorized"}), 403   
+            return jsonify({"error": "Unauthorized"}), 403
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-##VALIDADO
+## VALIDADO
 # UPDATE USER ADMINISTRADOR y USUARIO LOGEADO NADA MÁS PUEDE INGRESAR
 @api.route("/users/<int:user_id>", methods=["PUT"])
 @jwt_required()
@@ -215,19 +221,21 @@ def update_user(user_id):
         body = request.get_json()
         user = User.query.get(user_id)
         current_admin = get_jwt_identity()
-        administrator=Administrator.query.get(current_admin)
-        if administrator:
+        administrator = Administrator.query.get(current_admin)
+        if administrator or current_admin == user_id:
             if user:
                 user.dni = body.get("dni", user.dni)
                 user.name = body.get("name", user.name)
                 user.last_name = body.get("last_name", user.last_name)
                 user.email = body.get("email", user.email)
-                user.password = body.get("password", user.password)
+                user.password = bcrypt.generate_password_hash(body.get("password")).decode('utf-8') if body.get("password") else user.password
                 user.district = body.get("district", user.district)
                 user.phone = body.get("phone", user.phone)
-                user.date_of_birth = datetime.fromisoformat(body.get("date_of_birth"))
+                user.date_of_birth = datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else user.date_of_birth
                 db.session.commit()
-            return jsonify(user.serialize()), 200
+                return jsonify(user.serialize()), 200
+            else:
+                return jsonify({"error": "User not found"}), 404
         else:
             return jsonify({"error": "Unauthorized"}), 403
     except Exception as e:
@@ -258,7 +266,7 @@ def delete_user(user_id):
         return jsonify({"error": str(e)}), 400
 
 
-###VALIDADOS"""2111
+### VALIDADOS
 # CREATE EVENTS ADMINISTRADOR NADA MÁS PUEDE INGRESAR
 @api.route("/events", methods=["POST"])
 @jwt_required()
@@ -268,35 +276,26 @@ def create_event():
         administrator = Administrator.query.get(current_admin)
         if administrator:
             body = request.get_json()
-            image=body.get("image_url")
-
-            if (body.get("name") and body.get("date") and body.get("place") and body.get("description") and body.get("category") and body.get("stock") and body.get("admin_id")):
-                event_date = datetime.fromisoformat(body.get("date"))
-                new_event = Event(
-                    name=body.get("name"),
-                    date=event_date,
-                    image_url=body.get("image_url"),
-                    place=body.get("place"),
-                    description=body.get("description"),
-                    category=body.get("category"),
-                    stock=body.get("stock"),
-                    admin_id=body.get("admin_id")
-                )
-                
-                db.session.add(new_event)
-                db.session.commit()
-                
-                return jsonify({"message": "New Event Created", "event": new_event.serialize()}), 200
-            else:
-                return jsonify({"error": "Missing required fields"}), 400
+            new_event = Event(
+                title=body.get("title"),
+                description=body.get("description"),
+                date=datetime.fromisoformat(body.get("date")),
+                time=datetime.strptime(body.get("time"), "%H:%M:%S").time(),
+                location=body.get("location"),
+                image_url=body.get("image_url"),
+                price=body.get("price")
+            )
+            db.session.add(new_event)
+            db.session.commit()
+            return jsonify({"message": "Event created", "event": new_event.serialize()}), 201
         else:
             return jsonify({"error": "Unauthorized"}), 403
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
-
-# UPDATE EVENTS ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# UPDATE EVENT ADMINISTRADOR NADA MÁS PUEDE INGRESAR
 @api.route("/events/<int:event_id>", methods=["PUT"])
 @jwt_required()
 def update_event(event_id):
@@ -304,19 +303,19 @@ def update_event(event_id):
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
         if administrator:
-         body = request.get_json()
-         event = Event.query.get(event_id)
-         if event:
-            event.name = body.get("name", event.name)
-            event.date = datetime.fromisoformat(body.get("date", event.date.isoformat()))
-            event.image_url = body.get("image_url", event.image_url)
-            event.place = body.get("place", event.place)
-            event.description = body.get("description", event.description)
-            event.category = body.get("category", event.category)
-            event.stock = body.get("stock", event.stock)
-            event.admin_id = body.get("admin_id", event.admin_id)
-            db.session.commit()
-            return jsonify(event.serialize()), 200
+            body = request.get_json()
+            event = Event.query.get(event_id)
+            if event:
+                event.title = body.get("title", event.title)
+                event.description = body.get("description", event.description)
+                event.date = datetime.fromisoformat(body.get("date")) if body.get("date") else event.date
+                event.location = body.get("location", event.location)
+                event.image_url = body.get("image_url", event.image_url)
+                event.price = body.get("price", event.price)
+                db.session.commit()
+                return jsonify(event.serialize()), 200
+            else:
+                return jsonify({"error": "Event not found"}), 404
         else:
             return jsonify({"error": "Unauthorized"}), 403
 
@@ -325,7 +324,7 @@ def update_event(event_id):
         return jsonify({"error": str(e)}), 400
 
 
-# DELETE EVENTS ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# DELETE EVENT ADMINISTRADOR NADA MÁS PUEDE INGRESAR
 @api.route("/events/<int:event_id>", methods=["DELETE"])
 @jwt_required()
 def delete_event(event_id):
@@ -335,51 +334,30 @@ def delete_event(event_id):
         if administrator:
             event = Event.query.get(event_id)
             if event:
-             db.session.delete(event)
-             db.session.commit()
-            return jsonify({"message": "Event deleted successfully"}), 200
+                db.session.delete(event)
+                db.session.commit()
+                return jsonify({"message": "Event deleted successfully"}), 200
+            else:
+                return jsonify({"error": "Event not found"}), 404
         else:
             return jsonify({"error": "Unauthorized"}), 403
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
-#############################################################
-#############################################################
-##ENDPOINTS PARA TICKET##
-#############################################################
-#############################################################
-# ENDPOINT PARA LEER TICKETS DE UN USUARIO
-@api.route('/tickets/users/<int:user_id>', methods=['GET'])
-@jwt_required()
-def read_user_tickets(user_id):
-    try:
-        tickets = Ticket.query.filter_by(user_id=user_id).all() 
-        if not tickets:
-            return jsonify({"message": "No tickets found for this user"}), 404
-        
-        serialized_tickets = [ticket.serialize() for ticket in tickets]
-        return jsonify(serialized_tickets), 200
-    except Exception as e:
-         return jsonify({"error": str(e)}), 400
 
-# ENDPOINT PARA LEER TICKETS DE UN EVENTO
-@api.route('/tickets/events/<int:event_id>', methods=['GET'])
-@jwt_required()
-def read_event_tickets(event_id):
+# READ TICKETS
+@api.route("/tickets", methods=["GET"])
+def handle_tickets():
     try:
-        tickets = Ticket.query.filter_by(event_id=event_id).all()
-        if not tickets:
-            return jsonify({"message": "No tickets found for this event"}), 404
-        
-        serialized_tickets = [ticket.serialize() for ticket in tickets]
-        return jsonify(serialized_tickets), 200
+        tickets = list(map(lambda ticket: ticket.serialize(), Ticket.query.all()))
+        return jsonify(tickets), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": f"{e}"}), 400
 
-# ENDPOINT PARA LEER UN TICKET POR ID
-@api.route('/tickets/<int:ticket_id>', methods=['GET'])
-@jwt_required()
+
+# READ TICKET BY ID
+@api.route("/tickets/<int:ticket_id>", methods=["GET"])
 def read_ticket(ticket_id):
     try:
         ticket = Ticket.query.get(ticket_id)
@@ -388,8 +366,170 @@ def read_ticket(ticket_id):
         else:
             return jsonify({"error": "Ticket not found"}), 404
     except Exception as e:
+        return jsonify({"error": f"{e}"}), 400
+
+
+# READ FAVOURITES
+@api.route("/favourites", methods=["GET"])
+@jwt_required()
+def handle_favourites():
+    try:
+        current_user = get_jwt_identity()
+        favourites = Favourite.query.filter_by(user_id=current_user).all()
+        favourites_list = list(map(lambda fav: fav.serialize(), favourites))
+        return jsonify(favourites_list), 200
+    except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
+# READ FAVOURITE BY ID
+@api.route("/favourites/<int:favourite_id>", methods=["GET"])
+@jwt_required()
+def read_favourite(favourite_id):
+    try:
+        current_user = get_jwt_identity()
+        favourite = Favourite.query.filter_by(id=favourite_id, user_id=current_user).first()
+        if favourite:
+            return jsonify(favourite.serialize()), 200
+        else:
+            return jsonify({"error": "Favourite not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+# CREATE FAVOURITE
+@api.route("/favourites", methods=["POST"])
+@jwt_required()
+def create_favourite():
+    try:
+        current_user = get_jwt_identity()
+        body = request.get_json()
+        new_favourite = Favourite(
+            user_id=current_user,
+            event_id=body.get("event_id")
+        )
+        db.session.add(new_favourite)
+        db.session.commit()
+        return jsonify({"message": "Favourite added", "favourite": new_favourite.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+
+# DELETE FAVOURITE
+@api.route("/favourites/<int:favourite_id>", methods=["DELETE"])
+@jwt_required()
+def delete_favourite(favourite_id):
+    try:
+        current_user = get_jwt_identity()
+        favourite = Favourite.query.filter_by(id=favourite_id, user_id=current_user).first()
+        if favourite:
+            db.session.delete(favourite)
+            db.session.commit()
+            return jsonify({"message": "Favourite deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Favourite not found"}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+
+# READ PURCHASES
+@api.route("/purchases", methods=["GET"])
+@jwt_required()
+def handle_purchases():
+    try:
+        current_user = get_jwt_identity()
+        purchases = Purchase.query.filter_by(user_id=current_user).all()
+        result = list(map(lambda purchase: purchase.serialize(), purchases))
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+# READ PURCHASE BY ID
+@api.route("/purchases/<int:purchase_id>", methods=["GET"])
+@jwt_required()
+def read_purchase(purchase_id):
+    try:
+        current_user = get_jwt_identity()
+        purchase = Purchase.query.filter_by(id=purchase_id, user_id=current_user).first()
+        if purchase:
+            purchase_data = purchase.serialize()
+            purchase_data["tickets"] = list(map(lambda ticket: ticket.serialize(), purchase.tickets))
+            return jsonify(purchase_data), 200
+        else:
+            return jsonify({"error": "Purchase not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
+
+# CREATE PURCHASE WITH TICKETS
+@api.route("/purchases", methods=["POST"])
+@jwt_required()
+def create_purchase():
+    try:
+        current_user = get_jwt_identity()
+        body = request.get_json()
+
+        event = Event.query.get(body.get("event_id"))
+        if not event:
+            return jsonify({"error": "Event not found"}), 404
+
+        quantity = body.get("quantity")
+        if event.stock < quantity:
+            return jsonify({"error": "Not enough tickets available"}), 400
+
+        total_price = event.price * quantity
+
+        new_purchase = Purchase(
+            user_id=current_user,
+            event_id=event.id,
+            quantity=quantity,
+            total_price=total_price
+        )
+
+        event.stock -= quantity
+
+        db.session.add(new_purchase)
+        db.session.commit()
+
+        # Crear tickets
+        for _ in range(quantity):
+            ticket = Ticket(
+                price=event.price,
+                event_id=event.id,
+                user_id=current_user,
+                purchase_id=new_purchase.id
+            )
+            db.session.add(ticket)
+
+        db.session.commit()
+
+        return jsonify({"message": "Purchase created", "purchase": new_purchase.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+
+
+# DELETE PURCHASE
+@api.route("/purchases/<int:purchase_id>", methods=["DELETE"])
+@jwt_required()
+def delete_purchase(purchase_id):
+    try:
+        current_user = get_jwt_identity()
+        purchase = Purchase.query.filter_by(id=purchase_id, user_id=current_user).first()
+        if purchase:
+            db.session.delete(purchase)
+            db.session.commit()
+            return jsonify({"message": "Purchase deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Purchase not found"}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
 
 
 ####################################################################################################################################################
