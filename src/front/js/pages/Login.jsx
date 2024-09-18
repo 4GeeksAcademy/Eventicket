@@ -91,7 +91,7 @@ export const Login = () => {
                                 <br />
                                 <Link to="/login-admin">Ingresar como Administrador</Link>
                                 <br />
-                                <span><a href="#">¿Olvidaste tu contraseña?</a></span>
+                                <Link to="/">¿Olvidaste tu contraseña?</Link>
                             </div>
                         </form>
                     </div>

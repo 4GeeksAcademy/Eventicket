@@ -89,6 +89,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			deleteUser: async (userId) => {
+				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log(data.message);
+
+						// Actualizar la lista de usuarios en el store
+						const store = getStore();
+						const updatedUsers = store.users.filter(user => user.id !== userId);
+						setStore({ users: updatedUsers });
+
+						return true;
+					} else {
+						const errorData = await response.json();
+						console.error(errorData.error);
+						return false;
+					}
+				} catch (error) {
+					console.error("Error deleting user:", error);
+					return false;
+				}
+			},
+
 			loginUser: async (email, password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/login', {
@@ -217,7 +249,76 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ eventCreationError: "Error al crear el evento" });
 					return false;
 				}
-			}
+			},
+
+			deleteEvent: async (eventId) => {
+				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log(data.message);
+
+						// Actualizar la lista de eventos en el store
+						const store = getStore();
+						const updatedEvents = store.events.filter(event => event.id !== eventId);
+						setStore({ events: updatedEvents });
+
+						return true;
+					} else {
+						const errorData = await response.json();
+						console.error("Error al eliminar evento:", errorData.message);
+						return false;
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para eliminar evento:", error);
+					return false;
+				}
+			}, // Fin deleteEvent
+
+			updateEvent: async (eventId, eventData) => {
+				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+						},
+						body: JSON.stringify(eventData)
+					});
+
+					if (response.ok) {
+						const updatedEvent = await response.json();
+						console.log("Event updated successfully:", updatedEvent);
+
+						// Actualizar la lista de eventos en el store
+						const store = getStore();
+						const updatedEvents = store.events.map(event =>
+							event.id === eventId ? updatedEvent : event
+						);
+						setStore({ events: updatedEvents });
+
+						return true;
+					} else {
+						const errorData = await response.json();
+						console.error("Error al actualizar evento:", errorData.message);
+						return false;
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para actualizar evento:", error);
+					return false;
+				}
+			}, // Fin updateEvent
 		}
 	};
 };

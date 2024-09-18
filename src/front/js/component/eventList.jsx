@@ -1,14 +1,25 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+
 const EventList = () => {
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
     actions.getEvents(); // Llamar al fetch para obtener los eventos
-  }, []);
+  }, [actions]);
 
   // Acceder a los eventos del store
   const events = store.events || [];
+
+  const handleDelete = async (eventId) => {
+    const success = await actions.deleteEvent(eventId);
+    if (success) {
+      console.log("Event deleted successfully");
+    } else {
+      console.error("Failed to delete event");
+    }
+  };
+
 
   return (
     <div className="container mt-4">
@@ -42,10 +53,10 @@ const EventList = () => {
           {/* precio hardcodeado porque se saca de otra tabla*/}
           <div className="col-2 text-end">
             <button className="btn btn-outline-primary btn-sm me-2">
-              <i className="bi bi-pencil"></i>
+              <i className="fa-solid fa-pencil"></i>
             </button>
-            <button className="btn btn-outline-danger btn-sm">
-              <i className="bi bi-trash"></i>
+            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(event.id)}>
+              <i className="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
