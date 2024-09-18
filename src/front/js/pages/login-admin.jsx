@@ -77,6 +77,8 @@ export const LoginAdmin = () => {
                             </div>
                             <div className="d-grid">
                                 <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+                                <br />
+                                <Link to="/login">Iniciar Sesión como Usuario</Link>
                             </div>
                         </form>
                     </div>

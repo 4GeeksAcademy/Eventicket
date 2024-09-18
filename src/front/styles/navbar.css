@@ -1,40 +1,61 @@
-
 .navbar-brand-text {
-	font-size: 20px; 
+  font-size: 20px;
 }
+
 .btn-outline-custom {
-    color: #C8EE55; /* Color del texto del botón */
-    background-color: transparent ; /* Color de fondo del botón */
-    border-color: #C8EE55 ; /* Color del borde del botón */
+  color: #C8EE55;
+  /* Color del texto del botón */
+  background-color: transparent;
+  /* Color de fondo del botón */
+  border-color: #C8EE55;
+  /* Color del borde del botón */
 }
 
 .btn-outline-custom:hover {
-    color: #000000; /* Color del texto al pasar el ratón sobre el botón */
-    background-color: #C8EE55; /* Color de fondo al pasar el ratón sobre el botón */
-    border-color: #C8EE55; /* Color del borde al pasar el ratón sobre el botón */
+  color: #000000;
+  /* Color del texto al pasar el ratón sobre el botón */
+  background-color: #C8EE55;
+  /* Color de fondo al pasar el ratón sobre el botón */
+  border-color: #C8EE55;
+  /* Color del borde al pasar el ratón sobre el botón */
 }
+
 .btn-outline-custom2 {
-    color: #5585ee; /* Color del texto del botón */
-    background-color: transparent ; /* Color de fondo del botón */
-    border-color: #5585ee ; /* Color del borde del botón */
+  color: #5585ee;
+  /* Color del texto del botón */
+  background-color: transparent;
+  /* Color de fondo del botón */
+  border-color: #5585ee;
+  /* Color del borde del botón */
 }
 
 .btn-outline-custom2:hover {
-    color: #fff; /* Color del texto al pasar el ratón sobre el botón */
-    background-color: #4038E6 ; /* Color de fondo al pasar el ratón sobre el botón */
-    border-color: #4038E6 ; /* Color del borde al pasar el ratón sobre el botón */
+  color: #fff;
+  /* Color del texto al pasar el ratón sobre el botón */
+  background-color: #4038E6;
+  /* Color de fondo al pasar el ratón sobre el botón */
+  border-color: #4038E6;
+  /* Color del borde al pasar el ratón sobre el botón */
 }
+
 .navbar-brand-text {
-	margin-bottom: 5px; 
-  }
+  margin-bottom: 5px;
+}
+
 /* navbar.css */
 
 .navbar {
-	background-color: rgba(0, 0, 0, 0.3);
-	transition: background-color 0.3s ease;
-  }
-  
-  .navbar.scrolled {
-	background-color: #212529; 
-  }
-  
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  height: 60px;
+  /* Ajusta esta altura según tus necesidades */
+  padding: 1rem 2rem;
+  position: relative;
+  /* Asegura que el navbar esté en su posición original */
+  z-index: 1;
+  /* Asegura que el navbar esté por encima de otros elementos si es necesario */
+}
+
+.navbar.scrolled {
+  background-color: #212529;
+}

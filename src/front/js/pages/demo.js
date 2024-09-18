@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-
 import { Context } from "../store/appContext";
 import Sidebar from "../component/sidebar.jsx";
 import EventList from "../component/eventList.jsx";
@@ -17,7 +16,15 @@ export const Demo = () => {
 
       {/* Main content */}
       <div className="col-10">
-        {activeList === "events" ? <div><EventList /><br /><CrearEvento /></div> : <UserList />}
+        {activeList === "events" ? (
+          <div>
+            <EventList />
+            <br />
+            <CrearEvento />
+          </div>
+        ) : (
+          <UserList />
+        )}
       </div>
     </div>
   );

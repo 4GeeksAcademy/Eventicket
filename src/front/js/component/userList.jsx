@@ -11,6 +11,15 @@ const UserList = () => {
   // Acceder a los usuarios del store
   const users = store.users || []; // Asegurarse de que users esté definido como un array
 
+  const handleDelete = async (userId) => {
+    const success = await actions.deleteUser(userId);
+    if (success) {
+      console.log("User deleted successfully");
+    } else {
+      console.error("Failed to delete user");
+    }
+  };
+
   return (
     <div className="container mt-4">
       <div className="row mb-2">
@@ -42,10 +51,10 @@ const UserList = () => {
           <div className="col-2">{user.phone}</div>
           <div className="col-2 text-end">
             <button className="btn btn-outline-primary btn-sm me-2">
-              <i className="bi bi-pencil"></i>
+              <i className="fa-solid fa-pencil"></i>
             </button>
-            <button className="btn btn-outline-danger btn-sm">
-              <i className="bi bi-trash"></i>
+            <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(user.id)}>
+              <i className="fa-solid fa-trash"></i>
             </button>
           </div>
         </div>
