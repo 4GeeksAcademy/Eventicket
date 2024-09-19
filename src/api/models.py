@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime,time
 
 db = SQLAlchemy()
 
@@ -10,7 +10,7 @@ class Administrator(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     events = db.relationship("Event", backref="administrator", lazy=True)
-
+    
     def __repr__(self):
         return f"<Admin Name {self.name}>"
 
@@ -59,7 +59,9 @@ class Event(db.Model):
     title = db.Column(db.String(255), nullable=True)
     description = db.Column(db.Text, nullable=False)
     date = db.Column(db.Date, nullable=False)
+    time = db.Column(db.Time, nullable=False)  # Nuevo campo para la hora del evento
     location = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(255), nullable=False)
     image_url = db.Column(db.String(255))
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)

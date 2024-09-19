@@ -6,7 +6,7 @@ const EventList = () => {
 
   useEffect(() => {
     actions.getEvents(); // Llamar al fetch para obtener los eventos
-  }, [actions]);
+  }, []);
 
   // Acceder a los eventos del store
   const events = store.events || [];
@@ -45,8 +45,8 @@ const EventList = () => {
       </div>
       {events.map((event) => (
         <div className="row mb-3 align-items-center" key={event.id}>
-          <div className="col-2">{event.name}</div>
-          <div className="col-2">{event.place}</div>
+          <div className="col-2">{event.title}</div>
+          <div className="col-2">{event.location}</div>
           <div className="col-2">{event.date}</div>
           <div className="col-2">{event.stock} personas</div>
           <div className="col-2">S/. 20</div>

@@ -5,14 +5,16 @@ import '../../styles/creacion-evento.css';
 const CrearEvento = () => {
     const { store, actions } = useContext(Context);
     const [formData, setFormData] = useState({
-        name: "",
-        place: "",
+        title: "",
+        location: "",
         category: "",
-        stock: "",
+        stock:"",  // Inicializar como número
         description: "",
         image_url: "",
         date: "",
-        admin_id: 1  // El ID del administrador, puedes adaptarlo según tu lógica de autenticación
+        price:"0",  // Inicializar como número
+        time:"",
+        administrator_id: 1
     });
     const preset_name = "yu1h90st";                         // Nombre del preset de carga
     const cloud_name = "drlqmol4c";                          // Nombre del cloud en Cloudinary
@@ -60,8 +62,9 @@ const CrearEvento = () => {
     // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData)
 
-        if (!formData.name || !formData.place || !formData.category || !formData.date || !formData.image_url) {
+        if (!formData.title || !formData.location || !formData.category || !formData.date || !formData.image_url) {
             alert("Por favor completa todos los campos obligatorios, incluyendo la imagen.");
             return;
         }
@@ -94,8 +97,8 @@ const CrearEvento = () => {
                                 required
                                 spellCheck="false"
                                 type="text"
-                                name="name"
-                                value={formData.name}
+                                name="title"
+                                value={formData.title}
                                 onChange={handleChange}
                                 className="form-control"
                                 placeholder="Nombre del evento"
@@ -106,8 +109,8 @@ const CrearEvento = () => {
                                 required
                                 spellCheck="false"
                                 type="text"
-                                name="place"
-                                value={formData.place}
+                                name="location"
+                                value={formData.location}
                                 onChange={handleChange}
                                 id="exampleInputPlace"
                                 className=""
@@ -142,9 +145,27 @@ const CrearEvento = () => {
                                 onChange={handleChange}
                                 id="exampleInputStock"
                                 aria-describedby="stockHelp"
+                                step="1"
                             />
                             <p>Stock</p>
                         </div>
+
+                        <div className="mb-3 container-select">
+                            <input
+                                required
+                                type="number"
+                                className="form-control"
+                                name="price"
+                                value={formData.price}
+                                onChange={handleChange}
+                                id="exampleInputPrice"
+                                aria-describedby="stockHelp"
+                                step="1"
+                            />
+                            <p>Price</p>
+                        </div>
+
+
                         <div className="form-floating mb-3 input-container2">
                             <textarea
                                 required
@@ -167,13 +188,25 @@ const CrearEvento = () => {
                             required
                             id="date-event"
                             name="date"
-                            type="datetime-local"
+                            type="date"
                             className="form-control input-container"
                             min={"2024-09-14"}
                             value={formData.date}
                             onChange={handleChange}
                         />
                         <p className="form-label">Fecha</p>
+                        
+                        <input
+                         required
+                         id="time-event"
+                         name="time"
+                         type="time"
+                          className="form-control input-container"
+                         value={formData.time}
+                         onChange={handleChange}/>
+                        <p className="form-label">Hora</p>
+                    
+
 
                         <div>
                             <h1>Subir Imagen</h1>
