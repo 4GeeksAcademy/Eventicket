@@ -1,0 +1,268 @@
+/* .contenedor-principal{
+    background-image: url("https://img.freepik.com/vector-gratis/fondo-futurista-degradado-geometrico_23-2149116406.jpg");
+} */
+.contenedor-izquierdo{
+    background-color: #202526;
+}
+.contenedor-izquierdo-hijo{
+    background-color: #202526;
+    /* background-color: yellow; */
+    /* border-right: solid 5px #FFFB00; */
+}
+.contenedor-derecho {
+    border-left: solid 3px #FFFB00;
+
+}
+.icono-usuario {
+    color: #48FF00;
+    font-size: 1rem;
+    /* transform: scale(2); */
+}
+/* .icono-usuario2 {
+    color: #48FF00; 
+    font-size: 1.4rem ; 
+    transform: scale(2);
+}*/
+
+.subtitulo {
+    /* color: #4038e6 */
+    color: #00FFD5;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.nombre-precio-total {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.input-container-entrada {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container-entrada input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #48FF00;
+    background: #202526;
+    outline: none;
+    color: #fff;
+
+}
+.input-container-entrada label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container-entrada input:valid ~ label,
+.input-container-entrada input:focus ~ label {
+    top: -12px;
+    color: rbg(228,228,228);
+    background-color: #202526;
+    padding: 0 5px;
+}
+.formulario-entradas {
+    background-color: #202526;
+}
+/* 2 */
+.input-container-entrada2 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+}
+
+.input-container-entrada2 input {
+    width: 300px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: solid 2px #48FF00;
+    background: #202526;
+    outline: none;
+    color: #fff;
+
+}
+.input-container-entrada2 label {
+    position:absolute;
+    font-size: 16px;
+    top: 14px;
+    left: 15px;
+    color: #fff;
+    transition: ease-in .18s;
+    letter-spacing: 2px;
+
+
+}
+
+.input-container-entrada2 input:valid ~ label,
+.input-container-entrada2 input:focus ~ label {
+    top: -12px;
+    color: rbg(228,228,228);
+    background-color: #202526;
+    padding: 0 5px;
+}
+/* botones  */
+.boton-menos, .boton-mas {
+    background:  #c8ee55;
+    border: solid 2px #c8ee55;
+    color: #fff;
+}
+/* fondo de la cantida de entradas */
+.bg-input-entradas {
+    background-color: #202526;
+    border: none;
+    font-size: 1.5rem;
+}
+/* probando  */
+/* .button-personalisable {
+    background-color: #000;
+    cursor: pointer;
+    border: none;
+    padding: 16px 32px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    border-radius: 12px;
+}
+/* seudoelemento */
+/* .button-personalisable:hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        red,blue,deeppink,blue,
+            red,blue,deeppink,blue
+    );
+    background-size: 800%;
+    border-radius: 10px;
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+}
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+} */ 
+/* button 2 */
+.btn2 {
+    font-size: 24px;
+    font-weight: bold;
+    /* margin: 100px; */
+    padding: 15px 40px;
+    border: none;
+    outline: none;
+    color: #FFF;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+  }
+  .btn2::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+  /* glow */
+  .btn2::before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #FFFB00, #FF7300, #FFFB00, #48FF00,
+      #00FFD5, #002BFF, #FF00C8, #FF0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height:  calc(100% + 4px);
+    filter: blur(8px);
+    /* animacion infinita */
+    /* animation: glowing 20s linear infinite; */
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+    opacity: 0;
+  }
+  
+  @keyframes glowing {
+    0% {background-position: 0 0;}
+    50% {background-position: 400% 0;}
+    100% {background-position: 0 0;}
+  }
+  
+  /* hover */
+  /* .btn2:hover::before {
+    opacity: 1;
+  } */
+  /* sin hover  */
+  .btn2::before {
+    opacity: 1;
+  }
+  .btn2:active:after {
+    /* background: transparent; */
+    background-color: #000;
+  }
+  
+  .btn2:active {
+    /* color: #000; */
+    color: #fff;
+    font-weight: bold;
+  }
+.barra {
+    color: #48FF00;
+}
+.nombre-evento {
+    color: #00FFD5;
+    font-size: 3rem;
+    font-weight: bold;
+}
+.nombre-entradas {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 600;
+
+
+}
+.img-evento-entrada {
+    border-radius: 40px;
+    /* border-radius: 50%;  */
+    /* height: 150%;
+    width: 66%; */
+}
+.titulo-entrada {
+    font-weight: bold;
+    font-size: 2.5rem;
+    /* color: #433df2; */
+    color: #c8ee55;
+}

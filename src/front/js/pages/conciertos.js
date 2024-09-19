@@ -6,7 +6,7 @@ export const Conciertos = () => {
    
    
     return(
-        <div>
+        <div className="bg-dark">
             <VistaEvento/>
         </div>
     )
