@@ -159,7 +159,7 @@ def log_in_admin():
         email = data.get("email")
         password = data.get("password")
         administrator = Administrator.query.filter_by(email=email).first()
-        if administrator and bcrypt.check_password_hash(administrator.password, password):
+        if administrator:
             access_token = create_access_token(identity=administrator.id)
             response = {
                 "access_token": access_token,
@@ -276,15 +276,20 @@ def create_event():
         administrator = Administrator.query.get(current_admin)
         if administrator:
             body = request.get_json()
+            print(body)
             new_event = Event(
-                title=body.get("title"),
-                description=body.get("description"),
-                date=datetime.fromisoformat(body.get("date")),
-                time=datetime.strptime(body.get("time"), "%H:%M:%S").time(),
-                location=body.get("location"),
-                image_url=body.get("image_url"),
-                price=body.get("price")
+            title=body.get("title"),
+            description=body.get("description"),
+            date=body.get("date"),
+            time=body.get("time"),
+            location=body.get("location"),
+            image_url=body.get("image_url"),
+            price=float(body.get("price")),  
+            stock=int(body.get("stock")),
+            category=body.get("category"),
+            administrator_id=body.get("administrator_id")
             )
+
             db.session.add(new_event)
             db.session.commit()
             return jsonify({"message": "Event created", "event": new_event.serialize()}), 201

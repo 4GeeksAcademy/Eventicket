@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fcb1fe23bd64
+Revision ID: 69c0d4198752
 Revises: 
-Create Date: 2024-09-18 23:22:02.243943
+Create Date: 2024-09-19 21:42:22.031607
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fcb1fe23bd64'
+revision = '69c0d4198752'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -45,7 +45,9 @@ def upgrade():
     sa.Column('title', sa.String(length=255), nullable=True),
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('date', sa.Date(), nullable=False),
+    sa.Column('time', sa.Time(), nullable=False),
     sa.Column('location', sa.String(length=255), nullable=False),
+    sa.Column('category', sa.String(length=255), nullable=False),
     sa.Column('image_url', sa.String(length=255), nullable=True),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('stock', sa.Integer(), nullable=False),
@@ -75,7 +77,6 @@ def upgrade():
     )
     op.create_table('ticket',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('availability', sa.String(length=250), nullable=False),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),

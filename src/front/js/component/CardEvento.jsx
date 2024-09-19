@@ -7,6 +7,7 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
+    console.log(store.events)
   }, []);
 
   const events = store.events || [];
@@ -22,24 +23,27 @@ export const CardEvento = () => {
                 <img
                   src={event.image_url || "https://picsum.photos/300/200/"}
                   className="card-img-top"
-                  alt={event.name}
+                  alt={event.title}
                   style={{ height: "200px" }}
                 />
                 <div className="card-body">
-                  <h5 className="card-title text-primary fs-4">{event.name}</h5>
+                  <h5 className="card-title text-primary fs-4">{event.title}</h5>
                   <div className="d-flex justify-content-between">
                     <i className="fa-solid fa-location-dot fs-5"></i>
-                    <p className="fs-5">{event.place}</p>
+                    <p className="fs-5">{event.location}</p>
                     <button className="btn btn-outline-warning">
                       <i className="fa fa-heart-o" aria-hidden="true"></i>
                     </button>
                   </div>
                   <p className="fs-5">
-                    <i className="fa-regular fa-calendar"></i> {event.date}
+                    <i className="fa-regular fa-calendar">{event.date} {event.time}</i> 
+                  </p>
+                  <p className="fs-5">
+                    <i className="fa-regular fa-calendar">{event.time}</i> 
                   </p>
                 </div>
                 <div className="mb-5 d-flex justify-content-around">
-                  <h3>s/{event.ticket}</h3>
+                  <h3>s/{event.price}</h3>
                   <Link to="/detalle">
                     <button className="btn boton-verde rounded-pill fs-5 fw-bold">
                       Ver detalles

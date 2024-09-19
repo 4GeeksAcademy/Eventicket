@@ -40,13 +40,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUsers: async () => {
 				const store = getStore();
+				let adminToken=localStorage.getItem("adminToken")
 				try {
 					console.log("llamando a getusers")
 					const response = await fetch(process.env.BACKEND_URL + "/api/getusers", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.adminToken || store.accessToken}`  // Agrega el token de autenticación
+							"Authorization": `Bearer ${adminToken}`  // Agrega el token de autenticación
 						}
 					});
 
@@ -92,12 +93,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteUser: async (userId) => {
 				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
+				let adminToken=localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+							"Authorization": `Bearer ${adminToken}`
 						}
 					});
 
@@ -227,22 +229,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Acción para crear un evento
 			createEvent: async (eventData) => {
 				const store = getStore();  // Obtén el store actual
+				let adminToken=localStorage.getItem("adminToken")
+
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/events", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.adminToken || store.accessToken}`  // Agrega el token de autenticación
+							"Authorization": `Bearer ${adminToken}`  // Agrega el token de autenticación
 						},
 						body: JSON.stringify(eventData)
 					});
 
-					if (!response.ok) {
-						const errorData = await response.json();
-						throw new Error(`Error: ${errorData.error || response.statusText}`);
-					}
+					// if (!response.ok) {
+					// 	const errorData = await response.json();
+					// 	throw new Error(`Error: ${errorData.error || response.statusText}`);
+					// }
 
 					const data = await response.json();
+					console.log(data)
 					setStore({ eventCreationMessage: "Evento creado con éxito" });
 					return true;
 				} catch (error) {
