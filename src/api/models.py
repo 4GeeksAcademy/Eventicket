@@ -3,14 +3,13 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
 class Administrator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250),nullable=False)
+    name = db.Column(db.String(250), nullable=False)
     last_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-    event = db.relationship("Event", backref="administrator", lazy=True)
+    password = db.Column(db.String(80), nullable=False)
+    events = db.relationship("Event", backref="administrator", lazy=True)
 
     def __repr__(self):
         return f"<Admin Name {self.name}>"
@@ -18,9 +17,10 @@ class Administrator(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "name": self.name,
+            "last_name": self.last_name,
             "email": self.email,
         }
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,13 +28,13 @@ class User(db.Model):
     name = db.Column(db.String(250), nullable=False)
     last_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-    district = db.Column(db.String(20), unique=False, nullable=True)
-    phone = db.Column(db.String(12), unique=False, nullable=True)
+    password = db.Column(db.String(80), nullable=False)
+    district = db.Column(db.String(20), nullable=True)
+    phone = db.Column(db.String(12), nullable=True)
     date_of_birth = db.Column(db.DateTime, nullable=True)
-    purchase = db.relationship("Purchase", backref="user", lazy=True)
-    favourite = db.relationship("Favourite", backref="user", lazy=True)
-    tickets = db.relationship("Ticket", backref="user", lazy=True)  
+    purchases = db.relationship("Purchase", backref="user", lazy=True)
+    favourites = db.relationship("Favourite", backref="user", lazy=True)
+    tickets = db.relationship("Ticket", backref="user", lazy=True)
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -46,85 +46,88 @@ class User(db.Model):
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
-            "password": self.password,
             "district": self.district,
             "phone": self.phone,
             "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
-            "purchases": list(map(lambda purchase: purchase.serialize(), self.purchase)),
-            "favourites": list(map(lambda favourite: favourite.serialize(), self.favourite)),
-            "tickets": list(map(lambda ticket: ticket.serialize(), self.tickets))  
+            "purchases": list(map(lambda purchase: purchase.serialize(), self.purchases)),
+            "favourites": list(map(lambda favourite: favourite.serialize(), self.favourites)),
+            "tickets": list(map(lambda ticket: ticket.serialize(), self.tickets))
         }
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), nullable=False)
-    date = db.Column(db.DateTime, default=datetime.now)
-    image_url = db.Column(db.String(250), nullable=True)
-    place = db.Column(db.String(250), nullable=False)
-    description = db.Column(db.String(250), nullable=False)
-    category = db.Column(db.String(250), nullable=False)
+    title = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+    image_url = db.Column(db.String(255))
+    price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey("administrator.id"))
-    purchase = db.relationship("Purchase", backref="event", lazy=True)
-    ticket = db.relationship("Ticket", backref="event", lazy=True)
-    favourite = db.relationship("Favourite", backref="event", lazy=True)
-
-    def __repr__(self):
-        return f"<Event {self.name}>"
+    administrator_id = db.Column(db.Integer, db.ForeignKey('administrator.id'), nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "date": self.date.isoformat() if self.date else None,
-            "image_url": self.image_url,
-            "place": self.place,
+            "title": self.title,
             "description": self.description,
-            "category": self.category,
+            "date": self.date.isoformat(),
+            "location": self.location,
+            "image_url": self.image_url,
+            "price": self.price,
             "stock": self.stock,
-            "admin_id": self.admin_id
+            "administrator_id": self.administrator_id
         }
-
-
 
 class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    availability = db.Column(db.String(250), nullable=False)
-    price = db.Column(db.Integer, nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)  
+    price = db.Column(db.Float, nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey("event.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    purchase_id = db.Column(db.Integer, db.ForeignKey("purchase.id"), nullable=False)
 
     def __repr__(self):
         return f"<Ticket ID {self.id}>"
 
     def serialize(self):
         return {
-            "id": self.id,
+            "numero_ticket": self.id,
             "price": self.price,
             "event_id": self.event_id,
-            "user_id": self.user_id  
+            "owner": self.user_id,
+            "purchase_id": self.purchase_id
         }
 
 class Favourite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey("event.id"), nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
             "event_id": self.event_id,
-            "user_id": self.user_id  
+            "user_id": self.user_id
         }
 
 class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    event_id = db.Column(db.Integer, db.ForeignKey("event.id"))
-    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    purchase_date = db.Column(db.DateTime, default=datetime.utcnow)
+    estado = db.Column(db.String(50), nullable=False, default='pendiente')
+
+    tickets = db.relationship('Ticket', backref='purchase', lazy=True)
+
     def serialize(self):
         return {
-            "id": self.id,
-            "owner": self.user.id,
+            "id_compra": self.id,
+            "user_id": self.user_id,
+            "event_id": self.event_id,
+            "quantity": self.quantity,
+            "total_price": self.total_price,
+            "purchase_date": self.purchase_date.isoformat(),
+            "estado": self.estado,
+            "tickets": list(map(lambda ticket: ticket.serialize(), self.tickets))
         }

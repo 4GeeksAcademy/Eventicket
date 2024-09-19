@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 669d12fe29f9
+Revision ID: fcb1fe23bd64
 Revises: 
-Create Date: 2024-09-16 14:36:46.279339
+Create Date: 2024-09-18 23:22:02.243943
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '669d12fe29f9'
+revision = 'fcb1fe23bd64'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade():
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('dni', sa.Integer(), nullable=False),
+    sa.Column('dni', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=250), nullable=False),
     sa.Column('last_name', sa.String(length=250), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
@@ -42,29 +42,33 @@ def upgrade():
     )
     op.create_table('event',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=250), nullable=False),
-    sa.Column('date', sa.DateTime(), nullable=True),
-    sa.Column('image_url', sa.String(length=250), nullable=True),
-    sa.Column('place', sa.String(length=250), nullable=False),
-    sa.Column('description', sa.String(length=250), nullable=False),
-    sa.Column('category', sa.String(length=250), nullable=False),
+    sa.Column('title', sa.String(length=255), nullable=True),
+    sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('date', sa.Date(), nullable=False),
+    sa.Column('location', sa.String(length=255), nullable=False),
+    sa.Column('image_url', sa.String(length=255), nullable=True),
+    sa.Column('price', sa.Float(), nullable=False),
     sa.Column('stock', sa.Integer(), nullable=False),
-    sa.Column('admin_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['admin_id'], ['administrator.id'], ),
+    sa.Column('administrator_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['administrator_id'], ['administrator.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('favourite',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('event_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('purchase',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('event_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('quantity', sa.Integer(), nullable=False),
+    sa.Column('total_price', sa.Float(), nullable=False),
+    sa.Column('purchase_date', sa.DateTime(), nullable=True),
+    sa.Column('estado', sa.String(length=50), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -72,10 +76,12 @@ def upgrade():
     op.create_table('ticket',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('availability', sa.String(length=250), nullable=False),
-    sa.Column('price', sa.Integer(), nullable=False),
-    sa.Column('event_id', sa.Integer(), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('price', sa.Float(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('purchase_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.id'], ),
+    sa.ForeignKeyConstraint(['purchase_id'], ['purchase.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
