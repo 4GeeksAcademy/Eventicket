@@ -17,7 +17,7 @@ import { Footer } from "./component/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Registro } from "./pages/Registro.jsx";
-import { Detalle } from "./pages/Detalle.jsx";
+import { DetalleEvento } from "./component/DetalleEvento.jsx";
 import DashboardUser from "./pages/DashboardUser.jsx";
 
 
@@ -48,7 +48,7 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<LoginAdmin />} path="/login-admin" />
                         <Route element={<Registro />} path="/registro" />
-                        <Route element={<Detalle />} path="/detalle" />
+                        <Route element={<DetalleEvento />} path="/detalle/:eventId" />
                         <Route element={<DashboardUser />} path="/user" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>

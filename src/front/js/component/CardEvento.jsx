@@ -7,7 +7,7 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
-    console.log(store.events)
+    console.log(store.events);
   }, []);
 
   const events = store.events || [];
@@ -36,20 +36,16 @@ export const CardEvento = () => {
                     </button>
                   </div>
                   <p className="fs-5">
-                    <i className="fa-regular fa-calendar">{event.date} {event.time}</i> 
+                    <i className="fa-regular fa-calendar">{event.date} {event.time}</i>
                   </p>
-                  <p className="fs-5">
-                    <i className="fa-regular fa-calendar">{event.time}</i> 
-                  </p>
-                </div>
-                <div className="mb-5 d-flex justify-content-around">
-                  <h3>s/{event.price}</h3>
-                  <Link to="/detalle">
-                    <button className="btn boton-verde rounded-pill fs-5 fw-bold">
-                      Ver detalles
-                    </button>
-                  </Link>
-
+                  <div className="mb-5 d-flex justify-content-around">
+                    <h3>s/{event.price}</h3>
+                    <Link to={`/detalle/${event.id}`}>
+                      <button className="btn boton-verde rounded-pill fs-5 fw-bold">
+                        Ver detalles
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
