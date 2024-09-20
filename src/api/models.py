@@ -120,7 +120,6 @@ class Purchase(db.Model):
     total_price = db.Column(db.Float, nullable=False)
     purchase_date = db.Column(db.DateTime, default=datetime.utcnow)
     estado = db.Column(db.String(50), nullable=False, default='pendiente')
-
     tickets = db.relationship('Ticket', backref='purchase', lazy=True)
 
     def serialize(self):

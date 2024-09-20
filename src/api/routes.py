@@ -11,14 +11,21 @@ from flask_cors import CORS
 from datetime import datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail, Message
+from datetime import timedelta
 
 
 api = Blueprint("api", __name__)
 bcrypt = Bcrypt()
 jwt = JWTManager()
+mail = Mail()  # Inicializar Mail sin configuraciones
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+
+
 
 #########################################################################################################
 #########################################################################################################
@@ -535,6 +542,49 @@ def delete_purchase(purchase_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
+
+
+###ruta para recuperar contraseña
+@api.route("/recovery", methods=['POST'])
+def recovery_password():
+    try:
+        body = request.get_json()
+        email = body.get("email")
+        user = User.query.filter_by(email=email).first()
+        if not user or not email:
+            return jsonify({"Error":f"{email} does not exist"})
+        
+        access_token = create_access_token(identity=user.id,expires_delta=timedelta(minutes=10))
+        msg = Message(subject="Password Recovery",
+                      recipients=[email])
+        msg.body = f"Click en el siguiente enlace para recuperar tu contraseña:\n" \
+                   f"https://ominous-memory-wxv7rv646w92v6rv-3000.app.github.dev/new_password/token={access_token}"
+        mail.send(msg)
+        return jsonify({"msg": f"Recovery email sent to {email}"}), 200
+    except Exception as e:
+        return jsonify({"Error":f"{email} does not exist"})
+
+
+@api.route("/changepass",methods=['PUT'])
+@jwt_required()
+def modify_password():
+    try:        
+        current_user = get_jwt_identity()
+        user=User.query.filter_by(id=current_user).first()
+        if not current_user or not user:
+            return jsonify({"Error":f"Just Happened this error:{e}"})
+
+        body=request.get_json()
+        new_password=body.get("new_password")
+        hashed_password=bcrypt.generate_password_hash(new_password).decode('utf-8'),
+        user.password=hashed_password
+        db.session.commit()
+        return jsonify({"Message":f"The User:{user.name} has updated his password to:{new_password}"})
+    except Exception as e:
+        return jsonify({"Error":f"Just Happened this error:{e}"})
+    
+
+
 
 
 ####################################################################################################################################################
