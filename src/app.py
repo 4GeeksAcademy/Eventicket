@@ -13,6 +13,8 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -34,6 +36,20 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+
+
+# Configuraciones para Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'omgerickbrow662@gmail.com'
+app.config['MAIL_PASSWORD'] = 'zwraocntkjwxqqij'
+app.config['MAIL_DEFAULT_SENDER'] = 'omgerickbrow662@gmail.com'
+
+# Inicializar Flask-Mail
+mail = Mail(app)
 
 # add the admin
 setup_admin(app)
