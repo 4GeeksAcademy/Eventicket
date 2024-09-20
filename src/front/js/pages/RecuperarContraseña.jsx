@@ -11,9 +11,9 @@ export const RecuperarContraseña = () => {
 
         const email = e.target.email.value; // Captura el valor del email
         if (email) {
-            // Simular el envío de la información y redirigir
+           
             console.log("Correo enviado a:", email);
-            navigate("/restablecer"); // Redirige después del submit
+            navigate("/restablecer"); 
         }
     };
 
