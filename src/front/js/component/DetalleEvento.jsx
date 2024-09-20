@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/detalleEvento.css";
 
+//Hola
+
 export const DetalleEvento = () => {
   const { eventId } = useParams();
   const { store } = useContext(Context);
