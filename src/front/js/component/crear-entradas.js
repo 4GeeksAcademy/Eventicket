@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import RenderPaypal from "../component/RenderPaypal.jsx";
 import '../../styles/creacion-entradas.css';
 
 export const CrearEntradas = () => {
@@ -8,6 +9,10 @@ export const CrearEntradas = () => {
   const [buyerEmail, setBuyerEmail] = useState("");
 
   const totalAmount = vipTickets * 100 + generalTickets * 50; // Ejemplo de precios
+
+
+
+
 
   return (
     <div className="bg-dark container-fluid contenedor-principal my-5">
@@ -126,7 +131,7 @@ export const CrearEntradas = () => {
             {/* <button className="btn btn-primary w-100 mt-3">
               Comprar ahora
             </button> */}
-            <button className="btn2 w-100">Comprar ahora</button>
+            <RenderPaypal/>
           </div>
         </div>
       </div>

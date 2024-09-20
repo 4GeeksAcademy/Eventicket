@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/detalleEvento.css";
@@ -6,9 +6,41 @@ import "../../styles/detalleEvento.css";
 export const DetalleEvento = () => {
   const { eventId } = useParams();
   const { store } = useContext(Context);
-  const event = store.events.find(e => e.id.toString() === eventId);
+  const event = store.events.find((e) => e.id.toString() === eventId);
+  const paypalRef = useRef();
 
-  useEffect(() => {}, [store.events, eventId]);
+  const [quantityValue, setQuantityValue] = useState(0); 
+
+  const handleQuantityChange = (e) => {
+    setQuantityValue(e.target.value);
+  };
+
+  useEffect(() => {
+    window.paypal.Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              description: event.title,
+              amount: {
+                currency_code: "USD",
+                value: event.price*quantityValue,
+              },
+              quantity: quantityValue 
+            },
+          ],
+        });
+      },
+      onApprove: async (data, actions) => {
+        const order = await actions.order.capture();
+
+        console.log("Pago realizado con éxito:", order);
+      },
+      onError: (err) => {
+        console.log("Error en el pago:", err);
+      },
+    }).render(paypalRef.current);
+  }, [event]);
 
   return (
     <div className="container">
@@ -73,16 +105,16 @@ export const DetalleEvento = () => {
             </div>
             <div className="availability-section">
               <label htmlFor="tickets" className="fw-bold">Cantidad a comprar:</label>
-              <input type="number" id="tickets" className="htmlForm-control w-25 rounded" min="1" max="10" defaultValue="1" />
+              <input 
+                type="number" 
+                id="quantityInput" 
+                value={quantityValue} 
+                onChange={handleQuantityChange}
+                placeholder="Enter quantity" 
+              />
               <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
             </div>
-            <button className="boton-verde btn btn-lg w-100 mt-3 fw-bold text-primary">Comprar ahora</button>
-          </div>
-          <div className="row mt-5">
-            <h3 className="text-info-emphasis text-primary"><i className="fas fa-map-marker-alt text-primary ubicacion-icon"></i> Ubicación del Evento</h3>
-            <div id="map">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.9706489516125!2d-77.03757989004369!3d-12.045540441827331!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c8ca3c54dd11%3A0x40b0447dcf24a5c8!2sTeatro%20Municipal%20de%20Lima!5e0!3m2!1ses!2spe!4v1726583780944!5m2!1ses!2spe" width="100%" height="450" style={{ border: 0 }} allowFullScreen="" loading="lazy" title="Ubicación del evento"></iframe>
-            </div>
+            <div ref={paypalRef} className="mt-3"></div>
           </div>
         </div>
       </div>
