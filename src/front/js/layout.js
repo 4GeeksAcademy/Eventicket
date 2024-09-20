@@ -18,6 +18,7 @@ import HomePage from "./pages/HomePage.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Registro } from "./pages/Registro.jsx";
 import { Detalle } from "./pages/Detalle.jsx";
+import DashboardUser from "./pages/DashboardUser.jsx";
 
 
 // import { Footer } from "./component/footer";
@@ -48,6 +49,7 @@ const Layout = () => {
                         <Route element={<LoginAdmin />} path="/login-admin" />
                         <Route element={<Registro />} path="/registro" />
                         <Route element={<Detalle />} path="/detalle" />
+                        <Route element={<DashboardUser />} path="/user" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
