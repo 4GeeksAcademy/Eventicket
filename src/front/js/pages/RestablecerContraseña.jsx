@@ -15,22 +15,24 @@ export const RestablecerContraseña = () => {
 
                     <div className="form-floating mb-4">
                         <input
-                            type="email"
+                            type="password"
                             className="form-control border border-primary"
-                            id="floatingInput"
+                            id="password"
                             placeholder=""
+                            required
 
                         />
-                        <label htmlFor="floatingInput">Contraseña</label>
+                        <label htmlFor="password">Contraseña</label>
                     </div>
                     <div className="form-floating mb-4">
                         <input
-                            type="email"
+                            type="password"
                             className="form-control border border-primary"
-                            id="floatingInput"
+                            id="password2"
                             placeholder=""
+                            required
                         />
-                        <label htmlFor="floatingInput">Confirmar Contraseña</label>
+                        <label htmlFor="password2">Confirmar Contraseña</label>
                     </div>
                     <button className="btn btn-primary  w-100 py-2 button-restablecer " type="submit">Enviar</button>
                     <br />
