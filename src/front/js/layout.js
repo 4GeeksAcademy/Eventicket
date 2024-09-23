@@ -19,7 +19,7 @@ import { Login } from "./pages/Login.jsx";
 import { Registro } from "./pages/Registro.jsx";
 import { DetalleEvento } from "./component/DetalleEvento.jsx";
 import DashboardUser from "./pages/DashboardUser.jsx";
-import RenderPaypal from "./component/RenderPaypal.jsx"
+
 
 // import { Footer } from "./component/footer";
 
@@ -50,7 +50,6 @@ const Layout = () => {
                         <Route element={<Registro />} path="/registro" />
                         <Route element={<DetalleEvento />} path="/detalle/:eventId" />
                         <Route element={<DashboardUser />} path="/user" />
-                        <Route element={<RenderPaypal />} path="/paypal" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
