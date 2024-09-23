@@ -177,6 +177,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// Acción para actualizar la información del usuario
+			updateUser: async (user_id, updatedData) => {
+				const store = getStore();
+				const token = store.accessToken;
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(updatedData),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ currentUser: data });
+						console.log("Usuario actualizado exitosamente", data);
+					} else {
+						const error = await response.json();
+						console.error("Error al actualizar usuario:", error);
+					}
+				} catch (error) {
+					console.error("Error en la conexión con el servidor:", error);
+				}
+			},
+
 			// Acción para login del administrador
 			loginAdmin: async (email, password) => {
 				try {
@@ -227,6 +255,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					adminToken: null,
 					adminError: null
 				});
+				console.log("Admin deslogueado");
 			},
 
 			// Acción para crear un evento
