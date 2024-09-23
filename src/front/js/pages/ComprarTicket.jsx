@@ -12,7 +12,7 @@ export const ComprarTicket = () => {
             <div className="col-12 col-md-8 col-lg-6 col-xl-4">
                 <form className="p-4 rounded shadow w-100" style={{ maxWidth: "400px" }} onSubmit={handleComprar}>
                     <div className="text-center">
-                        <h1 className="text-center text-info-emphasis  fw-semibold">Detalle de la compra</h1>
+                        <h1 className="text-center text-info-emphasis  fw-semibold">DETALLE DE LA COMPRA</h1>
                         <h2 className="text-center  text-info-emphasis text-primary fw-semibold">Ópera Tosca</h2>
                     </div>
 
