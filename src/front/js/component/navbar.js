@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import '../../styles/navbar.css'; 
+import { Context } from "../store/appContext";
+import '../../styles/navbar.css';
 import loguito2 from "../../img/logito2.png";
 
 export const Navbar = () => {
+  const { store, actions } = useContext(Context);
+  const { currentUser, admin } = store;
+
+  const handleLogout = () => {
+    if (currentUser) {
+      actions.logoutUser();
+    } else if (admin) {
+      actions.logoutAdmin();
+    }
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark ">
       <Link className="navbar-brand d-flex align-items-center" to="/">
@@ -68,16 +80,40 @@ export const Navbar = () => {
           <button className="btn btn-outline-light" type="submit">Buscar</button>
         </form>
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li className="nav-item">
-            <Link to="/login" className="nav-link">
-              <button className="btn btn-outline-custom">Iniciar Sesión</button>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/registro" className="nav-link">
-              <button className="btn btn-outline-custom2">Registrarse</button>
-            </Link>
-          </li>
+          {/* Mostrar botones de Iniciar Sesión y Registrarse si no hay usuario ni admin logueado */}
+          {!currentUser && !admin ? (
+            <>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  <button className="btn btn-outline-custom">Iniciar Sesión</button>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/registro" className="nav-link">
+                  <button className="btn btn-outline-custom2">Registrarse</button>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              {/* Mostrar botón de perfil si hay un usuario logueado */}
+              {currentUser && (
+                <li className="nav-item">
+                  <Link to="/user" className="nav-link">
+                    <button className="btn btn-outline-info">Mi Perfil</button>
+                  </Link>
+                </li>
+              )}
+              {/* Botón de Cerrar Sesión para usuario o admin */}
+              <li className="nav-item">
+                <Link to="/">
+                  <button className="btn btn-outline-danger" onClick={handleLogout}>
+                    Cerrar Sesión
+                  </button>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>

@@ -12,7 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			adminError: null,
 			events: [],
 			eventCreationMessage: null,
-			eventCreationError: null
+			eventCreationError: null,
+			favorites: [{ user_id: "", event_id: "" }],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -30,6 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const events = await response.json();  // Parsear los eventos
 						setStore({ events: [...events] });  // Guardar los eventos en el store
+						console.log("Eventos obtenidos exitosamente:", events);
 					} else {
 						console.error("Error al obtener los eventos:", response.statusText);
 					}
@@ -40,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUsers: async () => {
 				const store = getStore();
-				let adminToken=localStorage.getItem("adminToken")
+				let adminToken = localStorage.getItem("adminToken")
 				try {
 					console.log("llamando a getusers")
 					const response = await fetch(process.env.BACKEND_URL + "/api/getusers", {
@@ -93,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteUser: async (userId) => {
 				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
-				let adminToken=localStorage.getItem("adminToken")
+				let adminToken = localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
 						method: "DELETE",
@@ -175,6 +177,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// Acción para actualizar la información del usuario
+			updateUser: async (user_id, updatedData) => {
+				const store = getStore();
+				const token = store.accessToken;
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(updatedData),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ currentUser: data });
+						console.log("Usuario actualizado exitosamente", data);
+					} else {
+						const error = await response.json();
+						console.error("Error al actualizar usuario:", error);
+					}
+				} catch (error) {
+					console.error("Error en la conexión con el servidor:", error);
+				}
+			},
+
 			// Acción para login del administrador
 			loginAdmin: async (email, password) => {
 				try {
@@ -198,6 +228,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							adminToken: data.access_token,
 							adminError: null // Limpia cualquier error previo
 						});
+						console.log("Administrador logueado exitosamente:");
 						return true; // Devuelve éxito
 					} else {
 						const errorData = await response.json();
@@ -224,12 +255,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					adminToken: null,
 					adminError: null
 				});
+				console.log("Admin deslogueado");
 			},
 
 			// Acción para crear un evento
 			createEvent: async (eventData) => {
 				const store = getStore();  // Obtén el store actual
-				let adminToken=localStorage.getItem("adminToken")
+				let adminToken = localStorage.getItem("adminToken")
 
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/events", {
@@ -325,6 +357,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			}, // Fin updateEvent
+			addFavourite: async (event_id) => {
+				try {
+					const token = localStorage.getItem("access_token");
+					if (!token) {
+						console.error("No access token available");
+						return false;
+					}
+
+					// Realiza la llamada POST al backend para agregar el favorito
+					const response = await fetch(process.env.BACKEND_URL + '/api/favourites', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`  // Agrega el token en el encabezado de autorización
+						},
+						body: JSON.stringify({ event_id: event_id })  // Enviamos solo el event_id
+					});
+
+					if (response.ok) {
+						const favourite = await response.json();  // Obtener el favorito agregado
+						const store = getStore();
+
+						// Actualiza el store con el nuevo favorito
+						setStore({ favorites: [...store.favorites, favourite.favourite] });
+						console.log("Favorito agregado exitosamente:", favourite);
+						return true;  // Indica que la acción fue exitosa
+					} else {
+						const errorData = await response.json();
+						console.error("Error al agregar favorito:", errorData.error);
+						return false;  // Indica que hubo un error en la acción
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para agregar favorito:", error);
+					return false;  // Indica que hubo un error en la solicitud
+				}
+			},
 		}
 	};
 };

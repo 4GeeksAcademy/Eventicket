@@ -39,6 +39,7 @@ h1 {
 #sidebar {
     width: 70px;
     min-width: 70px;
+    min-height: 75vh;
     z-index: 1000;
     transition: all .25s ease-in-out;
     background-color: #4038E6;

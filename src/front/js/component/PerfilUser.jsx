@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { Context } from '../store/appContext';
+
 
 const PerfilUser = () => {
+  const { store, actions } = useContext(Context);
+  const { currentUser } = store;
+
   // Estado para almacenar los datos del perfil del usuario
   const [profileData, setProfileData] = useState({
-    nombre: '',
-    apellidoPaterno: '',
-    apellidoMaterno: '',
-    dni: '',
-    celular: '',
-    correoElectronico: '',
+    name: "",
+    last_name: "",
+    date_of_birth: "",
+    dni: "",
+    phone: "",
+    email: ""
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      setProfileData({
+        name: currentUser.name || "",
+        last_name: currentUser.last_name || "",
+        date_of_birth: currentUser.date_of_birth || "",
+        dni: currentUser.dni || "",
+        phone: currentUser.phone || "",
+        email: currentUser.email || ""
+      });
+    }
+  }, [currentUser]);
 
   // Maneja el cambio en los campos de entrada
   const handleChange = (e) => {
@@ -17,10 +35,10 @@ const PerfilUser = () => {
     setProfileData({ ...profileData, [name]: value });
   };
 
-  // Maneja el clic en el botón de guardar
-  const handleSave = () => {
-    console.log('Datos guardados:', profileData);
-    // Faltaaaaa  la lógica para guardar los datos
+  // Maneja el clic en el botón de guardar para actualizar los datos del usuario
+  const handleUpdateUser = () => {
+    const userId = currentUser.id;
+    actions.updateUser(userId, profileData);
   };
 
   return (
@@ -34,9 +52,9 @@ const PerfilUser = () => {
               type="text"
               className="form-control"
               placeholder="Nombre"
-              name="nombre"
+              name="name"
               // value={profileData.nombre}
-              value="Pepita"
+              value={profileData.name}
               onChange={handleChange}
             />
           </div>
@@ -45,19 +63,19 @@ const PerfilUser = () => {
               type="text"
               className="form-control"
               placeholder="Apellido Paterno"
-              name="apellidoPaterno"
+              name="last_name"
               // value={profileData.apellidoPaterno}
-              value="Lopez"
+              value={profileData.last_name}
               onChange={handleChange}
             />
           </div>
           <div className="col">
             <input
-              type="text"
+              type="date"
               className="form-control"
-              placeholder="Apellido Materno"
-              name="apellidoMaterno"
-              value={profileData.apellidoMaterno}
+              placeholder="Fecha de Nacimiento"
+              name="date_of_birth"
+              value={profileData.date_of_birth}
               onChange={handleChange}
             />
           </div>
@@ -80,8 +98,8 @@ const PerfilUser = () => {
               type="text"
               className="form-control"
               placeholder="Celular"
-              name="celular"
-              value={profileData.celular}
+              name="phone"
+              value={profileData.phone}
               onChange={handleChange}
             />
           </div>
@@ -90,18 +108,17 @@ const PerfilUser = () => {
               type="email"
               className="form-control"
               placeholder="Correo Electrónico"
-              name="correoElectronico"
-              // value={profileData.correoElectronico}
+              name="email"
               //SE SUPONE EL CORREO NO SE PUEDE MODIFICAR ASI QUE SU EDICION DEBE ESTAR BLOQUEADA
-              value="pepita123@gamil.com"
-              onChange={handleChange}
+              value={profileData.email}
+              disabled
             />
           </div>
         </div>
 
         {/* Botón para guardar los cambio o añadir alguna info del user */}
-        <button type="button" className="btn btn-primary" onClick={handleSave}>
-          Guardar
+        <button type="button" className="btn btn-primary" onClick={handleUpdateUser}>
+          Actualizar
         </button>
       </form>
     </div>
