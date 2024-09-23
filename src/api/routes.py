@@ -24,17 +24,7 @@ mail = Mail()  # Inicializar Mail sin configuraciones
 CORS(api)
 
 
-
-
-
-#########################################################################################################
-#########################################################################################################
-#########################################################################################################
-# ENDPOINTS DE  LECTURA DE EVENTOS
-# CUALQUIERA PUEDE INGRESAR
-#########################################################################################################
-#########################################################################################################
-#########################################################################################################
+#OBTENER LOS EVENTOS (TODOS)
 @api.route("/events", methods=["GET"])
 def handle_events():
     try:
@@ -44,7 +34,7 @@ def handle_events():
         return jsonify({"error": f"{e}"}), 400
 
 
-# READ EVENTS in ID CUALQUIERA PUEDE INGRESAR
+# LEER EVENTOS POR ID (TODOS)
 @api.route("/events/<int:event_id>", methods=["GET"])
 def read_event(event_id):
     try:
@@ -57,10 +47,7 @@ def read_event(event_id):
         return jsonify({"error": f"{e}"}), 400
 
 
-##############################################################################################
-##############################################################################################
-##############################################################################################
-# CREATE USER
+#CREAR USUARIOS (TODOS)
 @api.route("/users", methods=["POST"])
 def create_user():
     try:
@@ -85,9 +72,6 @@ def create_user():
 
         db.session.add(new_user)
         db.session.commit()
-        print(body)
-        print(new_user.serialize())
-
         return jsonify({
             "message": "New User Created",
             "user": new_user.serialize()
@@ -98,7 +82,7 @@ def create_user():
         return jsonify({"error": str(er)}), 400
 
 
-# Login de usuario, paso 2, esto es después de crearse una cuenta o cuando se vuelva a conectar, probado
+#LOGEARSE COMO USUARIO (USUARIO)
 @api.route("/login", methods=["POST"])
 def log_in_user():
     try:
@@ -137,7 +121,7 @@ def log_in_user():
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-# Este endpoint solo ingresará el user para poder ver sus datos estando logeado y nadie más pueda buscar su usuario por ID
+#LEER DATOS DE UN USUARIO LOGEADO (USUARIO)
 @api.route("/user/", methods=["GET"])
 @jwt_required()
 def read_user_data():
@@ -152,13 +136,7 @@ def read_user_data():
         return jsonify({"error": str(e)}), 400
 
 
-#############################################################333
-###############################################################3
-###################################################################
-###############################################################3333
-## PARTE ADMIN ##
-############################################3
-#######################################3333
+#LOGEARSE COMO ADMINISTRADOR (ADMIN)
 @api.route("/loginadmin", methods=["POST"])
 def log_in_admin():
     try:
@@ -184,8 +162,7 @@ def log_in_admin():
         return jsonify({"message": str(e)}), 500
 
 
-# Este Endpoint únicamente puede ser para el administrador
-# READ USERS
+# MOSTRAR USUARIOS REGISTRADOS (ADMIN)
 @api.route("/getusers", methods=["GET"])
 @jwt_required()
 def handle_users():
@@ -201,7 +178,7 @@ def handle_users():
         return jsonify({"error": str(e)}), 400
 
 
-# READ USER BY ID SOLO EL ADMINISTRADOR
+# OBTENER USUARIO POR ID (ADMIN)
 @api.route("/users/<int:user_id>", methods=["GET"])
 @jwt_required()
 def read_user(user_id):
@@ -209,7 +186,9 @@ def read_user(user_id):
         user = User.query.get(user_id)
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        if administrator:
+        user_logged = User.query.get(current_admin)
+
+        if administrator and not user_logged:
             if user:
                 return jsonify(user.serialize()), 200
             else:
@@ -219,8 +198,7 @@ def read_user(user_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-## VALIDADO
-# UPDATE USER ADMINISTRADOR y USUARIO LOGEADO NADA MÁS PUEDE INGRESAR
+# ACTUALIZAR USUARIO (ADMIN/USUARIO)
 @api.route("/users/<int:user_id>", methods=["PUT"])
 @jwt_required()
 def update_user(user_id):
@@ -238,7 +216,7 @@ def update_user(user_id):
                 user.password = bcrypt.generate_password_hash(body.get("password")).decode('utf-8') if body.get("password") else user.password
                 user.district = body.get("district", user.district)
                 user.phone = body.get("phone", user.phone)
-                user.date_of_birth = datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else user.date_of_birth
+                user.date_of_birth = body.get("date_of_birth",user.date_of_birth)
                 db.session.commit()
                 return jsonify(user.serialize()), 200
             else:
@@ -250,14 +228,17 @@ def update_user(user_id):
         return jsonify({"error": str(e)}), 400
 
 
-# DELETE USER ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# BORRAR USUARIO (ADMIN)
 @api.route("/users/<int:user_id>", methods=["DELETE"])
 @jwt_required()
 def delete_user(user_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        if administrator:
+        user_logged=User.query.get(current_admin)
+        if not administrator and user_logged:
+            return jsonify({"error": "Unauthorized"}), 403
+        elif administrator and not user_logged:
             user = User.query.get(user_id)
             if user:
                 db.session.delete(user)
@@ -265,23 +246,23 @@ def delete_user(user_id):
                 return jsonify({"message": "User deleted successfully"}), 200
             else:
                 return jsonify({"error": "User not found"}), 404
-        else:
-            return jsonify({"error": "Unauthorized"}), 403
+
 
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
 
-### VALIDADOS
-# CREATE EVENTS ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# CREAR EVENTOS (ADMIN)
 @api.route("/events", methods=["POST"])
 @jwt_required()
 def create_event():
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        if administrator:
+        user_logged = User.query.get(current_admin)
+
+        if administrator and not user_logged:
             body = request.get_json()
             print(body)
             new_event = Event(
@@ -307,23 +288,29 @@ def create_event():
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
-# UPDATE EVENT ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# ACTUALIZAR EVENTOS (ADMIN)
 @api.route("/events/<int:event_id>", methods=["PUT"])
 @jwt_required()
 def update_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        if administrator:
+        user_logged = User.query.get(current_admin)
+
+        if administrator and not user_logged:     
             body = request.get_json()
             event = Event.query.get(event_id)
             if event:
                 event.title = body.get("title", event.title)
                 event.description = body.get("description", event.description)
-                event.date = datetime.fromisoformat(body.get("date")) if body.get("date") else event.date
+                event.date = body.get("date",event.date)
+                event.time=body.get("time",event.time)
                 event.location = body.get("location", event.location)
+                event.category= body.get("category", event.category)
                 event.image_url = body.get("image_url", event.image_url)
                 event.price = body.get("price", event.price)
+                event.stock = body.get("stock", event.stock)
+
                 db.session.commit()
                 return jsonify(event.serialize()), 200
             else:
@@ -336,14 +323,16 @@ def update_event(event_id):
         return jsonify({"error": str(e)}), 400
 
 
-# DELETE EVENT ADMINISTRADOR NADA MÁS PUEDE INGRESAR
+# BORRAR EVENTOS (ADMIN)
 @api.route("/events/<int:event_id>", methods=["DELETE"])
 @jwt_required()
 def delete_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        if administrator:
+        user_logged = User.query.get(current_admin)
+
+        if administrator and not user_logged:
             event = Event.query.get(event_id)
             if event:
                 db.session.delete(event)
@@ -358,43 +347,110 @@ def delete_event(event_id):
         return jsonify({"error": str(e)}), 400
 
 
-# READ TICKETS
+# OBTENER TODOS LOS TICKETS (ADMIN)
 @api.route("/tickets", methods=["GET"])
+@jwt_required()
 def handle_tickets():
     try:
-        tickets = list(map(lambda ticket: ticket.serialize(), Ticket.query.all()))
+        current_admin = get_jwt_identity()
+        administrator = Administrator.query.get(current_admin)
+        user_logged = User.query.get(current_admin)
+        if administrator and not user_logged:
+            tickets = list(map(lambda ticket: ticket.serialize(), Ticket.query.all()))
         return jsonify(tickets), 200
     except Exception as e:
         return jsonify({"error": f"{e}"}), 400
 
 
-# READ TICKET BY ID
+# OBTENER TICKET POR ID (ADMIN / USUARIO)
 @api.route("/tickets/<int:ticket_id>", methods=["GET"])
+@jwt_required()
 def read_ticket(ticket_id):
     try:
-        ticket = Ticket.query.get(ticket_id)
-        if ticket:
-            return jsonify(ticket.serialize()), 200
+        current_user_id = get_jwt_identity()
+        administrator = Administrator.query.get(current_user_id)
+        user_logged = User.query.get(current_user_id)
+
+        if administrator:
+            ticket = Ticket.query.get(ticket_id)
+            if ticket:
+                return jsonify(ticket.serialize()), 200
+            else:
+                return jsonify({"error": "Ticket not found"}), 404
+        elif user_logged:
+            ticket = Ticket.query.filter_by(id=ticket_id, user_id=current_user_id).first()
+            if ticket:
+                return jsonify(ticket.serialize()), 200
+            else:
+                return jsonify({"error": "Ticket not found or you do not have permission to view it"}), 404
         else:
-            return jsonify({"error": "Ticket not found"}), 404
+            return jsonify({"error": "Unauthorized"}), 403
+            
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
+# OBTENER ELIMINAR TICKET POR ID (ADMIN)
+@api.route("/tickets/<int:ticket_id>", methods=["DELETE"])
+@jwt_required()
+def delete_ticket(ticket_id):
+    try:
+        current_admin = get_jwt_identity()
+        administrator = Administrator.query.get(current_admin)
+        user_logged = User.query.get(current_admin)
+        if administrator and not user_logged:
+            ticket = Ticket.query.get(ticket_id)
+            if ticket:
+                db.session.delete(ticket)
+                db.session.commit()
+                return jsonify({"message": f"Your Ticket {ticket.id} wa deleted successfully"}), 200
+            else:
+                return jsonify({"error": "Ticket not found"}), 404
     except Exception as e:
         return jsonify({"error": f"{e}"}), 400
 
 
-# READ FAVOURITES
+
+#CREAR UN FAVORITOS DE UN USUARIO LOGUEADO (USER)
+@api.route("/favourites", methods=["POST"])
+@jwt_required()
+def create_favourite():
+    try:
+        current_user = get_jwt_identity()
+        body = request.get_json()
+        user_logged = User.query.get(current_user)
+        event=Event.query.filter_by(id=body.get("event_id")).first()
+        if not user_logged or not body.get("event_id") or not event:
+            return jsonify({"error": "you must to add an exist event or be loggued to add"}), 400
+        new_favourite = Favourite(
+            user_id=current_user,
+            event_id=body.get("event_id")
+        )
+        db.session.add(new_favourite)
+        db.session.commit()
+        return jsonify({"message": "Favourite added", "favourite": new_favourite.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+#LEER EVENTOS FAVORITOS DE UN USUARIO LOGEADO (USER)
 @api.route("/favourites", methods=["GET"])
 @jwt_required()
 def handle_favourites():
     try:
         current_user = get_jwt_identity()
+        user_logged = User.query.get(current_user)
+
+        if not current_user or not user_logged:
+            return jsonify({"error": f"You need to be loggued as a user"}), 400
         favourites = Favourite.query.filter_by(user_id=current_user).all()
         favourites_list = list(map(lambda fav: fav.serialize(), favourites))
         return jsonify(favourites_list), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
-# READ FAVOURITE BY ID
+#LEER EVENTOS FAVORITOS POR ID DE UN USUARIO LOGEADO (USER)
 @api.route("/favourites/<int:favourite_id>", methods=["GET"])
 @jwt_required()
 def read_favourite(favourite_id):
@@ -409,26 +465,7 @@ def read_favourite(favourite_id):
         return jsonify({"error": str(e)}), 400
 
 
-# CREATE FAVOURITE
-@api.route("/favourites", methods=["POST"])
-@jwt_required()
-def create_favourite():
-    try:
-        current_user = get_jwt_identity()
-        body = request.get_json()
-        new_favourite = Favourite(
-            user_id=current_user,
-            event_id=body.get("event_id")
-        )
-        db.session.add(new_favourite)
-        db.session.commit()
-        return jsonify({"message": "Favourite added", "favourite": new_favourite.serialize()}), 201
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 400
-
-
-# DELETE FAVOURITE
+# Borrar Un elemento de favorito POR ID(user)
 @api.route("/favourites/<int:favourite_id>", methods=["DELETE"])
 @jwt_required()
 def delete_favourite(favourite_id):
@@ -446,38 +483,8 @@ def delete_favourite(favourite_id):
         return jsonify({"error": str(e)}), 400
 
 
-# READ PURCHASES
-@api.route("/purchases", methods=["GET"])
-@jwt_required()
-def handle_purchases():
-    try:
-        current_user = get_jwt_identity()
-        purchases = Purchase.query.filter_by(user_id=current_user).all()
-        result = list(map(lambda purchase: purchase.serialize(), purchases))
-        return jsonify(result), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
 
-# READ PURCHASE BY ID
-@api.route("/purchases/<int:purchase_id>", methods=["GET"])
-@jwt_required()
-def read_purchase(purchase_id):
-    try:
-        current_user = get_jwt_identity()
-        purchase = Purchase.query.filter_by(id=purchase_id, user_id=current_user).first()
-        if purchase:
-            purchase_data = purchase.serialize()
-            purchase_data["tickets"] = list(map(lambda ticket: ticket.serialize(), purchase.tickets))
-            return jsonify(purchase_data), 200
-        else:
-            return jsonify({"error": "Purchase not found"}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-
-
-
-# CREATE PURCHASE WITH TICKETS
+# Crear Compra con tickets asignados (USER)
 @api.route("/purchases", methods=["POST"])
 @jwt_required()
 def create_purchase():
@@ -524,16 +531,54 @@ def create_purchase():
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
-
-
-# DELETE PURCHASE
-@api.route("/purchases/<int:purchase_id>", methods=["DELETE"])
+# OBTENER COMPRAS DE UN USUARIO LOGEADO (USUARIO)
+@api.route("/purchases", methods=["GET"])
 @jwt_required()
-def delete_purchase(purchase_id):
+def handle_purchases():
+    try:
+        current_user = get_jwt_identity()
+        purchases = Purchase.query.filter_by(user_id=current_user).all()
+        result = list(map(lambda purchase: purchase.serialize(), purchases))
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+# LEER COMPRA POR ID DE UN USUARIO LOGEADO (USUARIO)
+@api.route("/purchases/<int:purchase_id>", methods=["GET"])
+@jwt_required()
+def read_purchase(purchase_id):
     try:
         current_user = get_jwt_identity()
         purchase = Purchase.query.filter_by(id=purchase_id, user_id=current_user).first()
         if purchase:
+            purchase_data = purchase.serialize()
+            purchase_data["tickets"] = list(map(lambda ticket: ticket.serialize(), purchase.tickets))
+            return jsonify(purchase_data), 200
+        else:
+            return jsonify({"error": "Purchase not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
+# BORRAR COMPRA (ADMIN)
+@api.route("/purchases/<int:purchase_id>", methods=["DELETE"])
+@jwt_required()
+def delete_purchase(purchase_id):
+    try:
+        current_admin = get_jwt_identity()
+        administrator = Administrator.query.get(current_admin)
+        purchase = Purchase.query.filter_by(id=purchase_id).first()
+
+        if not administrator:
+            return jsonify({"error": "You are not an admin"}), 404
+
+        if purchase:
+            # Eliminar tickets asociados
+            for ticket in purchase.tickets:
+                db.session.delete(ticket)
+
+            # Eliminar la compra
             db.session.delete(purchase)
             db.session.commit()
             return jsonify({"message": "Purchase deleted successfully"}), 200
@@ -544,7 +589,7 @@ def delete_purchase(purchase_id):
         return jsonify({"error": str(e)}), 400
 
 
-###ruta para recuperar contraseña
+#ENVIAR CORREO DE RECUPERACION DE CONTRASEÑA (USER)
 @api.route("/recovery", methods=['POST'])
 def recovery_password():
     try:
@@ -564,7 +609,7 @@ def recovery_password():
     except Exception as e:
         return jsonify({"Error":f"{email} does not exist"})
 
-
+#ACTUALIZAR CONTRASEÑA POST VALIDACION (USER)
 @api.route("/changepass",methods=['PUT'])
 @jwt_required()
 def modify_password():
