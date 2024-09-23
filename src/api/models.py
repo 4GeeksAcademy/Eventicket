@@ -73,6 +73,7 @@ class Event(db.Model):
             "title": self.title,
             "description": self.description,
             "date": self.date.isoformat(),
+            "time": self.time.isoformat(),
             "location": self.location,
             "image_url": self.image_url,
             "price": self.price,
