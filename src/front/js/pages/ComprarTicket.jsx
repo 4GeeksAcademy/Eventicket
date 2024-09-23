@@ -18,13 +18,13 @@ export const ComprarTicket = () => {
 
                     {/* Fecha  */}
                     <div className="mb-3">
-                        <label htmlFor="date" className="form-label fw-bold">Fecha del Evento</label>
+                        <label htmlFor="date" className="form-label fw-bold ">Fecha del Evento</label>
                         <input
                             required
                             id="date"
                             name="date"
                             type="date"
-                            className="form-control input-container"
+                            className="form-control input-container border-primary"
                             min={"2024-09-14"}
                         // value="fecha"
 
@@ -36,7 +36,7 @@ export const ComprarTicket = () => {
                         <label htmlFor="cantidad" className="form-label fw-bold">Cantidad de Tickets</label>
                         <input
                             type="number"
-                            className="form-control border border-primary"
+                            className="form-control input-container border-primary"
                             id="cantidad"
                         // min="1"
                         // value="cantidad"
@@ -48,7 +48,7 @@ export const ComprarTicket = () => {
                         <label htmlFor="precio" className="form-label fw-bold">Precio por Ticket</label>
                         <input
                             type="text"
-                            className="form-control border border-primary"
+                            className="form-control input-container border-primary"
                             id="precio"
                         // value="precio"
                         // disabled 
@@ -60,7 +60,7 @@ export const ComprarTicket = () => {
                         <label htmlFor="precioTotal" className="form-label fw-bold">Total</label>
                         <input
                             type="text"
-                            className="form-control border border-primary"
+                            className="form-control input-container border-primary"
                             id="precioTotal"
                         // value="precioTotal"
                         // disabled
