@@ -41,12 +41,6 @@ const SidebarUser = ({ onViewChange }) => {
                 </li>
             </ul>
             <hr className='text-white' />
-            <div className="sidebar-footer">
-                <a href="#" className="sidebar-link">
-                    <i className="fas fa-sign-out-alt"></i>
-                    <span className='span-sidebar-user'>Cerrar Sesión</span>
-                </a>
-            </div>
         </aside>
     );
 };
