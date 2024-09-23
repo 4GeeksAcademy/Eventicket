@@ -1,76 +1,49 @@
 import React from "react";
+import "../../styles/detalleEvento.css";
 
 export const ComprarTicket = () => {
 
     const handleComprar = (e) => {
         e.preventDefault();
-
     };
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-4">
-                <form className="p-4 rounded shadow w-100" style={{ maxWidth: "400px" }} onSubmit={handleComprar}>
-                    <div className="text-center">
-                        <h1 className="text-center text-info-emphasis  fw-semibold">DETALLE DE LA COMPRA</h1>
-                        <h2 className="text-center  text-info-emphasis text-primary fw-semibold">Ópera Tosca</h2>
+                <div className="p-4 rounded-3 shadow w-100" style={{ maxWidth: "400px" }}>
+                    <div className="text-center mb-4">
+                        <h1 className="text-info-emphasis fw-semibold">RESUMEN DE LA ORDEN</h1>
+                        <h2 className="text-info-emphasis text-primary fw-semibold">Ópera Tosca</h2>
                     </div>
 
-                    {/* Fecha  */}
-                    <div className="mb-3">
-                        <label htmlFor="date" className="form-label fw-bold ">Fecha del Evento</label>
-                        <input
-                            required
-                            id="date"
-                            name="date"
-                            type="date"
-                            className="form-control input-container border-primary"
-                            min={"2024-09-14"}
-                        // value="fecha"
-
-                        />
+                    {/* Fecha */}
+                    <div className="row mb-3 border-bottom border-primary pb-2">
+                        <div className="col-6 col-md-4 fw-bold">Fecha</div>
+                        <div className="col-6 col-md-8">2024-09-14</div>
                     </div>
 
                     {/* Cantidad de tickets */}
-                    <div className="mb-3">
-                        <label htmlFor="cantidad" className="form-label fw-bold">Cantidad de Tickets</label>
-                        <input
-                            type="number"
-                            className="form-control input-container border-primary"
-                            id="cantidad"
-                        // min="1"
-                        // value="cantidad"
-                        />
+                    <div className="row mb-3 border-bottom border-primary pb-2">
+                        <div className="col-6 col-md-4 fw-bold">Cantidad</div>
+                        <div className="col-6 col-md-8">2 </div>
                     </div>
 
                     {/* Precio del ticket */}
-                    <div className="mb-3">
-                        <label htmlFor="precio" className="form-label fw-bold">Precio por Ticket</label>
-                        <input
-                            type="text"
-                            className="form-control input-container border-primary"
-                            id="precio"
-                        // value="precio"
-                        // disabled 
-                        />
+                    <div className="row mb-3 border-bottom border-primary pb-2">
+                        <div className="col-6 col-md-4 fw-bold">Precio</div>
+                        <div className="col-6 col-md-8">50 soles</div>
                     </div>
 
                     {/* Precio total */}
-                    <div className="mb-3">
-                        <label htmlFor="precioTotal" className="form-label fw-bold">Total</label>
-                        <input
-                            type="text"
-                            className="form-control input-container border-primary"
-                            id="precioTotal"
-                        // value="precioTotal"
-                        // disabled
-                        />
+                    <div className="row mb-3 border-bottom border-primary pb-2">
+                        <div className="col-6 col-md-4 fw-bold">Total</div>
+                        <div className="col-6 col-md-8">100 soles</div>
                     </div>
 
-                    <button className="btn btn-primary w-100 py-2" type="submit">
-                        Confirmar Compra
+                    <button className="btn boton-verde w-100 py-2 rounded-pill fw-bold text-white" onClick={handleComprar}>
+                        Continuar Compra
                     </button>
-                </form>
+                </div>
             </div>
         </div>
     );
