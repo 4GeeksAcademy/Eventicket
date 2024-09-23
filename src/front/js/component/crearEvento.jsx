@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import Swal from "sweetalert2"; 
 import '../../styles/creacion-evento.css';
 
 const CrearEvento = () => {
@@ -8,18 +9,18 @@ const CrearEvento = () => {
         title: "",
         location: "",
         category: "",
-        stock:"",  // Inicializar como número
+        stock: "",  // Inicializado como número
         description: "",
         image_url: "",
         date: "",
-        price:"0",  // Inicializar como número
-        time:"",
+        price: "0",  // Inicializado como número
+        time: "",
         administrator_id: 1
     });
-    const preset_name = "yu1h90st";                         // Nombre del preset de carga
-    const cloud_name = "drlqmol4c";                          // Nombre del cloud en Cloudinary
-    const [image, setImage] = useState('');       // Estado para guardar la URL de la imagen subida
-    const [loading, setLoading] = useState(false); // Estado para mostrar si la imagen está cargando
+    const preset_name = "yu1h90st";  // Nombre del preset de carga
+    const cloud_name = "drlqmol4c";  // Nombre del cloud en Cloudinary
+    const [image, setImage] = useState('');  // Estado para guardar la URL de la imagen subida
+    const [loading, setLoading] = useState(false);  // Estado para mostrar si la imagen está cargando
 
     // Función para subir la imagen
     const uploadImage = async (e) => {
@@ -43,15 +44,24 @@ const CrearEvento = () => {
                 image_url: file.secure_url
             });
             setLoading(false);
-            console.log("URL de la imagen subida:", file.secure_url);
+            Swal.fire({
+                icon: 'success',
+                title: 'Imagen subida correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
             console.error('Error al subir la imagen:', error);
             setLoading(false);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al subir la imagen',
+                text: error.message,
+            });
         }
     };
 
     // Manejar los cambios en los inputs
-    //
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -62,15 +72,20 @@ const CrearEvento = () => {
     // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
 
         if (!formData.title || !formData.location || !formData.category || !formData.date || !formData.image_url) {
-            alert("Por favor completa todos los campos obligatorios, incluyendo la imagen.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por favor completa todos los campos obligatorios, incluyendo la imagen.',
+            });
             return;
         }
 
         if (formData.category === "Seleccionar categoría") {
-            alert("Por favor selecciona una categoría válida.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por favor selecciona una categoría válida.',
+            });
             return;
         }
 
@@ -78,12 +93,23 @@ const CrearEvento = () => {
             const result = await actions.createEvent(formData);
 
             if (result) {
-                alert("Evento creado con éxito");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Evento creado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
-                alert("Error al crear el evento");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al crear el evento',
+                });
             }
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            Swal.fire({
+                icon: 'error',
+                title: `Error: ${error.message}`,
+            });
         }
     };
 
@@ -165,7 +191,6 @@ const CrearEvento = () => {
                             <p>Price</p>
                         </div>
 
-
                         <div className="form-floating mb-3 input-container2">
                             <textarea
                                 required
@@ -201,12 +226,11 @@ const CrearEvento = () => {
                          id="time-event"
                          name="time"
                          type="time"
-                          className="form-control input-container"
+                         className="form-control input-container"
                          value={formData.time}
-                         onChange={handleChange}/>
+                         onChange={handleChange}
+                        />
                         <p className="form-label">Hora</p>
-                    
-
 
                         <div>
                             <h1>Subir Imagen</h1>
