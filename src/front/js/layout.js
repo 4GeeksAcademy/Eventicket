@@ -21,6 +21,7 @@ import { Detalle } from "./pages/Detalle.jsx";
 import DashboardUser from "./pages/DashboardUser.jsx";
 import { RecuperarContraseña } from "./pages/RecuperarContraseña.jsx";
 import { RestablecerContraseña } from "./pages/RestablecerContraseña.jsx";
+import { ComprarTicket } from "./pages/ComprarTicket.jsx";
 
 
 // import { Footer } from "./component/footer";
@@ -54,6 +55,7 @@ const Layout = () => {
                         <Route element={<DashboardUser />} path="/user" />
                         <Route element={<RecuperarContraseña />} path="/contrasena" />
                         <Route element={<RestablecerContraseña />} path="/restablecer" />
+                        <Route element={<ComprarTicket />} path="/comprar" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
