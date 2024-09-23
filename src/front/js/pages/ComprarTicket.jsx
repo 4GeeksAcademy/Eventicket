@@ -68,7 +68,7 @@ export const ComprarTicket = () => {
                     </div>
 
                     <button className="btn btn-primary w-100 py-2" type="submit">
-                        Comprar
+                        Confirmar Compra
                     </button>
                 </form>
             </div>
