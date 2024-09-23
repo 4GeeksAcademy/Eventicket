@@ -29,10 +29,19 @@ export const Registro = () => {
         e.preventDefault();
         const success = await actions.createUser(formData);
         if (success) {
-            alert("Usuario creado exitosamente");
-            navigate("/login"); // Redirigir a la página de login después del registro exitoso
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario creado exitosamente',
+                confirmButtonText: 'Ok'
+            });
+            navigate("/login");
         } else {
-            alert("Error al crear el usuario");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear el usuario',
+                text: 'Por favor, intenta de nuevo.',
+                confirmButtonText: 'Ok'
+            });
         }
     };
 
