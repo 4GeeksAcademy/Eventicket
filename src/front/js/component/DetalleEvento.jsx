@@ -5,54 +5,65 @@ import "../../styles/detalleEvento.css";
 
 export const DetalleEvento = () => {
   const { eventId } = useParams();
-  const { store } = useContext(Context);
-  const event = store.events.find((e) => e.id.toString() === eventId);
+  const { store, actions } = useContext(Context); 
+  const [event, setEvent] = useState(null); 
   const paypalRef = useRef();
-  const [isPaying,setIsPaying]=useState(false)
+
+  const [isPaying, setIsPaying] = useState(false);
   const [quantityValue, setQuantityValue] = useState(0); 
 
   const handleQuantityChange = (e) => {
     setQuantityValue(e.target.value);
-    setIsPaying(false)
-    paypalRef.current.innerHTML = ''
-    console.log(isPaying)
+    setIsPaying(false);
+    paypalRef.current.innerHTML = '';
   };
 
   useEffect(() => {
-    
-    if(isPaying){
+
+    const loadEvent = async () => {
+      const fetchedEvent = await actions.getEventById(eventId); 
+      setEvent(fetchedEvent);
+    };
+
+    loadEvent();
+  }, [eventId, actions]);
+
+  useEffect(() => {
+    if (isPaying && event) {
       if (paypalRef.current) {
-        paypalRef.current.innerHTML = ''
-    window.paypal.Buttons({
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [
-            {
-              description: event.title,
-              amount: {
-                currency_code: "USD",
-                value: event.price*quantityValue,
-              },
-            },
-          ],
-        });
-      },
-      onApprove: async (data, actions) => {
-        const order = await actions.order.capture();
+        paypalRef.current.innerHTML = '';
+        window.paypal.Buttons({
+          createOrder: (data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: event.title,
+                  amount: {
+                    currency_code: "USD",
+                    value: event.price * quantityValue,
+                  },
+                },
+              ],
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            console.log("Pago realizado con éxito:", order);
+          },
+          onError: (err) => {
+            console.log("Error en el pago:", err);
+          },
+        }).render(paypalRef.current);
+      }
+    }
+  }, [isPaying, event, quantityValue]);
 
-        console.log("Pago realizado con éxito:", order);
-      },
-      onError: (err) => {
-        console.log("Error en el pago:", err);
-      },
-    }).render(paypalRef.current);
-  }
-}
-    
-  }, [isPaying]);
+  const handleBuy = () => {
+    setIsPaying(!isPaying);
+  };
 
-  const handleBuy=()=>{
-    setIsPaying(!isPaying)
+  if (!event) {
+    return null
   }
 
   return (
@@ -118,12 +129,12 @@ export const DetalleEvento = () => {
             </div>
             <div className="availability-section">
               <label htmlFor="tickets" className="fw-bold">Cantidad a comprar:</label>
-              <input 
-                type="number" 
-                id="quantityInput" 
-                value={quantityValue} 
+              <input
+                type="number"
+                id="quantityInput"
+                value={quantityValue}
                 onChange={handleQuantityChange}
-                placeholder="Enter quantity" 
+                placeholder="Enter quantity"
               />
               <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
             </div>
