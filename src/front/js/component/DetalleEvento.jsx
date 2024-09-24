@@ -82,7 +82,7 @@ export const DetalleEvento = () => {
                         <p className="fw-bold fs-4">Precio: <strong className="text-info-emphasis text-danger precio">S/.50.00</strong></p>
                         {/* <!-- Selector de fecha --> */}
                         <div className="d-flex align-items-center">
-                            <label htmlFor="date" className="fw-bold"> <i className="fas fa-calendar-alt calendar-icon"></i> Fecha:</label>
+                            <label htmlFor="date" className="fw-bold label-detail"> <i className="fas fa-calendar-alt calendar-icon"></i> Fecha:</label>
                             <select id="date" className="htmlForm-select w-50 rounded height-input" defaultValue="">
                                 <option disabled value="">Selecciona una fecha</option>
                                 <option>2024-09-20</option>
@@ -93,7 +93,7 @@ export const DetalleEvento = () => {
 
                         {/* <!-- Horario --> */}
                         <div className="d-flex align-items-center mt-3">
-                            <label htmlFor="horario" className="fw-bold"><i className="fas fa-clock time-icon"></i> Horario :</label>
+                            <label htmlFor="horario" className="fw-bold label-detail"><i className="fas fa-clock time-icon"></i> Horario :</label>
                             <select className="htmlForm-select w-50 rounded height-input" id="horario" defaultValue="">
                                 <option disabled value="">Selecciona Horario</option>
                                 <option>17:00 PM</option>
@@ -110,7 +110,7 @@ export const DetalleEvento = () => {
 
                         {/* <!-- Disponibilidad de tickets --> */}
                         <div className="availability-section">
-                            <label htmlFor="tickets" className="fw-bold">Disponibilidad:</label>
+                            <label htmlFor="tickets" className="fw-bold label-detail">Disponibilidad:</label>
                             <input type="number" id="tickets" className="htmlForm-control w-25 rounded" min="1" max="10" defaultValue="1" />
                             <p className="text-muted">Quedan 10 tickets disponibles</p>
                         </div>

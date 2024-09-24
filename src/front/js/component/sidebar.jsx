@@ -13,7 +13,7 @@ const Sidebar = ({ onViewChange }) => {
   };
 
   return (
-    <aside id="sidebar" className={`bg-dark sidebar ${isExpanded ? 'expand' : ''}`}>
+    <aside id="sidebar" className={`sidebar ${isExpanded ? 'expand' : ''}`}>
       <div className="d-flex align-items-center">
         <button className="toggle-btn" type="button" onClick={toggleSidebar}>
           <i className="fa fa-bars"></i>
@@ -41,7 +41,7 @@ const Sidebar = ({ onViewChange }) => {
         </li>
         <li className="sidebar-item">
           <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('create')}>
-            <i className="fa fa-heart"></i>
+            <i class="fa-solid fa-calendar-days"></i>
             <span className='span-sidebar-user'>Crear evento</span>
           </a>
         </li>
