@@ -394,6 +394,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;  // Indica que hubo un error en la solicitud
 				}
 			},
+
 			getFavourites: async () => {
 				try {
 					const token = localStorage.getItem("access_token");
@@ -444,6 +445,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la solicitud para obtener favoritos:", error);
 				}
 			}
+      
+			sendEmailToRecover: async (email) => {
+				try {
+					const data = await fetch(process.env.BACKEND_URL + '/api/recovery', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ "email": email })
+					})
+					const response = await data.json()
+					return response
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			changepass: async (token, new_password) => {
+				try {
+					const data = await fetch(process.env.BACKEND_URL + '/api/changepass', {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({ "new_password": new_password })
+					})
+					const response = await data.json()
+					return response
+				} catch (error) {
+					console.log(error)
+				}
+			},
+
 		}
 	};
 };
