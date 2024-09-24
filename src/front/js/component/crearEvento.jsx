@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import Swal from "sweetalert2"; 
 import '../../styles/creacion-evento.css';
 
 const CrearEvento = () => {
@@ -8,18 +9,18 @@ const CrearEvento = () => {
         title: "",
         location: "",
         category: "",
-        stock: "",
+        stock: "",  // Inicializado como número
         description: "",
         image_url: "",
         date: "",
-        price: "0",
+        price: "0",  // Inicializado como número
         time: "",
         administrator_id: 1
     });
-    const preset_name = "yu1h90st";
-    const cloud_name = "drlqmol4c";
-    const [image, setImage] = useState('');
-    const [loading, setLoading] = useState(false);
+    const preset_name = "yu1h90st";  // Nombre del preset de carga
+    const cloud_name = "drlqmol4c";  // Nombre del cloud en Cloudinary
+    const [image, setImage] = useState('');  // Estado para guardar la URL de la imagen subida
+    const [loading, setLoading] = useState(false);  // Estado para mostrar si la imagen está cargando
 
     const uploadImage = async (e) => {
         const files = e.target.files;
@@ -42,13 +43,25 @@ const CrearEvento = () => {
                 image_url: file.secure_url
             });
             setLoading(false);
-            console.log("URL de la imagen subida:", file.secure_url);
+            Swal.fire({
+                icon: 'success',
+                title: 'Imagen subida correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
             console.error('Error al subir la imagen:', error);
             setLoading(false);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al subir la imagen',
+                text: error.message,
+            });
         }
     };
 
+
+    // Manejar los cambios en los inputs
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -58,15 +71,20 @@ const CrearEvento = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
 
         if (!formData.title || !formData.location || !formData.category || !formData.date || !formData.image_url) {
-            alert("Por favor completa todos los campos obligatorios, incluyendo la imagen.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por favor completa todos los campos obligatorios, incluyendo la imagen.',
+            });
             return;
         }
 
         if (formData.category === "Seleccionar categoría") {
-            alert("Por favor selecciona una categoría válida.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por favor selecciona una categoría válida.',
+            });
             return;
         }
 
@@ -74,12 +92,23 @@ const CrearEvento = () => {
             const result = await actions.createEvent(formData);
 
             if (result) {
-                alert("Evento creado con éxito");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Evento creado con éxito',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
-                alert("Error al crear el evento");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al crear el evento',
+                });
             }
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            Swal.fire({
+                icon: 'error',
+                title: `Error: ${error.message}`,
+            });
         }
     };
 
@@ -196,6 +225,7 @@ const CrearEvento = () => {
                             </div>
                         </div>
                         <div className="form-floating mb-3 input-container-t">
+
                             <textarea
                                 required
                                 spellCheck="false"
@@ -234,6 +264,7 @@ const CrearEvento = () => {
                                     style={{ maxWidth: '100%', height: 'auto', maxHeight: '180px' }}
                                 />
                             )}
+
                         </div>
                     </div>
 

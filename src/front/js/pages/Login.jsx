@@ -5,6 +5,8 @@ import fondo from "../../img/fondo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext"; // Importar el contexto global
 import "../../styles/login.css";
+import Swal from "sweetalert2";
+
 
 export const Login = () => {
     const { actions } = useContext(Context); // Acceder a las acciones del flux
@@ -14,13 +16,22 @@ export const Login = () => {
 
     // Manejar el envío del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-        const success = await actions.loginUser(email, password); // Llamar a la acción del flux
+        e.preventDefault();
+        const success = await actions.loginUser(email, password);
         if (success) {
-            alert("Inicio de sesión exitoso");
-            navigate("/"); // Redirigir al usuario después del login
+            Swal.fire({
+                icon: 'success',
+                title: 'Inicio de sesión exitoso',
+                confirmButtonText: 'Ok'
+            });
+            navigate("/");
         } else {
-            alert("Error al iniciar sesión. Verifica tus credenciales.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al iniciar sesión',
+                text: 'Verifica tus credenciales.',
+                confirmButtonText: 'Ok'
+            });
         }
     };
 

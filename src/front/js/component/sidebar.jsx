@@ -47,11 +47,6 @@ const Sidebar = ({ onViewChange }) => {
         </li>
       </ul>
       <hr className='text-white' />
-      <div className="sidebar-footer d-flex aligne-items-center">
-        <Link to="/">
-          <button type="button" className="btn btn-danger" onClick={actions.logoutAdmin}>Logout</button>
-        </Link>
-      </div>
     </aside>
   );
 };

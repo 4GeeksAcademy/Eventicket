@@ -251,9 +251,9 @@
     color:#433DF2;
     font-size: 3rem;
 }
-span {
+/* span {
     font-size: 2.5rem;
-}
+} */
 /* calendario */
 .input-container-calendario {
     display: flex;

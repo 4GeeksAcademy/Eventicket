@@ -11,6 +11,7 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
+    console.log(store.events);
   }, []);
 
   const events = store.events || [];
@@ -50,12 +51,11 @@ export const CardEvento = () => {
                 </div>
                 <div className="mb-5 d-flex justify-content-around align-items-center">
                   <h5 className="my-0">Desde S/. {event.price}</h5>
-                  <Link to="/detalle">
+                  <Link to={`/detalle/${event.id}`}>
                     <button className="btn boton-verde rounded-pill fw-bold">
                       Ver detalles
                     </button>
                   </Link>
-
                 </div>
               </div>
             </div>

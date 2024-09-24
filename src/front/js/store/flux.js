@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			events: [],
 			eventCreationMessage: null,
 			eventCreationError: null,
-			favorites: [{ user_id: "", event_id: "" }],
+			favourites: [{ user_id: "", event_id: "" }],
+			favorites: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -177,6 +178,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// Acción para actualizar la información del usuario
+			updateUser: async (user_id, updatedData) => {
+				const store = getStore();
+				const token = store.accessToken;
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(updatedData),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ currentUser: data });
+						console.log("Usuario actualizado exitosamente", data);
+					} else {
+						const error = await response.json();
+						console.error("Error al actualizar usuario:", error);
+					}
+				} catch (error) {
+					console.error("Error en la conexión con el servidor:", error);
+				}
+			},
+
 			// Acción para login del administrador
 			loginAdmin: async (email, password) => {
 				try {
@@ -227,6 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					adminToken: null,
 					adminError: null
 				});
+				console.log("Admin deslogueado");
 			},
 
 			// Acción para crear un evento
@@ -364,6 +394,90 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;  // Indica que hubo un error en la solicitud
 				}
 			},
+
+			getFavourites: async () => {
+				try {
+					const token = localStorage.getItem("access_token");
+					if (!token) {
+						console.error("No access token available");
+						return false;
+					}
+
+					// Realiza la llamada GET al backend para obtener los favoritos del usuario
+					const response = await fetch(process.env.BACKEND_URL + "/api/favourites", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`  // Incluye el token en el encabezado de autorización
+						}
+					});
+
+					if (response.ok) {
+						const favourites = await response.json();  // Lista de favoritos con event_id
+						const store = getStore();
+
+						// Hacemos llamadas para obtener detalles de cada evento por su event_id
+						const eventDetailsPromises = favourites.map(async (favourite) => {
+							const eventResponse = await fetch(process.env.BACKEND_URL + `/api/events/${favourite.event_id}`, {
+								method: "GET",
+								headers: {
+									"Content-Type": "application/json",
+									"Authorization": `Bearer ${token}`  // Incluye el token
+								}
+							});
+							return eventResponse.ok ? await eventResponse.json() : null;
+						});
+
+						// Esperamos todas las promesas para obtener los detalles de los eventos
+						const eventDetails = await Promise.all(eventDetailsPromises);
+
+						// Filtramos eventos válidos (no nulos)
+						const validEventDetails = eventDetails.filter(event => event !== null);
+
+						// Guardamos los detalles de los eventos en el store como favoritos
+						setStore({ favorites: validEventDetails });
+						console.log("Favoritos obtenidos exitosamente:", validEventDetails);
+					} else {
+						const errorData = await response.json();
+						console.error("Error al obtener favoritos:", errorData.error);
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para obtener favoritos:", error);
+				}
+			}
+      
+			sendEmailToRecover: async (email) => {
+				try {
+					const data = await fetch(process.env.BACKEND_URL + '/api/recovery', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ "email": email })
+					})
+					const response = await data.json()
+					return response
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			changepass: async (token, new_password) => {
+				try {
+					const data = await fetch(process.env.BACKEND_URL + '/api/changepass', {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({ "new_password": new_password })
+					})
+					const response = await data.json()
+					return response
+				} catch (error) {
+					console.log(error)
+				}
+			},
+
 		}
 	};
 };

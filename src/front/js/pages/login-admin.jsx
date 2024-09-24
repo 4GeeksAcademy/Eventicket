@@ -5,6 +5,8 @@ import logo from "../../img/logito.png";
 import people from "../../img/people.png";
 import fondo from "../../img/fondo.png";
 import "../../styles/login.css";
+import Swal from "sweetalert2";
+
 
 export const LoginAdmin = () => {
     const [email, setEmail] = useState("");
@@ -13,15 +15,23 @@ export const LoginAdmin = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Evita el recargo de página
+        e.preventDefault();
 
-        const success = await actions.loginAdmin(email, password); // Llama a la acción de loginAdmin
+        const success = await actions.loginAdmin(email, password);
 
         if (success) {
-            navigate("/demo"); // Redirige al dashboard del admin
+            Swal.fire({
+                title: 'Éxito',
+                text: 'Inicio de sesión exitoso',
+                icon: 'success',
+            });
+            navigate("/demo");
         } else {
-            // Puedes mostrar el error almacenado en store.adminError
-            console.log(store.adminError);
+            Swal.fire({
+                title: 'Error',
+                text: store.adminError || 'Error al iniciar sesión',
+                icon: 'error',
+            });
         }
     };
 
