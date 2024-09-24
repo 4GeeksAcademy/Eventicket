@@ -23,6 +23,7 @@ import { RecuperarContraseña } from "./pages/RecuperarContraseña.jsx";
 import { RestablecerContraseña } from "./pages/RestablecerContraseña.jsx";
 import { ComprarTicket } from "./pages/ComprarTicket.jsx";
 import  EditarEvento  from "./component/editarEvento.jsx"
+import Favourites from "./pages/Favourites.jsx";
 
 //create your first component
 const Layout = () => {
@@ -55,6 +56,7 @@ const Layout = () => {
                         <Route path="/restablecer/" element={<RestablecerContraseña />}  />
                         <Route element={<EditarEvento />} path="/editarEvento/:id" />
                         <Route element={<ComprarTicket />} path="/comprar" />
+                        <Route element={<Favourites />} path="/favourites" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
