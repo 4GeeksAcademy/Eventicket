@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../../img/logito.png";
 import "../../styles/recuperarContraseña.css";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ export const RestablecerContraseña = () => {
         new_password:"",
         verifiedPassword:""
     })
+    const [isToken,setToken]=useState(false)
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
     const token = queryParams.get('token')
@@ -19,6 +20,11 @@ export const RestablecerContraseña = () => {
     const handleInput=(e)=>{
         setFormPass({...formPass,[e.target.name]:e.target.value})
     }
+
+    useEffect(()=>{
+        if(!token){setToken(false)}
+        else{setToken(true)}
+    },[])
 
     const handleSubmit=async(e) => {
         e.preventDefault();
@@ -34,7 +40,7 @@ export const RestablecerContraseña = () => {
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
-            <div className="col-12 col-md-8 col-lg-6 col-xl-4">
+           {token? <div className="col-12 col-md-8 col-lg-6 col-xl-4">
                 <form className="p-4  rounded shadow w-100" style={{ maxWidth: "400px" }}>
                     <div className="text-center">
                         <img className="mb-4" src={logo} alt="Logo" width="40" height="40" />
@@ -74,7 +80,7 @@ export const RestablecerContraseña = () => {
                     <br />
                     <br />
                 </form>
-            </div>
+            </div>:<div>No estas autorizado para ingresar a esta pagina</div>}
         </div>
     );
 }
