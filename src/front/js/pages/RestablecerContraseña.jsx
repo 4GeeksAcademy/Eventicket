@@ -4,6 +4,7 @@ import "../../styles/recuperarContraseña.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2';
 
 export const RestablecerContraseña = () => {
     const {actions}=useContext(Context)
@@ -26,14 +27,36 @@ export const RestablecerContraseña = () => {
         else{setToken(true)}
     },[])
 
-    const handleSubmit=async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!token)alert("Token no existente")
-        if(formPass.new_password!==formPass.verifiedPassword)alert("Las Contraseñas en ambos campos deben ser iguales")
-    
-        const response= await actions.changepass(token,formPass.new_password)
-        console.log(response)
-        return navigate("/Login")
+        if (!token) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Token no existente',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+        if (formPass.new_password !== formPass.verifiedPassword) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Las Contraseñas en ambos campos deben ser iguales',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return; 
+        }
+
+        const response = await actions.changepass(token, formPass.new_password);
+        console.log(response);
+        await Swal.fire({
+            title: 'Éxito',
+            text: 'Contraseña restablecida con éxito',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+        return navigate("/Login");
     }
 
 

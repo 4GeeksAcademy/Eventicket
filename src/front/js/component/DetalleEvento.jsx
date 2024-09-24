@@ -48,6 +48,7 @@ export const DetalleEvento = () => {
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
+            
             console.log("Pago realizado con éxito:", order);
           },
           onError: (err) => {

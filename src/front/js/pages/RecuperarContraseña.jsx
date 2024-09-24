@@ -3,6 +3,8 @@ import logo from "../../img/logito.png";
 import "../../styles/recuperarContraseña.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Swal from 'sweetalert2';
+
 
 export const RecuperarContraseña = () => {
     const { store, actions } = useContext(Context)
@@ -11,14 +13,29 @@ export const RecuperarContraseña = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!email) alert("Debes ingresar un Email Valido")
+        if (!email) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Debes ingresar un Email Válido',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return; 
+        }
 
-        const response = await actions.sendEmailToRecover(email)
-        setEmail(email)
-        console.log(response)
-        return navigate("/Login")
+        const response = await actions.sendEmailToRecover(email);
+        setEmail(email);
+        console.log(response);
+    
+        await Swal.fire({
+            title: 'Éxito',
+            text: 'Te hemos enviado un enlace para restablecer tu contraseña.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+
+        return navigate("/Login");
     };
-
     const handleInput = (e) => {
         setEmail(e.target.value)
     }
