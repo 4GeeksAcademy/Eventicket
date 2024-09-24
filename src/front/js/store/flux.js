@@ -501,6 +501,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
+			createPurchase: async (event_id, state, quantity) => {
+				try {
+					const token = localStorage.getItem("access_token");
+					if (!token) {
+						console.error("No access token available");
+						return false;
+					}
+			
+					// Validamos que el estado sea "COMPLETED" antes de hacer la solicitud
+					if (state !== "COMPLETED") {
+						console.error("Purchase cannot be completed: Invalid status");
+						return false;
+					}
+			
+					// Realizamos la solicitud POST al backend
+					const response = await fetch(process.env.BACKEND_URL + "/api/purchases", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}` // Token JWT
+						},
+						body: JSON.stringify({
+							event_id: event_id,
+							estado: state,
+							quantity: quantity,
+						}),
+					});
+
+
+					// Si la respuesta es exitosa, obtenemos la compra realizada
+					if (response.ok) {
+						const data = await response.json();
+						console.log("Purchase created successfully:", data);
+						return true;  // Indicamos que la compra fue exitosa
+					} else {
+						const errorData = await response.json();
+						console.error("Error creating purchase:", errorData.error);
+						return false;  // Indicamos que hubo un error en la compra
+					}
+				} catch (error) {
+					console.error("Error in the purchase request:", error);
+					return false;  // Indicamos que hubo un error general
+				}
+			},
 
 		}
 	};

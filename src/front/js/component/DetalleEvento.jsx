@@ -11,6 +11,8 @@ export const DetalleEvento = () => {
 
   const [isPaying, setIsPaying] = useState(false);
   const [quantityValue, setQuantityValue] = useState(0); 
+  const [state,setState]=useState("")
+  const crearcompra=actions
 
   const handleQuantityChange = (e) => {
     setQuantityValue(e.target.value);
@@ -18,8 +20,11 @@ export const DetalleEvento = () => {
     paypalRef.current.innerHTML = '';
   };
 
-  useEffect(() => {
+  const handleBuy = () => {
+    setIsPaying(!isPaying);
+  };
 
+  useEffect(() => {
     const loadEvent = async () => {
       const fetchedEvent = await actions.getEventById(eventId); 
       setEvent(fetchedEvent);
@@ -48,6 +53,7 @@ export const DetalleEvento = () => {
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
+            setState(order.status)
             console.log("Pago realizado con éxito:", order);
           },
           onError: (err) => {
@@ -56,11 +62,14 @@ export const DetalleEvento = () => {
         }).render(paypalRef.current);
       }
     }
-  }, [isPaying, event, quantityValue]);
+  }, [isPaying, quantityValue]);
 
-  const handleBuy = () => {
-    setIsPaying(!isPaying);
-  };
+  useEffect(() => {
+    const makePurchase = async () => {
+      if(state){await actions.createPurchase(Number(eventId), state,Number(quantityValue));console.log("compra exitosa")}}
+    makePurchase();
+  }, [state]);
+  
 
   if (!event) {
     return null

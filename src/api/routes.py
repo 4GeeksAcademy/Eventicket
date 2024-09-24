@@ -491,6 +491,10 @@ def create_purchase():
     try:
         current_user = get_jwt_identity()
         body = request.get_json()
+        estado=body.get("estado")
+
+        if not estado=="COMPLETED":
+            return jsonify({"error": "Purchase Cannot be Completed"}), 400
 
         event = Event.query.get(body.get("event_id"))
         if not event:
@@ -506,7 +510,8 @@ def create_purchase():
             user_id=current_user,
             event_id=event.id,
             quantity=quantity,
-            total_price=total_price
+            total_price=total_price,
+            estado=estado
         )
 
         event.stock -= quantity
