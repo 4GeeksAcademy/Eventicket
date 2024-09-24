@@ -8,14 +8,21 @@ export const DetalleEvento = () => {
   const { store } = useContext(Context);
   const event = store.events.find((e) => e.id.toString() === eventId);
   const paypalRef = useRef();
-
+  const [isPaying,setIsPaying]=useState(false)
   const [quantityValue, setQuantityValue] = useState(0); 
 
   const handleQuantityChange = (e) => {
     setQuantityValue(e.target.value);
+    setIsPaying(false)
+    paypalRef.current.innerHTML = ''
+    console.log(isPaying)
   };
 
   useEffect(() => {
+    
+    if(isPaying){
+      if (paypalRef.current) {
+        paypalRef.current.innerHTML = ''
     window.paypal.Buttons({
       createOrder: (data, actions) => {
         return actions.order.create({
@@ -26,7 +33,6 @@ export const DetalleEvento = () => {
                 currency_code: "USD",
                 value: event.price*quantityValue,
               },
-              quantity: quantityValue 
             },
           ],
         });
@@ -40,7 +46,14 @@ export const DetalleEvento = () => {
         console.log("Error en el pago:", err);
       },
     }).render(paypalRef.current);
-  }, [event]);
+  }
+}
+    
+  }, [isPaying]);
+
+  const handleBuy=()=>{
+    setIsPaying(!isPaying)
+  }
 
   return (
     <div className="container">
@@ -115,6 +128,7 @@ export const DetalleEvento = () => {
               <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
             </div>
             <div ref={paypalRef} className="mt-3"></div>
+            <button className="btn btn-primary" onClick={handleBuy}>Pagar ahora</button>
           </div>
         </div>
       </div>

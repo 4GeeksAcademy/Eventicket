@@ -4,6 +4,7 @@ import fondo from "../../img/fondo.png";
 import registro from "../../img/Registro.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Swal from "sweetalert2";
 
 export const Registro = () => {
 
