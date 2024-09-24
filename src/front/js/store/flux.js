@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			events: [],
 			eventCreationMessage: null,
 			eventCreationError: null,
-			favorites: [{ user_id: "", event_id: "" }],
+			favourites: [{ user_id: "", event_id: "" }],
+			favorites: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -394,6 +395,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getFavourites: async () => {
+				try {
+					const token = localStorage.getItem("access_token");
+					if (!token) {
+						console.error("No access token available");
+						return false;
+					}
+
+					// Realiza la llamada GET al backend para obtener los favoritos del usuario
+					const response = await fetch(process.env.BACKEND_URL + "/api/favourites", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`  // Incluye el token en el encabezado de autorización
+						}
+					});
+
+					if (response.ok) {
+						const favourites = await response.json();  // Lista de favoritos con event_id
+						const store = getStore();
+
+						// Hacemos llamadas para obtener detalles de cada evento por su event_id
+						const eventDetailsPromises = favourites.map(async (favourite) => {
+							const eventResponse = await fetch(process.env.BACKEND_URL + `/api/events/${favourite.event_id}`, {
+								method: "GET",
+								headers: {
+									"Content-Type": "application/json",
+									"Authorization": `Bearer ${token}`  // Incluye el token
+								}
+							});
+							return eventResponse.ok ? await eventResponse.json() : null;
+						});
+
+						// Esperamos todas las promesas para obtener los detalles de los eventos
+						const eventDetails = await Promise.all(eventDetailsPromises);
+
+						// Filtramos eventos válidos (no nulos)
+						const validEventDetails = eventDetails.filter(event => event !== null);
+
+						// Guardamos los detalles de los eventos en el store como favoritos
+						setStore({ favorites: validEventDetails });
+						console.log("Favoritos obtenidos exitosamente:", validEventDetails);
+					} else {
+						const errorData = await response.json();
+						console.error("Error al obtener favoritos:", errorData.error);
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para obtener favoritos:", error);
+				}
+			}
+      
 			sendEmailToRecover: async (email) => {
 				try {
 					const data = await fetch(process.env.BACKEND_URL + '/api/recovery', {
