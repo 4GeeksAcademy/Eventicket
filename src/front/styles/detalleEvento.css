@@ -69,7 +69,7 @@ button {
 }
 
 /* Separación entre label y input */
-label {
+.label-detail {
     margin-right: 10px;
     min-width: 120px;
 }
