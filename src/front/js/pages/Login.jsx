@@ -5,6 +5,7 @@ import fondo from "../../img/fondo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext"; // Importar el contexto global
 import "../../styles/login.css";
+import Swal from "sweetalert2";
 
 
 export const Login = () => {
