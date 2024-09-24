@@ -1,21 +1,27 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../img/logito.png";
 import "../../styles/recuperarContraseña.css";
 import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const RecuperarContraseña = () => {
-    const navigate = useNavigate(); // Para redirigir después de enviar
+    const { store, actions } = useContext(Context)
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("")
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Previene la recarga automática del formulario
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!email) alert("Debes ingresar un Email Valido")
 
-        const email = e.target.email.value; // Captura el valor del email
-        if (email) {
-           
-            console.log("Correo enviado a:", email);
-            navigate("/restablecer"); 
-        }
+        const response = await actions.sendEmailToRecover(email)
+        setEmail(email)
+        console.log(response)
+        return navigate("/Login")
     };
+
+    const handleInput = (e) => {
+        setEmail(e.target.value)
+    }
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
@@ -33,6 +39,8 @@ export const RecuperarContraseña = () => {
                             type="email"
                             className="form-control border border-primary"
                             id="email"
+                            value={email}
+                            onChange={handleInput}
                             placeholder="name@example.com"
                             required
                         />

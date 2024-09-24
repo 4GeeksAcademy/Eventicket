@@ -13,7 +13,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from datetime import timedelta
-
+import os
 
 api = Blueprint("api", __name__)
 bcrypt = Bcrypt()
@@ -603,7 +603,8 @@ def recovery_password():
         msg = Message(subject="Password Recovery",
                       recipients=[email])
         msg.body = f"Click en el siguiente enlace para recuperar tu contraseña:\n" \
-                   f"https://ominous-memory-wxv7rv646w92v6rv-3000.app.github.dev/new_password/token={access_token}"
+                   f"{os.getenv('FRONTEND_URL')}/restablecer?token={access_token}"
+
         mail.send(msg)
         return jsonify({"msg": f"Recovery email sent to {email}"}), 200
     except Exception as e:
