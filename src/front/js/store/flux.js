@@ -468,7 +468,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error en la solicitud para obtener favoritos:", error);
 				}
-			}
+			},
       
 			sendEmailToRecover: async (email) => {
 				try {

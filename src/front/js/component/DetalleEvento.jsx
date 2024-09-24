@@ -5,62 +5,66 @@ import "../../styles/detalleEvento.css";
 
 export const DetalleEvento = () => {
   const { eventId } = useParams();
-  const { store, actions } = useContext(Context); // Importa las acciones de tu store
-  const [event, setEvent] = useState(null); // Estado para almacenar el evento
+  const { store, actions } = useContext(Context); 
+  const [event, setEvent] = useState(null); 
   const paypalRef = useRef();
 
-  const [quantityValue, setQuantityValue] = useState(1);
+  const [isPaying, setIsPaying] = useState(false);
+  const [quantityValue, setQuantityValue] = useState(0); 
 
   const handleQuantityChange = (e) => {
     setQuantityValue(e.target.value);
+    setIsPaying(false);
+    paypalRef.current.innerHTML = '';
   };
 
   useEffect(() => {
-    const fetchEvent = async () => {
-      let foundEvent = store.events.find((e) => e.id.toString() === eventId);
 
-      if (!foundEvent) {
-        foundEvent = await actions.getEventById(eventId); 
-      }
-
-      setEvent(foundEvent);
+    const loadEvent = async () => {
+      const fetchedEvent = await actions.getEventById(eventId); 
+      setEvent(fetchedEvent);
     };
 
-    fetchEvent();
-  }, [eventId, store.events, actions]);
+    loadEvent();
+  }, [eventId, actions]);
 
   useEffect(() => {
-    if (event) {
-      window.paypal.Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                description: event.title,
-                amount: {
-                  currency_code: "USD",
-                  value: event.price * quantityValue,
+    if (isPaying && event) {
+      if (paypalRef.current) {
+        paypalRef.current.innerHTML = '';
+        window.paypal.Buttons({
+          createOrder: (data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: event.title,
+                  amount: {
+                    currency_code: "USD",
+                    value: event.price * quantityValue,
+                  },
                 },
-                quantity: quantityValue,
-              },
-            ],
-          });
-        },
-        onApprove: async (data, actions) => {
-          const order = await actions.order.capture();
-          console.log("Pago realizado con éxito:", order);
-        },
-        onError: (err) => {
-          console.log("Error en el pago:", err);
-        },
-      }).render(paypalRef.current);
+              ],
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            console.log("Pago realizado con éxito:", order);
+          },
+          onError: (err) => {
+            console.log("Error en el pago:", err);
+          },
+        }).render(paypalRef.current);
+      }
     }
-  }, [event, quantityValue]);
+  }, [isPaying, event, quantityValue]);
+
+  const handleBuy = () => {
+    setIsPaying(!isPaying);
+  };
 
   if (!event) {
-    return null;
+    return null
   }
-
 
   return (
     <div className="container">
@@ -135,6 +139,7 @@ export const DetalleEvento = () => {
               <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
             </div>
             <div ref={paypalRef} className="mt-3"></div>
+            <button className="btn btn-primary" onClick={handleBuy}>Pagar ahora</button>
           </div>
         </div>
       </div>
