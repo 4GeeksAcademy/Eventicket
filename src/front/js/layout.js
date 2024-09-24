@@ -52,7 +52,7 @@ const Layout = () => {
                         <Route element={<DetalleEvento />} path="/detalle/:eventId" />
                         <Route element={<DashboardUser />} path="/user" />
                         <Route element={<RecuperarContraseña />} path="/contrasena" />
-                        <Route element={<RestablecerContraseña />} path="/restablecer" />
+                        <Route path="/restablecer/" element={<RestablecerContraseña />}  />
                         <Route element={<ComprarTicket />} path="/comprar" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
