@@ -287,6 +287,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ eventCreationError: "Error al crear el evento" });
 					return false;
 				}
+			},getEventById: async (eventId) => {
+				const store = getStore();  
+				let adminToken = localStorage.getItem("adminToken");
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${adminToken}` 
+						}
+					});
+			
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(`Error: ${errorData.error || response.statusText}`);
+					}
+			
+					const data = await response.json();
+					return data;  
+				} catch (error) {
+					console.error("Error al obtener el evento", error);
+					return null;  
+				}
 			},
 
 			deleteEvent: async (eventId) => {
