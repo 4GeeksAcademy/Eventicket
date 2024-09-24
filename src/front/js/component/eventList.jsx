@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 const EventList = () => {
   const { store, actions } = useContext(Context);
@@ -57,9 +58,9 @@ const EventList = () => {
             <div className="col-2">{event.stock} personas</div>
             <div className="col-2">S/.{event.price}</div>
             <div className="col-2 text-end">
-              <button className="btn btn-outline-primary btn-sm me-2">
+            <Link to={`/editarEvento/${event.id}`} className="btn btn-outline-primary btn-sm me-2">
                 <i className="fa-solid fa-pencil"></i>
-              </button>
+              </Link>
               <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(event.id)}>
                 <i className="fa-solid fa-trash"></i>
               </button>
