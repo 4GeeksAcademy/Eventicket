@@ -31,7 +31,7 @@ class User(db.Model):
     password = db.Column(db.String(80),nullable=False)
     district = db.Column(db.String(20), nullable=True)
     phone = db.Column(db.String(12), nullable=True)
-    date_of_birth = db.Column(db.DateTime, nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
     purchases = db.relationship("Purchase", backref="user", lazy=True)
     favourites = db.relationship("Favourite", backref="user", lazy=True)
     tickets = db.relationship("Ticket", backref="user", lazy=True)
@@ -48,7 +48,7 @@ class User(db.Model):
             "email": self.email,
             "district": self.district,
             "phone": self.phone,
-            "date_of_birth": self.date_of_birth.strftime("%d-%m-%Y") if self.date_of_birth else None,
+            "date_of_birth": self.date_of_birth.isoformat() if self.date_of_birth else None,
             "purchases": list(map(lambda purchase: purchase.serialize(), self.purchases)),
             "favourites": list(map(lambda favourite: favourite.serialize(), self.favourites)),
             "tickets": list(map(lambda ticket: ticket.serialize(), self.tickets))
