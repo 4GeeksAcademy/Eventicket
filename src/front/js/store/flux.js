@@ -350,30 +350,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}, // Fin deleteEvent
 
 			updateEvent: async (eventId, eventData) => {
-				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
-
+				const adminToken=localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+							"Authorization": `Bearer ${adminToken}`
 						},
 						body: JSON.stringify(eventData)
 					});
-
+					const updatedEvent = await response.json();
 					if (response.ok) {
-						const updatedEvent = await response.json();
-						console.log("Event updated successfully:", updatedEvent);
-
-						// Actualizar la lista de eventos en el store
 						const store = getStore();
 						const updatedEvents = store.events.map(event =>
 							event.id === eventId ? updatedEvent : event
 						);
 						setStore({ events: updatedEvents });
 
-						return true;
+						return "Event updated successfully";
 					} else {
 						const errorData = await response.json();
 						console.error("Error al actualizar evento:", errorData.message);

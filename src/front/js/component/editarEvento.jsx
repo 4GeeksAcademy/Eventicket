@@ -28,6 +28,7 @@ const EditarEvento = () => {
 
 
     useEffect(() => {
+        if(id){
         const fetchEvent = async () => {
             const event = await actions.getEventById(id); 
             if (event) {
@@ -35,7 +36,8 @@ const EditarEvento = () => {
             }
         };
         fetchEvent();
-    }, [id, actions]);
+        }
+    }, [id]);
 
  // Función para subir la imagen
  const uploadImage = async (e) => {
@@ -91,7 +93,7 @@ const EditarEvento = () => {
             if (result) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Evento actualizado con éxito',
+                    title:result,
                     showConfirmButton: false,
                     timer: 1500
                 });
