@@ -1,0 +1,98 @@
+/* Para pantallas muy pequeñas (menos de 576px) */
+@media (max-width: 768px) {
+
+    /* Asegurar que las columnas siguen ocupando el 100% */
+    .col-2-list-event {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    /* Alinear las acciones al centro en pantallas pequeñas */
+    .text-end {
+        text-align: left;
+    }
+
+    /* Botones ocupan el 100% y se alinean de manera vertical */
+    .btn-list-event {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    /* Mantener la separación entre filas y columnas */
+    .card-body-list-event {
+        display: block;
+        padding: 10px;
+    }
+
+    /* Ajustar el espaciado entre los elementos */
+    .container-list-event {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Ajustar el tamaño de fuente para móviles muy pequeños */
+    .h1-list-event {
+        font-size: 1.5rem;
+    }
+
+    .card-body-list-event div {
+        font-size: 0.875rem;
+        /* Reducir ligeramente el tamaño de texto */
+    }
+}
+
+
+/* Para pantallas muy pequeñas (menos de 576px) */
+@media (max-width: 576px) {
+    .col-2-list-event {
+      flex: 0 0 100%;
+      max-width: 100%;
+      text-align: left;
+      margin-bottom: 10px;
+      word-wrap: break-word; /* Asegurar que los textos largos se ajusten */
+    }
+  
+    .btn-list-event {
+      width: 50%;
+      margin-top: 5px;
+    }
+  
+    .card-body-list-event {
+      display: block;
+      padding: 10px;
+    }
+  
+    .container-list-event {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    /* Ajustar el tamaño de fuente para móviles muy pequeños */
+    .h1-list-event {
+      font-size: 1.5rem;
+    }
+  
+    /* Ajuste específico para los títulos */
+    .card-body-list-event div {
+      font-size: 0.875rem;
+      word-wrap: break-word; /* Ajustar los textos largos */
+    }
+  
+    /* Ajustar el espaciado entre filas */
+    .row-list-event {
+      margin-bottom: 15px;
+    }
+  }
+  .strong-list-event{
+    font-size: 15px;
+  }
+  .strong-list-event-acc {
+    font-size: 12px;
+
+  }
+  .span-list-event{
+    font-size: 12px;
+
+  }

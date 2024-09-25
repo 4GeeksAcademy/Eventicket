@@ -18,7 +18,7 @@ export const Demo = () => {
       <Sidebar onViewChange={handleViewChange} style={{ minHeight: "75vh" }} />
 
       {/* Main content */}
-      <div className="col-10">
+      <div className="col-10 mx-auto">
         {activeView === "users" && <UserList />}
         {activeView === "events" && <EventList />}
         {activeView === "create" && <CrearEvento />}
