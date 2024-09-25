@@ -67,7 +67,7 @@ def create_user():
             password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'),
             district=body.get("district", None),
             phone=body.get("phone", None),
-            date_of_birth=datetime.fromisoformat(body.get("date_of_birth")) if body.get("date_of_birth") else None
+            date_of_birth=body.get("date_of_birth")
         )
 
         db.session.add(new_user)

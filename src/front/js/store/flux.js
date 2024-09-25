@@ -85,7 +85,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return true; // Indica que el usuario fue creado correctamente
 					} else {
 						const errorData = await response.json();
-						console.error("Error al crear usuario:", errorData.message);
+						console.error("Error al crear usuario:", errorData.message || errorData);
 						return false; // Indica que hubo un error
 					}
 				} catch (error) {
