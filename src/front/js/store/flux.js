@@ -261,7 +261,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			// Acción para crear un evento
 			createEvent: async (eventData) => {
-				const store = getStore();  // Obtén el store actual
 				let adminToken = localStorage.getItem("adminToken")
 
 				try {
@@ -291,7 +290,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getEventById: async (eventId) => {
-				const store = getStore();
 				let adminToken = localStorage.getItem("adminToken");
 
 				try {
@@ -317,14 +315,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteEvent: async (eventId) => {
-				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
-
+				const adminToken=localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.adminToken || store.accessToken}`
+							"Authorization": `Bearer ${adminToken}`
 						}
 					});
 
@@ -368,7 +365,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						);
 						setStore({ events: updatedEvents });
 
-						return "Event updated successfully";
+						return "Evento Actualizado Exitosamente";
 					} else {
 						const errorData = await response.json();
 						console.error("Error al actualizar evento:", errorData.message);
@@ -396,9 +393,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ event_id: event_id })  // Enviamos solo el event_id
 					});
-
+					const favourite = await response.json();  // Obtener el favorito agregado
+					console.log(favourite)
 					if (response.ok) {
-						const favourite = await response.json();  // Obtener el favorito agregado
 						const store = getStore();
 
 						// Actualiza el store con el nuevo favorito
