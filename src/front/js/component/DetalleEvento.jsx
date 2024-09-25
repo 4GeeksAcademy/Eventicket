@@ -181,7 +181,7 @@ export const DetalleEvento = () => {
             </div>
             <div className="row  availability-section mt-3">
               <div className="row align-items-center mb-3">
-                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i class="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
+                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i className="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
                 <div className="col-6 d-flex justify-content-center">
                   <div className="input-group  ">
                     <button

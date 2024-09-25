@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+}
 
 /* Para el estado de hover del menú desplegable */
 .dropdown-toggle:focus,
@@ -87,4 +93,3 @@ a {
     position: relative;
     width: 100%;
 }
-
