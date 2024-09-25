@@ -296,9 +296,8 @@ def update_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
 
-        if administrator and not user_logged:     
+        if administrator:     
             body = request.get_json()
             event = Event.query.get(event_id)
             if event:
