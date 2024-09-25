@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import '../../styles/lista-evento.css'
+
 
 const UserList = () => {
   const { store, actions } = useContext(Context);
@@ -27,22 +29,22 @@ const UserList = () => {
       <div className="row mb-3 align-items-center card border-0">
         <div className="card-body d-flex">
           <div className="col-2">
-            <strong>Nombre</strong>
+            <strong className="strong-list-event-p">Nombre</strong>
           </div>
           <div className="col-2">
-            <strong>Apellido</strong>
+            <strong className="strong-list-event-p">Apellido</strong>
           </div>
           <div className="col-2">
-            <strong>Email</strong>
+            <strong className="strong-list-event-p">Email</strong>
           </div>
           <div className="col-2">
-            <strong>Contraseña</strong>
+            <strong className="strong-list-event-accc">Contraseña</strong>
           </div>
           <div className="col-2">
-            <strong>Telefono</strong>
+            <strong className="strong-list-event-pp">Celular</strong>
           </div>
-          <div className="col-2 text-end">
-            <strong>Acciones</strong>
+          <div className="col-2 text-start">
+            <strong className="strong-list-event-acc">Acciones</strong>
           </div>
         </div>
       </div>
@@ -54,11 +56,11 @@ const UserList = () => {
             <div className="col-2">{user.email}</div>
             <div className="col-2">{user.password}</div>
             <div className="col-2">{user.phone}</div>
-            <div className="col-2 text-end">
-              <button className="btn btn-outline-primary btn-sm me-2">
+            <div className="col-2 text-start">
+              <button className="btn btn-list-event btn-outline-primary btn-sm me-2">
                 <i className="fa-solid fa-pencil"></i>
               </button>
-              <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(user.id)}>
+              <button className="btn btn-list-event btn-outline-danger btn-sm" onClick={() => handleDelete(user.id)}>
                 <i className="fa-solid fa-trash"></i>
               </button>
             </div>

@@ -86,10 +86,20 @@
     }
   }
   .strong-list-event{
-    font-size: 15px;
+    font-size: 12px;
+  }
+  .strong-list-event-p{
+    font-size: 12px;
+  }
+  .strong-list-event-pp{
+    font-size: 11px;
   }
   .strong-list-event-acc {
-    font-size: 12px;
+    font-size: 11px;
+
+  }
+  .strong-list-event-accc {
+    font-size: 11px;
 
   }
   .span-list-event{
