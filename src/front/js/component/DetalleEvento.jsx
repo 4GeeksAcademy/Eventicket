@@ -12,9 +12,9 @@ export const DetalleEvento = () => {
   const paypalRef = useRef();
 
   const [isPaying, setIsPaying] = useState(false);
-  const [quantityValue, setQuantityValue] = useState(0); 
-  const [state,setState]=useState("")
-  const crearcompra=actions
+  const [quantityValue, setQuantityValue] = useState(0);
+  const [state, setState] = useState("")
+  const crearcompra = actions
   const navigate = useNavigate();
 
 
@@ -134,9 +134,11 @@ export const DetalleEvento = () => {
               </button>
             </div>
           </div>
-          <div className="evento-info mt-4 pt-5">
+          <br />
+          <br />
+          <div className="evento-info  col-12 d-flex flex-column mb-2 rounded boton-verde p-2">
             <h3 className="text-info-emphasis text-primary">Descripción</h3>
-            <p>{event.description}</p>
+            <div className="mb-2 p-2">{event.description}</div>
           </div>
         </div>
         <div className="col-lg-6 col-md-8 col-sm-12 mx-auto rounded">
@@ -177,9 +179,9 @@ export const DetalleEvento = () => {
                 </div>
               </div>
             </div>
-            <div className="availability-section mt-3">
+            <div className="row  availability-section mt-3">
               <div className="row align-items-center mb-3">
-                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5">Cantidad :</label>
+                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i class="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
                 <div className="col-6 d-flex justify-content-center">
                   <div className="input-group  ">
                     <button
@@ -193,7 +195,7 @@ export const DetalleEvento = () => {
                       id="quantityInput"
                       value={quantityValue}
                       onChange={handleQuantityChange}
-                      className="form-control text-center fw-bold  fs-5 bg-transparent border-0 p-0 mx-1"
+                      className="text-center fw-bold  fs-5 bg-transparent border-0 p-0 mx-1 col-2"
                       readOnly
                     />
                     <button
@@ -205,9 +207,16 @@ export const DetalleEvento = () => {
                   </div>
                 </div>
               </div>
+              <div>
+              </div>
               <div className="row">
                 <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
               </div>
+            </div>
+            <hr className="text-dark mb-2" />
+            <div className="d-flex justify-content-between total-section">
+              <strong className=" mb-4 nombre-precio-total">Total a Pagar:</strong>
+              <strong className=" nombre-precio-total">S/{event.price * quantityValue}</strong>
             </div>
             <div ref={paypalRef} className="mt-3"></div>
             <button className="btn btn-primary w-100" onClick={handleBuy}>Pagar ahora</button>
