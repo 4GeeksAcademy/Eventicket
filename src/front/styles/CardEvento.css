@@ -1,0 +1,19 @@
+.card {
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+.card-img-top {
+    border-radius: 30px;
+    padding: 15px;
+    /* aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%; */
+}
+
+.card-body {
+    padding: 25px;
+    padding-top: 15px;
+    padding-bottom: 0px;
+    margin-top: -15px;
+}
