@@ -165,8 +165,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			logoutUser: () => {
 				// Acción para cerrar la sesión del usuario
-				setStore({ currentUser: null, accessToken: null });
 				localStorage.removeItem("access_token");
+				setStore({ currentUser: null, accessToken: null });
 				console.log("Usuario deslogueado");
 			},
 
@@ -274,10 +274,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(eventData)
 					});
 
-					// if (!response.ok) {
-					// 	const errorData = await response.json();
-					// 	throw new Error(`Error: ${errorData.error || response.statusText}`);
-					// }
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(`Error: ${errorData.error || response.statusText}`);
+					}
 
 					const data = await response.json();
 					console.log(data)
@@ -288,29 +288,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ eventCreationError: "Error al crear el evento" });
 					return false;
 				}
-			},getEventById: async (eventId) => {
-				const store = getStore();  
+			},
+
+			getEventById: async (eventId) => {
+				const store = getStore();
 				let adminToken = localStorage.getItem("adminToken");
-			
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${adminToken}` 
+							"Authorization": `Bearer ${adminToken}`
 						}
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						throw new Error(`Error: ${errorData.error || response.statusText}`);
 					}
-			
+
 					const data = await response.json();
-					return data;  
+					return data;
 				} catch (error) {
 					console.error("Error al obtener el evento", error);
-					return null;  
+					return null;
 				}
 			},
 
@@ -469,7 +471,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la solicitud para obtener favoritos:", error);
 				}
 			},
-      
+
 			sendEmailToRecover: async (email) => {
 				try {
 					const data = await fetch(process.env.BACKEND_URL + '/api/recovery', {
@@ -508,13 +510,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.error("No access token available");
 						return false;
 					}
-			
+
 					// Validamos que el estado sea "COMPLETED" antes de hacer la solicitud
 					if (state !== "COMPLETED") {
 						console.error("Purchase cannot be completed: Invalid status");
 						return false;
 					}
-			
+
 					// Realizamos la solicitud POST al backend
 					const response = await fetch(process.env.BACKEND_URL + "/api/purchases", {
 						method: "POST",
@@ -543,6 +545,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error in the purchase request:", error);
 					return false;  // Indicamos que hubo un error general
+				}
+			},
+
+			getTicketsByUser: async () => {
+				try {
+					const token = localStorage.getItem("access_token");
+					const response = await fetch(process.env.BACKEND_URL + "/api/tickets/user", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+
+					if (!response.ok) {
+						const errorData = await response.json();
+						console.error("Error fetching tickets:", errorData.error);
+						return null;
+					}
+
+					const data = await response.json();
+					console.log("Tickets data:", data);
+					return data;
+				} catch (error) {
+					console.error("Error in getTicketsByUser:", error);
+					return null;
 				}
 			},
 

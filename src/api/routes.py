@@ -260,9 +260,10 @@ def create_event():
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
+        #user_logged = User.query.get(current_admin)
+        #and not user_logged
 
-        if administrator and not user_logged:
+        if administrator :
             body = request.get_json()
             print(body)
             new_event = Event(
@@ -363,26 +364,26 @@ def handle_tickets():
 
 
 # OBTENER TICKET POR ID (ADMIN / USUARIO)
-@api.route("/tickets/<int:ticket_id>", methods=["GET"])
+@api.route("/tickets/user", methods=["GET"])
 @jwt_required()
-def read_ticket(ticket_id):
+def read_tickets_by_user():
     try:
         current_user_id = get_jwt_identity()
         administrator = Administrator.query.get(current_user_id)
         user_logged = User.query.get(current_user_id)
 
         if administrator:
-            ticket = Ticket.query.get(ticket_id)
-            if ticket:
-                return jsonify(ticket.serialize()), 200
+            tickets = Ticket.query.all()  # Si es administrador, obtiene todos los tickets
+            if tickets:
+                return jsonify([ticket.serialize() for ticket in tickets]), 200
             else:
-                return jsonify({"error": "Ticket not found"}), 404
+                return jsonify({"error": "No tickets found"}), 404
         elif user_logged:
-            ticket = Ticket.query.filter_by(id=ticket_id, user_id=current_user_id).first()
-            if ticket:
-                return jsonify(ticket.serialize()), 200
+            tickets = Ticket.query.filter_by(user_id=current_user_id).all()  # Solo obtiene los tickets del usuario autenticado
+            if tickets:
+                return jsonify([ticket.serialize() for ticket in tickets]), 200
             else:
-                return jsonify({"error": "Ticket not found or you do not have permission to view it"}), 404
+                return jsonify({"error": "No tickets found for this user"}), 404
         else:
             return jsonify({"error": "Unauthorized"}), 403
             

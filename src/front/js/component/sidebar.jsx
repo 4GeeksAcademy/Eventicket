@@ -41,7 +41,7 @@ const Sidebar = ({ onViewChange }) => {
         </li>
         <li className="sidebar-item">
           <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('create')}>
-            <i class="fa-solid fa-calendar-days"></i>
+            <i className="fa-solid fa-calendar-days"></i>
             <span className='span-sidebar-user'>Crear evento</span>
           </a>
         </li>
