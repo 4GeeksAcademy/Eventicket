@@ -50,7 +50,7 @@ const FavoritosUser = () => {
                                         <span>{favorito.time}</span>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center">
-                                        <h6>Precio: S/. {favorito.price}</h6>
+                                        <h6>S/. {favorito.price}</h6>
                                         <Link to={`/detalle/${favorito.id}`}>
                                             <button className="btn btn-success">Ver detalles</button>
                                         </Link>

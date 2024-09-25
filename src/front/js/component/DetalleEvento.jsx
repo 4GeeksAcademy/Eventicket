@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 export const DetalleEvento = () => {
   const { eventId } = useParams();
-  const { store, actions } = useContext(Context); 
-  const [event, setEvent] = useState(null); 
+  const { store, actions } = useContext(Context);
+  const [event, setEvent] = useState(null);
   const paypalRef = useRef();
 
   const [isPaying, setIsPaying] = useState(false);
@@ -30,7 +30,7 @@ export const DetalleEvento = () => {
 
   useEffect(() => {
     const loadEvent = async () => {
-      const fetchedEvent = await actions.getEventById(eventId); 
+      const fetchedEvent = await actions.getEventById(eventId);
       setEvent(fetchedEvent);
     };
 
@@ -78,7 +78,17 @@ export const DetalleEvento = () => {
         }).render(paypalRef.current);
       }
     }
+
   }, [isPaying, quantityValue, event]);
+
+  useEffect(() => {
+    const makePurchase = async () => {
+      if (state) { await actions.createPurchase(Number(eventId), state, Number(quantityValue)); console.log("compra exitosa") }
+    }
+    makePurchase();
+  }, [state]);
+
+
 
   if (!event) {
     return null;
@@ -129,36 +139,78 @@ export const DetalleEvento = () => {
             <p>{event.description}</p>
           </div>
         </div>
-        <div className="col-lg-6 rounded">
-          <div className="buy-section">
-            <h3>{event.title}</h3>
+        <div className="col-lg-6 col-md-8 col-sm-12 mx-auto rounded">
+          <div className="buy-section p-4 rounded shadow-sm">
+            <h3 className="text-start">{event.title}</h3>
             <hr />
-            <p className="fw-bold fs-4">Precio: <strong className="text-info-emphasis text-danger">{event.price}</strong></p>
-            <div className="d-flex align-items-center">
-              <label htmlFor="date" className="fw-bold"><i className="fas fa-calendar-alt calendar-icon"></i> Fecha:</label>
-              <p className="fw-bold"><strong>{event.date}</strong></p>
+            <p className="fw-bold fs-4 text-start text-danger">
+              Precio: s/. <strong className="text-info-emphasis text-danger">{event.price}</strong>
+            </p>
+            <div className="row">
+              <div className="col-12 d-flex justify-content-between align-items-center mb-3">
+                <div className="col-6 d-flex justify-content-start">
+                  <label htmlFor="date" className="fw-bold fs-5">
+                    <i className="fas fa-calendar-alt calendar-icon"></i> Fecha:
+                  </label>
+                </div>
+                <div className="col-6  fw-bold fs-5">
+                  <strong>{event.date}</strong>
+                </div>
+              </div>
+              <div className="col-12 d-flex justify-content-between align-items-center mb-3">
+                <div className="col-6 d-flex justify-content-start">
+                  <label htmlFor="horario" className="fw-bold fs-5">
+                    <i className="fas fa-clock time-icon"></i> Horario:
+                  </label>
+                </div>
+                <div className="col-6  fw-bold fs-5">
+                  <strong>{event.time}</strong>
+                </div>
+              </div>
+              <div className="col-12 d-flex justify-content-between align-items-center mb-3">
+                <div className="col-6 d-flex justify-content-start">
+                  <i className="fas fa-globe world-icon"></i>
+                  <label className="fw-bold fs-5 ms-2">Ubicación:</label>
+                </div>
+                <div className="col-6  fw-bold fs-5">
+                  <strong>{event.location}</strong>
+                </div>
+              </div>
             </div>
-            <div className="d-flex align-items-center mt-3">
-              <label htmlFor="horario" className="fw-bold"><i className="fas fa-clock time-icon"></i> Horario:</label>
-              <p className="fw-bold"><strong>{event.time}</strong></p>
-            </div>
-            <div className="d-flex align-items-center mt-3">
-              <i className="fas fa-globe world-icon"></i>
-              <p className="fw-bold">Disponible en: <strong>{event.location}</strong></p>
-            </div>
-            <div className="availability-section">
-              <label htmlFor="tickets" className="fw-bold">Cantidad a comprar:</label>
-              <input
-                type="number"
-                id="quantityInput"
-                value={quantityValue}
-                onChange={handleQuantityChange}
-                placeholder="Enter quantity"
-              />
-              <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
+            <div className="availability-section mt-3">
+              <div className="row align-items-center mb-3">
+                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5">Cantidad :</label>
+                <div className="col-6 d-flex justify-content-center">
+                  <div className="input-group  ">
+                    <button
+                      className="btn btn-outline-info boton-menos rounded-circle"
+                      onClick={() => setQuantityValue(Math.max(0, quantityValue - 1))}
+                    >
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                    <input
+                      type="number"
+                      id="quantityInput"
+                      value={quantityValue}
+                      onChange={handleQuantityChange}
+                      className="form-control text-center fw-bold  fs-5 bg-transparent border-0 p-0 mx-1"
+                      readOnly
+                    />
+                    <button
+                      className="btn btn-outline-info boton-mas rounded-circle"
+                      onClick={() => setQuantityValue(quantityValue + 1)}
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <p className="text-muted">Quedan {event.stock} tickets disponibles</p>
+              </div>
             </div>
             <div ref={paypalRef} className="mt-3"></div>
-            <button className="btn btn-primary" onClick={handleBuy}>Pagar ahora</button>
+            <button className="btn btn-primary w-100" onClick={handleBuy}>Pagar ahora</button>
           </div>
         </div>
       </div>

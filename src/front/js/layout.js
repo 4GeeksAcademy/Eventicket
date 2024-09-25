@@ -22,7 +22,7 @@ import DashboardUser from "./pages/DashboardUser.jsx";
 import { RecuperarContraseña } from "./pages/RecuperarContraseña.jsx";
 import { RestablecerContraseña } from "./pages/RestablecerContraseña.jsx";
 import { ComprarTicket } from "./pages/ComprarTicket.jsx";
-import  EditarEvento  from "./component/editarEvento.jsx"
+import EditarEvento from "./component/editarEvento.jsx"
 import Favourites from "./pages/Favourites.jsx";
 import {ConfirmacionCompra}   from "./component/confirmacionCompra.jsx";
 
@@ -35,7 +35,7 @@ const Layout = () => {
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
-        <div>
+        <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
@@ -54,7 +54,7 @@ const Layout = () => {
                         <Route element={<DetalleEvento />} path="/detalle/:eventId" />
                         <Route element={<DashboardUser />} path="/user" />
                         <Route element={<RecuperarContraseña />} path="/contrasena" />
-                        <Route path="/restablecer/" element={<RestablecerContraseña />}  />
+                        <Route path="/restablecer/" element={<RestablecerContraseña />} />
                         <Route element={<EditarEvento />} path="/editarEvento/:id" />
                         <Route element={<ComprarTicket />} path="/comprar" />
                         <Route element={<Favourites />} path="/favourites" />

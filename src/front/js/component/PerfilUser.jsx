@@ -47,7 +47,8 @@ const PerfilUser = () => {
       <form>
         {/* Fila para Nombre, Apellido Paterno y Apellido Materno */}
         <div className="row mb-4">
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="name">Nombre</label>
             <input
               type="text"
               className="form-control"
@@ -58,7 +59,8 @@ const PerfilUser = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="last_name">Apellidos</label>
             <input
               type="text"
               className="form-control"
@@ -69,7 +71,8 @@ const PerfilUser = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="date_of_birth">F. de Nac</label>
             <input
               type="date"
               className="form-control"
@@ -83,7 +86,8 @@ const PerfilUser = () => {
 
         {/* Fila para DNI, Celular y Correo Electrónico */}
         <div className="row mb-4">
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="dni">DNI</label>
             <input
               type="text"
               className="form-control"
@@ -93,7 +97,8 @@ const PerfilUser = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="phone">Celular</label>
             <input
               type="text"
               className="form-control"
@@ -103,7 +108,8 @@ const PerfilUser = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="col">
+          <div className="col-md-4 mb-3">
+            <label htmlFor="email">E-mail</label>
             <input
               type="email"
               className="form-control"
