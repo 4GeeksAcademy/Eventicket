@@ -24,6 +24,10 @@
     color: #54ea40;
 }
 
+.total-section strong {
+    color: #54ea40;
+}
+
 .carousel-control-next-icon.green,
 .carousel-control-prev-icon.green {
     border: #ffffff solid 2px;
@@ -54,6 +58,7 @@ button {
 /* Iconos de calendario, reloj y mundo */
 .calendar-icon,
 .time-icon,
+.ticket-icon,
 .world-icon {
     color: #71ee55;
     margin-right: 10px;
@@ -96,6 +101,17 @@ button {
     width: 1.3em;
     padding-left: 6px;
     background-color: #C8EE55;
+}
+
+.evento-info div {
+    max-width: 100%;
+    /* Esto asegura que no exceda el ancho de su contenedor */
+    overflow: auto;
+    /* Agrega un scroll si el contenido es demasiado largo */
+    word-wrap: break-word;
+    /* Forza a que las palabras largas se ajusten */
+    white-space: pre-line;
+    /* Preserva saltos de línea pero ajusta el texto */
 }
 
 /* Mapa */
