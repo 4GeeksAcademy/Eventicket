@@ -470,8 +470,8 @@ def read_favourite(favourite_id):
 @jwt_required()
 def delete_favourite(favourite_id):
     try:
-        current_user = get_jwt_identity()
-        favourite = Favourite.query.filter_by(id=favourite_id, user_id=current_user).first()
+        current_user_id = get_jwt_identity()
+        favourite = Favourite.query.filter_by(id=favourite_id).first()
         if favourite:
             db.session.delete(favourite)
             db.session.commit()

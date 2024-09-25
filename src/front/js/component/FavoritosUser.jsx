@@ -12,6 +12,15 @@ const FavoritosUser = () => {
 
     const favourites = store.favorites || [];
 
+    const handleDeleteFavourite = async (favouriteId) => {
+        const success = await actions.deleteFavourite(favouriteId);
+        if (success) {
+            actions.getFavourites();
+        } else {
+            console.log("Error al eliminar favorito");
+        }
+    };
+
     return (
         <div className="container py-5">
             <h1 className="text-center fs-1 text-primary">Mis Favoritos</h1>
@@ -35,7 +44,10 @@ const FavoritosUser = () => {
                                         </div>
                                         <button
                                             className="btn btn-outline-danger"
-                                            onClick={() => actions.deleteFavourite(favorito.id)}
+                                            onClick={() => {
+                                                console.log(favorito.id);
+                                                handleDeleteFavourite(favorito.id)
+                                            }}
                                         >
                                             <i className="fa fa-trash-o" aria-hidden="true"></i> Quitar
                                         </button>

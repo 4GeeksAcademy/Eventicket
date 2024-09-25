@@ -350,7 +350,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}, // Fin deleteEvent
 
 			updateEvent: async (eventId, eventData) => {
-				const adminToken=localStorage.getItem("adminToken")
+				const adminToken = localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "PUT",
@@ -566,6 +566,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error in getTicketsByUser:", error);
 					return null;
+				}
+			},
+
+			deleteFavourite: async (favourite_id) => {
+				try {
+					const token = localStorage.getItem("access_token"); // Obtener el token JWT del localStorage o de donde lo estés guardando
+
+					if (!token) {
+						console.error("No token found. Please login first.");
+						return false; // Indica que no hay token disponible
+					}
+
+					const response = await fetch(process.env.BACKEND_URL + `/api/favourites/${favourite_id}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}` // Enviar el token en el header Authorization
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("Favourite deleted successfully:", data);
+						return true; // Indica que la operación fue exitosa
+					} else {
+						const errorData = await response.json();
+						console.error("Error deleting favourite:", errorData.error);
+						return false; // Indica que hubo un error
+					}
+				} catch (error) {
+					console.error("Error in the request to delete favourite:", error);
+					return false; // Indica que hubo un error en la solicitud
 				}
 			},
 
