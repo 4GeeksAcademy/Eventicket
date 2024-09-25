@@ -79,7 +79,7 @@ export const Navbar = () => {
             <div className="col-12 col-lg-5 my-auto">
               <ul className="navbar-nav navbar-categorias">
 
-              {/* <li>
+                {/* <li>
                   <Link to="/conciertos" className="dropdown-item">
                     Conciertos
                   </Link>
@@ -125,7 +125,7 @@ export const Navbar = () => {
                     </li>
                   </>
                 ) : (
-                  <>
+                  <div className="d-flex flex-row align-items-center gap-3">
                     {currentUser && (
                       <li className="nav-item">
                         <Link to="/user" className="nav-link">
@@ -133,14 +133,16 @@ export const Navbar = () => {
                         </Link>
                       </li>
                     )}
-                    <li className="nav-item">
-                      <Link to="/">
-                        <button className="btn btn-outline-danger" onClick={handleLogout}>
-                          Cerrar Sesión
-                        </button>
-                      </Link>
-                    </li>
-                  </>
+                    <div>
+                      <li className="nav-item">
+                        <Link to="/">
+                          <button className="btn btn-outline-danger" onClick={handleLogout}>
+                            Cerrar Sesión
+                          </button>
+                        </Link>
+                      </li>
+                    </div>
+                  </div>
                 )}
               </ul>
             </div>
