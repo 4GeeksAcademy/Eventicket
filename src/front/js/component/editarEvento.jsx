@@ -111,7 +111,7 @@ const EditarEvento = () => {
             });
         }
     };
-
+ //hola
     return (
         <div className="row w-100" style={{ maxWidth: "1200px" }}>
             <form className="col-12 d-flex justify-content-between align-items-start" onSubmit={handleSubmit}>
