@@ -7,7 +7,7 @@ import { Demo } from "./pages/demo";
 import { LoginAdmin } from "./pages/login-admin.jsx";
 import { Conciertos } from "./pages/conciertos";
 import { Deportes } from "./pages/deportes";
-import { Entrenenimiento } from "./pages/entretenimiento";
+import { Entretenimiento } from "./pages/entretenimiento";
 import { Cursos } from "./pages/cursos";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
@@ -43,7 +43,7 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
                         <Route element={<Conciertos />} path="/conciertos" />
                         <Route element={<Deportes />} path="/deportes" />
-                        <Route element={<Entrenenimiento />} path="/entrenenimiento" />
+                        <Route element={<Entretenimiento />} path="/entretenimiento" />
                         <Route element={<Cursos />} path="/cursos" />
                         <Route element={<HomePage />} path="/homepage" />
                         <Route element={<Demo />} path="/demo" />

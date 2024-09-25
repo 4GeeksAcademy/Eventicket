@@ -1,46 +1,134 @@
 .navbar-brand-text {
-  font-size: 20px;
+  font-size: 25px;
+  margin-bottom: 0;
 }
 
 .btn-outline-custom {
-  color: #C8EE55;
+  color: #000;
   /* Color del texto del botón */
-  background-color: transparent;
+  /* background-color: transparent; */
+  background-color: #C8EE55;
   /* Color de fondo del botón */
   border-color: #C8EE55;
   /* Color del borde del botón */
+  border: solid 2px #C8EE55;
+  border-radius: 10px;
+  padding: 8px 10px;
+  transition: box-shadow 0.1s ease; /* Transición suave para la sombra */  
 }
+.btn-outline-custom:active {  
+  box-shadow: 0 4px 25px rgba(0, 255, 170, 0.678); /* Sombra difusa al hacer clic */  
+}  
 
-.btn-outline-custom:hover {
-  color: #000000;
+/* .btn-outline-custom:hover {
+  color: #000000; */
   /* Color del texto al pasar el ratón sobre el botón */
-  background-color: #C8EE55;
+  /* background-color: #C8EE55; */
   /* Color de fondo al pasar el ratón sobre el botón */
-  border-color: #C8EE55;
+  /* border-color: #C8EE55; */
   /* Color del borde al pasar el ratón sobre el botón */
-}
+/* } */
 
 .btn-outline-custom2 {
-  color: #5585ee;
-  /* Color del texto del botón */
-  background-color: transparent;
-  /* Color de fondo del botón */
-  border-color: #5585ee;
-  /* Color del borde del botón */
-}
-
-.btn-outline-custom2:hover {
   color: #fff;
-  /* Color del texto al pasar el ratón sobre el botón */
-  background-color: #4038E6;
-  /* Color de fondo al pasar el ratón sobre el botón */
-  border-color: #4038E6;
-  /* Color del borde al pasar el ratón sobre el botón */
+  /* Color del texto del botón */
+  /* background-color: transparent; */
+  background-color: #433DF2;
+  /* Color de fondo del botón */
+  border-color: #433DF2;
+  /* Color del borde del botón */
+  padding: 8px 10px;
+  border: solid 2px #433DF2;
+  border-radius: 10px;
+  transition: box-shadow 0.1s ease; /* Transición suave para la sombra */  
+
+  
 }
+.btn-outline-custom2:active {  
+  box-shadow: 0 4px 25px rgba(132, 0, 255, 0.678); /* Sombra difusa al hacer clic */  
+}  
+
+/* .btn-outline-custom2:hover { */
+  /* color: #fff; */
+  /* Color del texto al pasar el ratón sobre el botón */
+  /* background-color: #4038E6; */
+  /* Color de fondo al pasar el ratón sobre el botón */
+  /* border-color: #4038E6; */
+  /* Color del borde al pasar el ratón sobre el botón */
+/* } */
 
 .navbar-brand-text {
   margin-bottom: 5px;
 }
 .navbar{
   background-color: #212529;
+}
+/* .navbar-categorias {
+
+} */
+/* .nav-link {
+  color: #666777;
+  font-weight: 500;
+}
+.nav-link:hover, .nav-link.active{
+  color: #000000;
+
+} */
+
+    .nav-link-categorias::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #433DF2;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+  }
+
+.nav-link-categorias:hover::after {
+  width: 100%;
+  visibility: visible;
+}
+.nav-link-categorias{
+  position: relative;
+}
+/* input y lupa */
+.search-container {
+  position: relative; /* Relativo para posicionar la lupa dentro */
+  width: 100%; /* Ajusta el tamaño según necesites */
+  max-width: 600px; /* Máximo ancho opcional */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 20px 10px 45px; /* Espaciado para evitar que el texto pase sobre la lupa */
+  border-radius: 50px; /* Bordes redondeados */
+  border: none;
+  outline: none;
+  background-color: #dcdcdc; /* Fondo gris */
+  font-size: 12px;
+}
+
+.search-input::placeholder {
+  color: #333; /* Color del texto placeholder */
+}
+
+.search-icon {
+  position: absolute;
+  left: 8px; /* Posiciona la lupa a la izquierda */
+  top: 50%;
+  transform: translateY(-50%); /* Centra la lupa verticalmente */
+  color: #fff; /* Color blanco para la lupa */
+  background-color: #000; /* Fondo negro para la lupa */
+  padding: 8px; /* Espacio alrededor de la lupa */
+  border-radius: 50%; /* Lupa dentro de un círculo */
+  font-size: 16px; /* Tamaño del icono */
+}
+/* search */
+.input-search {
+  border:  3px solid #4038E6 !important;
 }
