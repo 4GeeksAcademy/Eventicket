@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/detalleEvento.css";
+import { useNavigate } from "react-router-dom";
+
 
 export const DetalleEvento = () => {
   const { eventId } = useParams();
@@ -10,9 +12,11 @@ export const DetalleEvento = () => {
   const paypalRef = useRef();
 
   const [isPaying, setIsPaying] = useState(false);
-  const [quantityValue, setQuantityValue] = useState(0);
-  const [state, setState] = useState("")
-  const crearcompra = actions
+  const [quantityValue, setQuantityValue] = useState(0); 
+  const [state,setState]=useState("")
+  const crearcompra=actions
+  const navigate = useNavigate();
+
 
   const handleQuantityChange = (e) => {
     setQuantityValue(e.target.value);
@@ -53,8 +57,20 @@ export const DetalleEvento = () => {
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
-            setState(order.status)
+            setState(order.status);
+
             console.log("Pago realizado con éxito:", order);
+
+            navigate("/confirmacionCompra", {
+              state: {
+                eventName: event.title,
+                eventLocation: event.location,
+                eventTime: event.time,
+                eventDate: event.date,
+                quantity: quantityValue,
+                totalAmount: event.price * quantityValue,
+              },
+            });
           },
           onError: (err) => {
             console.log("Error en el pago:", err);
@@ -62,7 +78,8 @@ export const DetalleEvento = () => {
         }).render(paypalRef.current);
       }
     }
-  }, [isPaying, quantityValue]);
+
+  }, [isPaying, quantityValue, event]);
 
   useEffect(() => {
     const makePurchase = async () => {
@@ -72,9 +89,11 @@ export const DetalleEvento = () => {
   }, [state]);
 
 
+
   if (!event) {
-    return null
+    return null;
   }
+
 
   return (
     <div className="container">

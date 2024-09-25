@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+
+.check1 {
+    display: flex;
+    background-color: #63d19e;
+    color: #fff;
+    font-size: 17px;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 10px
+}
+
+.larger-card {
+    padding: 30px;
+    margin-bottom: 30px; 
+}
+
+h6, small {
+    font-size: 1.1em; 
+}
+
+.order-details {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;   
+    text-align: center;     
+}
+
+.order-button {
+    margin-top: 20px; 
+}
