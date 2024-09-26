@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "../../styles/SideBar.css";
+import '../../styles/navbar.css';
 
 const SidebarUser = ({ onViewChange }) => {
 
@@ -22,19 +23,19 @@ const SidebarUser = ({ onViewChange }) => {
             <hr className='text-white' />
             <ul className="sidebar-nav">
                 <li className="sidebar-item">
-                    <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('profile')}>
+                    <a className="sidebar-link btn-sidebar  nav-link-categorias  active" onClick={() => onViewChange('profile')}>
                         <i className="fa fa-user"></i>
                         <span className='span-sidebar-user'>Mi Perfil</span>
                     </a>
                 </li>
                 <li className="sidebar-item">
-                    <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('compras')}>
+                    <a className="sidebar-link btn-sidebar   nav-link-categorias  active" onClick={() => onViewChange('compras')}>
                         <i className="fa fa-shopping-bag"></i>
                         <span className='span-sidebar-user'>Mis compras</span>
                     </a>
                 </li>
                 <li className="sidebar-item">
-                    <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('favoritos')}>
+                    <a className="sidebar-link btn-sidebar  nav-link-categorias   active" onClick={() => onViewChange('favoritos')}>
                         <i className="fa fa-heart"></i>
                         <span className='span-sidebar-user'>Mis Favoritos</span>
                     </a>

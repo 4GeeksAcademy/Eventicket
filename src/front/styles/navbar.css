@@ -89,6 +89,22 @@
 
   }
 
+  .sidebar-item .nav-link-categorias::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    /* #f5f4ff */
+    /* #16b7f7 #6aff07  #fff9f9*/
+    background-color: #05ffde;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+  }
+
 .nav-link-categorias:hover::after {
   width: 100%;
   visibility: visible;

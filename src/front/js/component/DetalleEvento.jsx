@@ -25,7 +25,15 @@ export const DetalleEvento = () => {
   };
 
   const handleBuy = () => {
-    setIsPaying(!isPaying);
+    if(!store.currentUser){
+      return alert("logeate para realizar la compra")
+    }
+
+    if(quantityValue>event.stock){
+      setIsPaying(false);
+      return alert("No hay suficientes tickets para poder realizar la compra")
+    }
+    setIsPaying(true);
   };
 
   useEffect(() => {
@@ -73,7 +81,7 @@ export const DetalleEvento = () => {
             });
           },
           onError: (err) => {
-            console.log("Error en el pago:", err);
+            console.log("Error en el pago");
           },
         }).render(paypalRef.current);
       }
@@ -86,6 +94,7 @@ export const DetalleEvento = () => {
       if (state) { await actions.createPurchase(Number(eventId), state, Number(quantityValue)); console.log("compra exitosa") }
     }
     makePurchase();
+
   }, [state]);
 
 
@@ -96,11 +105,11 @@ export const DetalleEvento = () => {
 
 
   return (
-    <div className="container">
+    <div className="container pt-5">
       <h1 className="text-center display-1 text-info-emphasis text-primary fw-semibold">{event.title}</h1>
       <div className="d-flex justify-content-start">
         <p className="text-center text-secondary me-3"><i className="fas fa-map-marker-alt text-primary"></i> {event.location}</p>
-        <p className="text-center text-secondary"><i className="fa fa-check-square text-primary" aria-hidden="true"></i> Evento Cultural</p>
+        <p className="text-center text-secondary"><i className="fa fa-check-square text-primary" aria-hidden="true"></i> {event.category}</p>
       </div>
       <div className="row">
         <div className="col-lg-6 rounded">
@@ -181,7 +190,7 @@ export const DetalleEvento = () => {
             </div>
             <div className="row  availability-section mt-3">
               <div className="row align-items-center mb-3">
-                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i class="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
+                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i className="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
                 <div className="col-6 d-flex justify-content-center">
                   <div className="input-group  ">
                     <button

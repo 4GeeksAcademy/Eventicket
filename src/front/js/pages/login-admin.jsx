@@ -3,7 +3,7 @@ import { Context } from "../store/appContext"
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../img/logito.png";
 import people from "../../img/people.png";
-import fondo from "../../img/fondo.png";
+import fondo from "../../img/fondoazul.jpg";
 import "../../styles/login.css";
 import Swal from "sweetalert2";
 
@@ -26,6 +26,7 @@ export const LoginAdmin = () => {
                 icon: 'success',
             });
             navigate("/demo");
+            window.location.reload()
         } else {
             Swal.fire({
                 title: 'Error',
@@ -55,7 +56,7 @@ export const LoginAdmin = () => {
                         </div>
 
                         <h2 className="fw-bold text-center py-3 text-primary text-info-emphasis fw-light display-6">
-                            Bienvenido Administrador!
+                            Bienvenido Administrador
                         </h2>
 
                         {/* Mostrar mensaje de error si hay */}
@@ -67,7 +68,7 @@ export const LoginAdmin = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    className="form-control"
+                                    className="form-control login"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -79,7 +80,7 @@ export const LoginAdmin = () => {
                                 <input
                                     type="password"
                                     name="password"
-                                    className="form-control"
+                                    className="form-control login"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required

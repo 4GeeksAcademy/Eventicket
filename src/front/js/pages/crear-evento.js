@@ -1,10 +1,7 @@
-import React, { useContext } from "react";
-// import { Link } from "react-router-dom";
-// import { Context } from "../store/appContext";
+import React from "react";
 import '../../styles/creacion-evento.css';
 
 export const VistaEvento = () => {
-    // const { store, actions } = useContext(Context);
     return (
         <div className="crear-eventos d-flex justify-content-center align-items-center col-10 mx-auto">
             <div className="d-flex flex-column vh-100 p-3 bg-dark text-white">

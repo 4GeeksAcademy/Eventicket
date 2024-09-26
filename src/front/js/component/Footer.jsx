@@ -21,30 +21,49 @@ export const Footer = () => (
                     <p> <a href="#" className="text-white" style={{ textDecoration: "none" }}  >¿Tienes un evento?</a></p>
                 </div>
 
-                <div className="col-md-4 col-lg-3 col-xl-4 mx-auto mt-3">
-                    <h5 className=" mb-4 font-weight-bold text-primary" >Contact</h5>
-                    <p><i className="fas fa-home mr-3"  ></i> Lima, San Borja #750, PERÚ </p>
-                    <p><i className="fas fa-envelope mr-3" ></i> eventicket@gmail.com </p>
-                    <p><i className="fas fa-phone mr-3 " ></i>  +51 950269683</p>
-                </div>
-                <hr className="mb-4" />
-                <div className="row align-items-center">
-                    <div className="col-md-7 col-lg-8">
-                        <p>Copyright 2024 All right reserverd by: EventTicket❤️ </p>
+                <div className="col-md-4 col-lg-3 col-xl-4 mx-auto mt-3 text-center">
+                    <h5 className="mb-4 font-weight-bold text-primary text-center" >Contacto</h5>
+                    <div className="text-center">
+                        <div className="row text-center ">
+                            <div className="col-2">
+                                <i className="fas fa-home "></i>
+                            </div>
+                            <div className="col-10 text-start ps-0">Lima, San Borja #750, PERÚ</div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col-2">
+                                <i className="fas fa-envelope mr-3"></i>
+                            </div>
+                            <div className="col-10 text-start ps-0">eventicket@gmail.com</div>
+                        </div>
+                        <div className="row text-center">
+                            <div className="col-2">
+                                <i className="fas fa-phone mr-3"></i>
+                            </div>
+                            <div className="col-10 text-start ps-0">+51 950269683</div>
+                        </div>
                     </div>
-                    <div className="col-md-5 col-lg-4">
-                        <div className="text-center text-md-right">
-                            <ul className="list-unstyled list-inline" >
-                                <li className="list-inline-item">
-                                    <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }}><i className="fab fa-facebook"></i> </a>
-                                </li>
-                                <li className="list-inline-item">
-                                    <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }} ><i className="fab fa-instagram"></i> </a>
-                                </li>
-                                <li className="list-inline-item">
-                                    <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }} ><i className="fab fa-linkedin"></i> </a>
-                                </li>
-                            </ul>
+                </div>
+                <div>
+                    <hr className="mb-4" />
+                    <div className="row align-items-center">
+                        <div className="col-md-7 col-lg-8">
+                            <p>Copyright 2024 All right reserverd by: EventTicket❤️ </p>
+                        </div>
+                        <div className="col-md-5 col-lg-4">
+                            <div className="text-center text-md-right">
+                                <ul className="list-unstyled list-inline" >
+                                    <li className="list-inline-item">
+                                        <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }}><i className="fab fa-facebook"></i> </a>
+                                    </li>
+                                    <li className="list-inline-item">
+                                        <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }} ><i className="fab fa-instagram"></i> </a>
+                                    </li>
+                                    <li className="list-inline-item">
+                                        <a href="#" className="btn-floating btn-sm text-white" style={{ fontSize: "23px" }} ><i className="fab fa-linkedin"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

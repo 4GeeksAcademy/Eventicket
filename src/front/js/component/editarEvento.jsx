@@ -26,6 +26,7 @@ const EditarEvento = () => {
     const [loading, setLoading] = useState(false);  // Estado para mostrar si la imagen está cargando
 
     useEffect(() => {
+        if(id){
         const fetchEvent = async () => {
             const event = await actions.getEventById(id); 
             if (event) {
@@ -36,7 +37,8 @@ const EditarEvento = () => {
             }
         };
         fetchEvent();
-    }, [id, actions]);
+        }
+    }, [id]);
 
     const uploadImage = async (e) => {
         const files = e.target.files;
@@ -108,7 +110,7 @@ const EditarEvento = () => {
             if (result) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Evento actualizado con éxito',
+                    title:result,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -126,7 +128,7 @@ const EditarEvento = () => {
             });
         }
     };
-
+ //hola
     return (
         <div className="row w-100" style={{ maxWidth: "1200px" }}>
             <p className="title-create-event d-flex flex-row ms-5 mb-0 my-2">EDITAR EVENTO</p>

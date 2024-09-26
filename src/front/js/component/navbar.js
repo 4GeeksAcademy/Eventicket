@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import '../../styles/navbar.css';
 import loguito2 from "../../img/logito2.png";
@@ -50,6 +50,7 @@ export const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="search-container"> {/* Centro de búsqueda */}
               <form className="d-flex">
+
                 <input
                   className="form-control input-search me-2 rounded-pill"
                   type="search"
@@ -80,6 +81,8 @@ export const Navbar = () => {
                 </ul>
               )}
             </div>
+            }
+          
 
             <div className="d-flex justify-content-end">
               <ul className="navbar-nav mb-2 mb-lg-0">
@@ -98,26 +101,32 @@ export const Navbar = () => {
                   </>
                 ) : (
                   <div className="d-flex flex-row align-items-center gap-3">
-                    {currentUser && (
+                    {currentUser && !admin && (
                       <li className="nav-item">
                         <Link to="/user" className="nav-link">
                           <button className="btn btn-outline-info">Mi Perfil</button>
                         </Link>
                       </li>
                     )}
-                    <div>
+                  {!currentUser && admin && (
                       <li className="nav-item">
-                        <Link to="/">
-                          <button className="btn btn-outline-danger" onClick={handleLogout}>
-                            Cerrar Sesión
-                          </button>
+                        <Link to="/demo" className="nav-link">
+                          <button className="btn btn-outline-info">Mi panel</button>
                         </Link>
                       </li>
-                    </div>
+                    )}
+                    <li className="nav-item">
+                      <Link to="/">
+                        <button className="btn btn-outline-danger" onClick={handleLogout}>
+                          Cerrar Sesión
+                        </button>
+                      </Link>
+                    </li>
                   </div>
                 )}
               </ul>
             </div>
+
           </div>
         </div>
       </nav>

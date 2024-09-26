@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import logo from "../../img/logito.png";
 import people from "../../img/people.png";
-import fondo from "../../img/fondo.png";
+import fondo from "../../img/fondoazul.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext"; // Importar el contexto global
 import "../../styles/login.css";
@@ -21,7 +21,7 @@ export const Login = () => {
         if (success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Inicio de sesión exitoso',
+                title: success,
                 confirmButtonText: 'Ok'
             });
             navigate("/");
@@ -55,7 +55,7 @@ export const Login = () => {
                         className="col bg d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"
                         style={{
                             backgroundImage: `url(${people})`,
-                            height: "80vh"
+                            height: "90vh"
                         }}
                     ></div>
 
@@ -74,7 +74,7 @@ export const Login = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    className="form-control"
+                                    className="form-control login"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)} // Actualizar estado de email
                                     required
@@ -86,7 +86,7 @@ export const Login = () => {
                                 <input
                                     type="password"
                                     name="password"
-                                    className="form-control"
+                                    className="form-control login"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)} // Actualizar estado de contraseña
                                     required

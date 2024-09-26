@@ -12,7 +12,6 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
-    console.log(store.events);
   }, []);
 
   const events = store.events || [];
@@ -32,16 +31,20 @@ export const CardEvento = () => {
                   alt={event.title}
                   style={{ height: "230px", objectFit: "cover", }}
                 />
-                <div className="card-body">
+                <div className="card-body ">
                   <h4 className="card-title text-primary ">{event.title}</h4>
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <div className="d-flex align-items-center">
+
+                  <div className="row  d-flex justify-content-between align-items-center mb-2">
+                    <div className=" col-9 d-flex align-items-center">
                       <i className="fa-solid fa-location-dot px-2 fs-4"></i>
                       <h6 className=" mb-0">{event.location}</h6>
                     </div>
-                    <button className="btn btn-outline-warning" onClick={() => handleAddFavourite(event.id)}>
-                      <i className="fa fa-heart-o " aria-hidden="true"></i>
-                    </button>
+                    <div className="col-3" >
+                      <button className="btn btn-outline-warning" onClick={() => handleAddFavourite(event.id)}>
+                        <i className="fa fa-heart-o " aria-hidden="true"></i>
+                      </button>
+                    </div>
+
                   </div>
                   <div className="d-flex align-items-center fs-5 mb-2">
                     <i className="fa-regular fa-calendar px-2"></i>

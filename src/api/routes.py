@@ -54,7 +54,7 @@ def create_user():
         body = request.get_json()
         filter_user = User.query.filter_by(email=body.get("email")).first()
         if filter_user:
-            return jsonify({"message": "User already exists"}), 400
+            return jsonify({"message": "User already exists"}), 409
 
         if not body.get("name") or not body.get("email") or not body.get("password"):
             return jsonify({"message": "Error, name, email, and password must be completed"}), 400
@@ -296,9 +296,8 @@ def update_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
 
-        if administrator and not user_logged:     
+        if administrator:     
             body = request.get_json()
             event = Event.query.get(event_id)
             if event:
@@ -331,9 +330,8 @@ def delete_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
 
-        if administrator and not user_logged:
+        if administrator:
             event = Event.query.get(event_id)
             if event:
                 db.session.delete(event)
@@ -355,8 +353,7 @@ def handle_tickets():
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
-        if administrator and not user_logged:
+        if administrator:
             tickets = list(map(lambda ticket: ticket.serialize(), Ticket.query.all()))
         return jsonify(tickets), 200
     except Exception as e:
@@ -422,15 +419,20 @@ def create_favourite():
         body = request.get_json()
         user_logged = User.query.get(current_user)
         event=Event.query.filter_by(id=body.get("event_id")).first()
+        favourite_added=Favourite.query.filter_by(user_id=current_user,event_id=event.id).first()
+
         if not user_logged or not body.get("event_id") or not event:
             return jsonify({"error": "you must to add an exist event or be loggued to add"}), 400
-        new_favourite = Favourite(
+        
+        if not favourite_added:
+            new_favourite = Favourite(
             user_id=current_user,
-            event_id=body.get("event_id")
-        )
-        db.session.add(new_favourite)
-        db.session.commit()
-        return jsonify({"message": "Favourite added", "favourite": new_favourite.serialize()}), 201
+            event_id=body.get("event_id"))
+            db.session.add(new_favourite)
+            db.session.commit()
+            return jsonify({"message": "Favourite added", "favourite": new_favourite.serialize()}), 201
+
+        return jsonify({"error": f"Event {event.title} has beend added previusly"}), 400
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
