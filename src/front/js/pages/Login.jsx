@@ -21,10 +21,11 @@ export const Login = () => {
         if (success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Inicio de sesión exitoso',
+                title: success,
                 confirmButtonText: 'Ok'
             });
             navigate("/");
+            window.location.reload()
         } else {
             Swal.fire({
                 icon: 'error',

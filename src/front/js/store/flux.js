@@ -3,69 +3,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			events: [],
 			users: [],
-			usersError: null,
 			ticket: [],
-			currentUser: null,
-			accessToken: null,
-			admin: null,
-			adminToken: null,
-			adminError: null,
-			events: [],
-			eventCreationMessage: null,
-			eventCreationError: null,
+			currentUser: JSON.parse(localStorage.getItem('currentUser')) || false,
+			accessToken: localStorage.getItem("access_token") || false,
+			admin: localStorage.getItem("admin") || false,
+			adminToken: localStorage.getItem("adminToken") || false,
 			favourites: [{ user_id: "", event_id: "" }],
 			favorites: [],
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
 			getEvents: async () => {
 				try {
-					// Llamada al backend
 					const response = await fetch(process.env.BACKEND_URL + '/api/events', {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
 						},
 					});
-
-					// Verifica si la respuesta es correcta
-					if (response.ok) {
-						const events = await response.json();  // Parsear los eventos
-						setStore({ events: [...events] });  // Guardar los eventos en el store
-						console.log("Eventos obtenidos exitosamente:", events);
-					} else {
-						console.error("Error al obtener los eventos:", response.statusText);
-					}
+					const events = await response.json();
+					setStore({ events: [...events] });
+					console.log("Eventos obtenidos exitosamente:", events);
+					return "Eventos obtenidos exitosamente"
 				} catch (error) {
 					console.error("Error en la llamada fetch de eventos:", error);
+					return "Error en la llamada fetch de eventos"
 				}
 			},
 
 			getUsers: async () => {
-				const store = getStore();
-				let adminToken = localStorage.getItem("adminToken")
 				try {
-					console.log("llamando a getusers")
+					let adminToken = localStorage.getItem("adminToken")
 					const response = await fetch(process.env.BACKEND_URL + "/api/getusers", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${adminToken}`  // Agrega el token de autenticación
+							"Authorization": `Bearer ${adminToken}`
 						}
 					});
-
-					if (!response.ok) {
-						const errorData = await response.json();
-						throw new Error(`Error: ${errorData.error || response.statusText}`);
-					}
-
 					const data = await response.json();
 					setStore({ users: data });
-					return true;
+					return "Usuarios Obtenidos de manera exitosa";
 				} catch (error) {
 					console.error("Error al obtener los usuarios", error);
-					setStore({ usersError: "Error al obtener los usuarios" });
-					return false;
+					return "Error al obtener los usuarios";
 				}
 			},
 
@@ -78,24 +58,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(userData),
 					});
-
-					if (response.ok) {
-						const data = await response.json();
-						console.log("Usuario creado exitosamente:", data);
-						return true; // Indica que el usuario fue creado correctamente
-					} else {
-						const errorData = await response.json();
-						console.error("Error al crear usuario:", errorData.message || errorData);
-						return false; // Indica que hubo un error
+					
+					const data = await response.json();
+					if (!response.ok) {
+						console.log("error "+data.message)
+						return false
 					}
+					return true;
 				} catch (error) {
 					console.error("Error en la solicitud para crear usuario:", error);
-					return false; // Indica que hubo un error en la solicitud
+					return false;
 				}
 			},
 
 			deleteUser: async (userId) => {
-				const store = getStore();  // Asumiendo que el token JWT está almacenado en localStorage
 				let adminToken = localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
@@ -106,24 +82,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 
-					if (response.ok) {
-						const data = await response.json();
-						console.log(data.message);
-
-						// Actualizar la lista de usuarios en el store
-						const store = getStore();
-						const updatedUsers = store.users.filter(user => user.id !== userId);
-						setStore({ users: updatedUsers });
-
-						return true;
-					} else {
-						const errorData = await response.json();
-						console.error(errorData.error);
-						return false;
-					}
+					const data = await response.json();
+					const store = getStore();
+					const updatedUsers = store.users.filter(user => user.id !== userId);
+					setStore({ users: updatedUsers });
+					return data.message;
 				} catch (error) {
 					console.error("Error deleting user:", error);
-					return false;
+					return "Error deleting user";
 				}
 			},
 
@@ -139,74 +105,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 							password: password,
 						}),
 					});
-
-					if (response.ok) {
-						const data = await response.json();
-						setStore({
-							currentUser: data, // Guardar los datos del usuario en el store
-							accessToken: data.access_token, // Guardar el token de acceso
-						});
-
-						// Si prefieres guardar el token en localStorage:
-						localStorage.setItem("access_token", data.access_token);
-
-						console.log("Usuario logueado exitosamente:", data);
-						return true; // Indica que el login fue exitoso
-					} else {
-						const errorData = await response.json();
-						console.error("Error al iniciar sesión:", errorData.error);
-						return false; // Indica que hubo un error
+					const data = await response.json();
+					if (!response.ok){
+						return false
 					}
+					localStorage.setItem("access_token", data.access_token);
+					localStorage.setItem("currentUser", JSON.stringify(data));
+					return "Usuario logueado exitosamente";
 				} catch (error) {
 					console.error("Error en la solicitud de inicio de sesión:", error);
-					return false; // Indica que hubo un error en la solicitud
+					return false;
 				}
 			},
 
-			logoutUser: () => {
-				// Acción para cerrar la sesión del usuario
-				localStorage.removeItem("access_token");
-				setStore({ currentUser: null, accessToken: null });
-				console.log("Usuario deslogueado");
-			},
-
-			// Obtener el token almacenado en localStorage al iniciar la app
-			loadAccessToken: () => {
-				const token = localStorage.getItem("access_token");
-				if (token) {
-					setStore({ accessToken: token });
-				}
-			},
-
+		
 			// Acción para actualizar la información del usuario
 			updateUser: async (user_id, updatedData) => {
-				const store = getStore();
-				const token = store.accessToken;
-
+				const accessToken = localStorage.getItem("access_token")
+				console.log(accessToken)
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`,
+							Authorization: `Bearer ${accessToken}`,
 						},
 						body: JSON.stringify(updatedData),
 					});
-
-					if (response.ok) {
-						const data = await response.json();
-						setStore({ currentUser: data });
-						console.log("Usuario actualizado exitosamente", data);
-					} else {
-						const error = await response.json();
-						console.error("Error al actualizar usuario:", error);
-					}
+					const data = await response.json();
+					localStorage.setItem("currentUser", JSON.stringify(data))
+					return `Datos del usuario ${data.name} Actualizados de manera exitosa`
 				} catch (error) {
 					console.error("Error en la conexión con el servidor:", error);
 				}
 			},
 
-			// Acción para login del administrador
 			loginAdmin: async (email, password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/loginadmin", {
@@ -219,73 +152,53 @@ const getState = ({ getStore, getActions, setStore }) => {
 							password: password
 						})
 					});
-
-					if (response.ok) {
-						const data = await response.json();
-						// Guarda el token y los datos del administrador en el store
-						localStorage.setItem("adminToken", data.access_token);
-						setStore({
-							admin: data,
-							adminToken: data.access_token,
-							adminError: null // Limpia cualquier error previo
-						});
-						console.log("Administrador logueado exitosamente:");
-						return true; // Devuelve éxito
-					} else {
-						const errorData = await response.json();
-						setStore({ adminError: errorData.message || "Error en el inicio de sesión" });
-						return false; // Devuelve fallo
+					const data = await response.json();
+					if(!response.ok){
+						return false
 					}
+					localStorage.setItem("adminToken", data.access_token);
+					localStorage.setItem("admin", JSON.stringify(data));
+					return "Administrador logueado exitosamente";
 				} catch (error) {
-					setStore({ adminError: "Error de conexión con el servidor" });
+					console.log("Error de conexión con el servidor" + "" + error)
 					return false;
 				}
 			},
 
-			// Método para verificar si el administrador está autenticado
-			isAdminAuthenticated: () => {
-				const store = getStore();
-				return !!store.adminToken; // Retorna true si hay un token en el store
-			},
-
-			// Método para logout del administrador
-			logoutAdmin: () => {
-				localStorage.removeItem("adminToken");
-				setStore({
-					admin: null,
-					adminToken: null,
-					adminError: null
-				});
-				console.log("Admin deslogueado");
+			// Deslogearte
+			logout: () => {
+				if (localStorage.getItem("currentUser")) {
+					localStorage.removeItem("currentUser");
+					localStorage.removeItem("access_token");
+					window.location.reload();
+					return "Usuario Deslogeado"
+				  } else if (localStorage.getItem("admin")) {
+					localStorage.removeItem("admin");
+					localStorage.removeItem("adminToken");
+					window.location.reload();
+					return "Administrador deslogeado"
+				  }
 			},
 
 			// Acción para crear un evento
 			createEvent: async (eventData) => {
 				let adminToken = localStorage.getItem("adminToken")
-
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/events", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${adminToken}`  // Agrega el token de autenticación
+							"Authorization": `Bearer ${adminToken}`
 						},
 						body: JSON.stringify(eventData)
 					});
 
-					if (!response.ok) {
-						const errorData = await response.json();
-						throw new Error(`Error: ${errorData.error || response.statusText}`);
-					}
-
 					const data = await response.json();
 					console.log(data)
-					setStore({ eventCreationMessage: "Evento creado con éxito" });
-					return true;
+					return "Evento creado con éxito";
 				} catch (error) {
 					console.error("Error al crear el evento", error);
-					setStore({ eventCreationError: "Error al crear el evento" });
-					return false;
+					return error;
 				}
 			},
 
@@ -300,13 +213,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": `Bearer ${adminToken}`
 						}
 					});
-
-					if (!response.ok) {
-						const errorData = await response.json();
-						throw new Error(`Error: ${errorData.error || response.statusText}`);
-					}
-
 					const data = await response.json();
+					if (!response.ok) {
+						console.error(data)
+						return false
+					}
 					return data;
 				} catch (error) {
 					console.error("Error al obtener el evento", error);
@@ -315,8 +226,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteEvent: async (eventId) => {
-				const adminToken=localStorage.getItem("adminToken")
 				try {
+					const adminToken = localStorage.getItem("adminToken")
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "DELETE",
 						headers: {
@@ -325,21 +236,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 
-					if (response.ok) {
-						const data = await response.json();
-						console.log(data.message);
+					const data = await response.json();
+					console.log(data.message);
+					const store = getStore();
+					const updatedEvents = store.events.filter(event => event.id !== eventId);
+					setStore({ events: updatedEvents });
 
-						// Actualizar la lista de eventos en el store
-						const store = getStore();
-						const updatedEvents = store.events.filter(event => event.id !== eventId);
-						setStore({ events: updatedEvents });
-
-						return true;
-					} else {
-						const errorData = await response.json();
-						console.error("Error al eliminar evento:", errorData.message);
-						return false;
-					}
+					return true;
 				} catch (error) {
 					console.error("Error en la solicitud para eliminar evento:", error);
 					return false;
@@ -347,7 +250,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}, // Fin deleteEvent
 
 			updateEvent: async (eventId, eventData) => {
-				const adminToken=localStorage.getItem("adminToken")
+				const adminToken = localStorage.getItem("adminToken")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}`, {
 						method: "PUT",
@@ -431,10 +334,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					if (response.ok) {
-						const favourites = await response.json();  // Lista de favoritos con event_id
-						const store = getStore();
-
-						// Hacemos llamadas para obtener detalles de cada evento por su event_id
+						const favourites = await response.json(); 
 						const eventDetailsPromises = favourites.map(async (favourite) => {
 							const eventResponse = await fetch(process.env.BACKEND_URL + `/api/events/${favourite.event_id}`, {
 								method: "GET",

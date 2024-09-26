@@ -12,7 +12,6 @@ export const CardEvento = () => {
 
   useEffect(() => {
     actions.getEvents();
-    console.log(store.events);
   }, []);
 
   const events = store.events || [];

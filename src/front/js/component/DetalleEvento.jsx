@@ -25,7 +25,10 @@ export const DetalleEvento = () => {
   };
 
   const handleBuy = () => {
-    setIsPaying(!isPaying);
+    if(!store.currentUser){
+      return alert("logeate para realizar la compra")
+    }
+    setIsPaying(true);
   };
 
   useEffect(() => {
@@ -73,7 +76,7 @@ export const DetalleEvento = () => {
             });
           },
           onError: (err) => {
-            console.log("Error en el pago:", err);
+            console.log("Error en el pago");
           },
         }).render(paypalRef.current);
       }
@@ -86,6 +89,7 @@ export const DetalleEvento = () => {
       if (state) { await actions.createPurchase(Number(eventId), state, Number(quantityValue)); console.log("compra exitosa") }
     }
     makePurchase();
+
   }, [state]);
 
 
