@@ -58,10 +58,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(userData),
 					});
-					
+
 					const data = await response.json();
 					if (!response.ok) {
-						console.log("error "+data.message)
+						console.log("error " + data.message)
 						return false
 					}
 					return true;
@@ -106,12 +106,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}),
 					});
 					const data = await response.json();
-					if (!response.ok){
+					if (!response.ok) {
 						return false
 					}
 					localStorage.setItem("access_token", data.access_token);
 					localStorage.setItem("currentUser", JSON.stringify(data));
-					setStore({currentUser:data,accessToken:data.access_token})
+					setStore({ currentUser: data, accessToken: data.access_token })
 					return "Usuario logueado exitosamente";
 				} catch (error) {
 					console.error("Error en la solicitud de inicio de sesión:", error);
@@ -119,11 +119,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-		
+
 			// Acción para actualizar la información del usuario
 			updateUser: async (user_id, updatedData) => {
 				const accessToken = localStorage.getItem("access_token")
-				console.log(accessToken)
+				//console.log(accessToken)
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
 						method: "PUT",
@@ -133,9 +133,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(updatedData),
 					});
-					const data = await response.json();
-					localStorage.setItem("currentUser", JSON.stringify(data))
-					return `Datos del usuario ${data.name} Actualizados de manera exitosa`
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ currentUser: data });
+						console.log("Usuario actualizado exitosamente", data);
+					} else {
+						const error = await response.json();
+						console.error("Error al actualizar usuario:", error);
+					}
 				} catch (error) {
 					console.error("Error en la conexión con el servidor:", error);
 				}
@@ -154,7 +159,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						})
 					});
 					const data = await response.json();
-					if(!response.ok){
+					if (!response.ok) {
 						return false
 					}
 					localStorage.setItem("adminToken", data.access_token);
@@ -166,19 +171,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-		
+
 			logout: () => {
 				if (localStorage.getItem("currentUser")) {
 					localStorage.removeItem("currentUser");
 					localStorage.removeItem("access_token");
-					setStore({accessToken:false,currentUser:false})
+					setStore({ accessToken: false, currentUser: false })
 					return "Usuario Deslogeado"
-				  } else if (localStorage.getItem("admin")) {
+				} else if (localStorage.getItem("admin")) {
 					localStorage.removeItem("admin");
 					localStorage.removeItem("adminToken");
-					setStore({adminToken:false,admin:false})
+					setStore({ adminToken: false, admin: false })
 					return "Administrador deslogeado"
-				  }
+				}
 			},
 
 			// Acción para crear un evento
@@ -335,7 +340,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					if (response.ok) {
-						const favourites = await response.json(); 
+						const favourites = await response.json();
 						const eventDetailsPromises = favourites.map(async (favourite) => {
 							const eventResponse = await fetch(process.env.BACKEND_URL + `/api/events/${favourite.event_id}`, {
 								method: "GET",
