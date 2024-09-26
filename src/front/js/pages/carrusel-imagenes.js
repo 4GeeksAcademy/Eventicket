@@ -5,13 +5,13 @@ import carrusel2 from "../../img/carrousel2.jpg";
 import carrusel3 from "../../img/carrousel3.jpg";
 
 export const Carrusel = () => {
-  let swiper = new Swiper(".mySwiper",{
+  let swiper = new Swiper(".mySwiper", {
     effect: "coverflow",
     grabCursor: true,
-    centeredSlides:true,
+    centeredSlides: true,
     slidesPerView: "auto",
     coverflowEffect: {
-      rotate:15,
+      rotate: 15,
       strech: 0,
       depth: 300,
       modifier: 1,
@@ -50,9 +50,9 @@ export const Carrusel = () => {
     <div className="swiper mySwiper my-3">
       <div className="swiper-wrapper">
         {/* 1 */}
-        <div className="swiper-slide">
+        {/* <div className="swiper-slide">
           <img className="img-carrusel" src="https://media.licdn.com/dms/image/C5612AQGbvv_Zj5JQ1w/article-cover_image-shrink_720_1280/0/1551108267663?e=2147483647&v=beta&t=0Q8tP_opTQTHswRBcgHlCOzSIc67crsHE61AGWLOS44" alt="evento de aniversario"></img>
-        </div>
+        </div> */}
         {/* 2 */}
         <div className="swiper-slide">
           <img className="img-carrusel" src="https://www.miraflores.gob.pe/wp-content/uploads/2022/08/D23FBC35-C386-47C9-AD69-6E2AFF1443D2-1024x604.jpeg" alt="bellas artes en miraflores"></img>
@@ -67,7 +67,7 @@ export const Carrusel = () => {
         </div>
         {/* 5 */}
         <div className="swiper-slide">
-          <img  className="img-carrusel" src="https://grandluxorhotels.com/wp-content/uploads/2016/09/9323706488_7c288a9659_b.jpg" alt="evento empresarial"></img>
+          <img className="img-carrusel" src="https://grandluxorhotels.com/wp-content/uploads/2016/09/9323706488_7c288a9659_b.jpg" alt="evento empresarial"></img>
         </div>
         {/* 6 */}
         <div className="swiper-slide">
@@ -82,9 +82,9 @@ export const Carrusel = () => {
           <img className="img-carrusel" src="https://cevents.es/wp-content/uploads/2021/11/evento-corporativo-imgpost.jpg" alt="evento de oratoria"></img>
         </div>
         {/* 1 */}
-        <div className="swiper-slide">
+        {/* <div className="swiper-slide">
           <img className="img-carrusel" src="https://media.licdn.com/dms/image/C5612AQGbvv_Zj5JQ1w/article-cover_image-shrink_720_1280/0/1551108267663?e=2147483647&v=beta&t=0Q8tP_opTQTHswRBcgHlCOzSIc67crsHE61AGWLOS44" alt="evento de aniversario"></img>
-        </div>
+        </div> */}
         {/* 2 */}
         <div className="swiper-slide">
           <img className="img-carrusel" src="https://i0.wp.com/www.pachaindah.com/html/locales-eventos-lima.jpg?resize=798%2C442&ssl=1" alt="evento de aniversario"></img>
@@ -100,7 +100,7 @@ export const Carrusel = () => {
         {/* 5 */}
         <div className="swiper-slide">
           <img className="img-carrusel" src="https://news.microsoft.com/wp-content/uploads/prod/sites/61/2024/06/Alberto-Granados-hablando-frente-al-publico-de-la-plenaria-en-Microsoft-Envision-AI-Connection-1200x630.jpg" alt="evento de microsoft"></img>
-        </div>  
+        </div>
 
       </div>
 

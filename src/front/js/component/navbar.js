@@ -1,31 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { act, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import '../../styles/navbar.css';
 import loguito2 from "../../img/logito2.png";
 
 export const Navbar = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const { currentUser, admin } = store;
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false); 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const filteredEvents = store.events?.filter(event =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleLogout = () => {
-    if (currentUser) {
-      actions.logoutUser();
-    } else if (admin) {
-      actions.logoutAdmin();
-    }
+    actions.logout();
+    navigate("/");
   };
 
   const handleEventClick = () => {
-    setSearchTerm(""); 
-    setDropdownOpen(false); 
+    setSearchTerm("");
+    setDropdownOpen(false);
   };
+
+  useEffect(() => {
+  }, [currentUser, admin]);
 
   return (
     <>
@@ -58,7 +59,7 @@ export const Navbar = () => {
                   aria-label="Search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setDropdownOpen(true)} 
+                  onFocus={() => setDropdownOpen(true)}
                 />
               </form>
 
@@ -81,8 +82,8 @@ export const Navbar = () => {
                 </ul>
               )}
             </div>
-            }
-          
+
+
 
             <div className="d-flex justify-content-end">
               <ul className="navbar-nav mb-2 mb-lg-0">
@@ -108,7 +109,7 @@ export const Navbar = () => {
                         </Link>
                       </li>
                     )}
-                  {!currentUser && admin && (
+                    {!currentUser && admin && (
                       <li className="nav-item">
                         <Link to="/demo" className="nav-link">
                           <button className="btn btn-outline-info">Mi panel</button>

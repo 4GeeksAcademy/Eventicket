@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from '../store/appContext';
+import Swal from "sweetalert2";
 
 
 const PerfilUser = () => {
@@ -36,10 +37,15 @@ const PerfilUser = () => {
   };
 
   // Maneja el clic en el botón de guardar para actualizar los datos del usuario
-  const handleUpdateUser = async() => {
+  const handleUpdateUser = async () => {
     const userId = currentUser.id;
-    const response=await actions.updateUser(userId, profileData);
-    alert(response)
+    await actions.updateUser(userId, profileData);
+    Swal.fire({
+      icon: 'success',
+      title: 'Datos actualizados correctamente',
+      showConfirmButton: false,
+      timer: 1500
+    });
   };
 
   return (
