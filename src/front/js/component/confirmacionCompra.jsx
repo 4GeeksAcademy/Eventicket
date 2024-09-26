@@ -16,6 +16,7 @@ export const ConfirmacionCompra = () => {
   } = location.state || {};
 
   return (
+
     <div className="container py-5 d-flex align-items-center justify-content-center min-vh-100 ">
       <div className="col-md-2 col-lg-1 d-none d-md-flex flex-column align-items-center justify-content-center">
         <img src={ticket} className="img-fluid" style={{ maxWidth: '45px' }} alt="ticket" />

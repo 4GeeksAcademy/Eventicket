@@ -24,51 +24,46 @@ const EventList = () => {
 
 
   return (
-    <div className="container container-list-event mt-4 col-12">
-      <h1 className="h1-list-event">Lista de Eventos</h1>
-      <hr className="text-color-gray" />
-      <div className="row row-list-event mb-3 align-items-center card border-0">
-        <div className="card-body card-body-list-event d-flex">
-          <div className="col-2">
-            <strong className="strong-list-event">Evento</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event">Lugar</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event">Fecha</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event">Aforo</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event">Precio</strong>
-          </div>
-          <div className="col-2 text-start">
-            <strong className="strong-list-event-acc fw-bold">Acciones</strong>
-          </div>
-        </div>
+    <div className="container mt-4">
+      <h1 className="text-start">Lista de Eventos</h1>
+      <hr />
+      {/* Aqui empieza el Contenedor responsivo de la tabla */}
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead className="table-primary">
+            <tr>
+              <th scope="col">Evento</th>
+              <th scope="col">Lugar</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Aforo</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event.id}>
+                <td>{event.title}</td>
+                <td>{event.location}</td>
+                <td>{event.date}</td>
+                <td>{event.stock} personas</td>
+                <td>S/.{event.price}</td>
+                <td>
+                  <Link to={`/editarEvento/${event.id}`} className="btn btn-outline-primary btn-sm me-1">
+                    <i className="fa-solid fa-pencil"></i>
+                  </Link>
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => handleDelete(event.id)}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-
-      {events.map((event) => (
-        <div className="row row-list-event mb-3 align-items-center card" key={event.id}>
-          <div className="card-body card-body-list-event d-flex">
-            <div className="col-2 strong-list-event">{event.title}</div>
-            <div className="col-2 strong-list-event">{event.location}</div>
-            <div className="col-2 strong-list-event"><span className="span-list-event">{event.date}</span></div>
-            <div className="col-2 strong-list-event">{event.stock} <span className="span-list-event">personas</span></div>
-            <div className="col-2 strong-list-event">S/.{event.price}</div>
-            <div className="col-2 text-start">
-              <Link to={`/editarEvento/${event.id}`} className="btn btn-list-event btn-outline-primary btn-sm me-1">
-                <i className="fa-solid fa-pencil"></i>
-              </Link>
-              <button className="btn btn-list-event btn-outline-danger btn-sm" onClick={() => handleDelete(event.id)}>
-                <i className="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
     </div>
   );
 };

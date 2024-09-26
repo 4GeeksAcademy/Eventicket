@@ -10,10 +10,6 @@ export const CrearEntradas = () => {
 
   const totalAmount = vipTickets * 100 + generalTickets * 50; // Ejemplo de precios
 
-
-
-
-
   return (
     <div className="bg-dark container-fluid contenedor-principal my-5">
       {/* Sección de tickets */}

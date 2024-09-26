@@ -25,7 +25,15 @@ export const DetalleEvento = () => {
   };
 
   const handleBuy = () => {
-    setIsPaying(!isPaying);
+    if(!store.currentUser){
+      return alert("logeate para realizar la compra")
+    }
+
+    if(quantityValue>event.stock){
+      setIsPaying(false);
+      return alert("No hay suficientes tickets para poder realizar la compra")
+    }
+    setIsPaying(true);
   };
 
   useEffect(() => {
@@ -73,7 +81,7 @@ export const DetalleEvento = () => {
             });
           },
           onError: (err) => {
-            console.log("Error en el pago:", err);
+            console.log("Error en el pago");
           },
         }).render(paypalRef.current);
       }
@@ -86,6 +94,7 @@ export const DetalleEvento = () => {
       if (state) { await actions.createPurchase(Number(eventId), state, Number(quantityValue)); console.log("compra exitosa") }
     }
     makePurchase();
+
   }, [state]);
 
 
@@ -122,7 +131,7 @@ export const DetalleEvento = () => {
             <button className="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
               <span className="carousel-control-next-icon green"></span>
             </button>
-            <div className="carousel-indicators spacing">
+            {/* <div className="carousel-indicators spacing">
               <button type="button" className="active" data-bs-target="#carouselDemo" data-bs-slide-to="0">
                 <img src="https://i0.wp.com/iopera.es/wp-content/uploads/2018/10/Tosca-de-Puccini-desde-Helsinki-desde-la-%C3%93pera-Nacional-de-Finlandia-v%C3%ADdeo-de-la-%C3%B3pera-en-la-representaci%C3%B3n-en-directo-del-7-de-octubre-de-2018-giacomo.jpg" />
               </button>
@@ -132,7 +141,7 @@ export const DetalleEvento = () => {
               <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="2">
                 <img src="https://www.operaworld.es/wp-content/uploads/2023/02/Captura-de-Pantalla-2023-02-27-a-las-22.56.56.png" />
               </button>
-            </div>
+            </div> */}
           </div>
           <br />
           <br />

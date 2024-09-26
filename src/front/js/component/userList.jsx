@@ -23,51 +23,44 @@ const UserList = () => {
   };
 
   return (
-    <div className="container mt-4 col-12">
+    <div className="container mt-4">
       <h1>Lista de Usuarios</h1>
       <hr className="text-color-gray" />
-      <div className="row mb-3 align-items-center card border-0">
-        <div className="card-body d-flex">
-          <div className="col-2">
-            <strong className="strong-list-event-p">Nombre</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event-p">Apellido</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event-p">Email</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event-accc">Contraseña</strong>
-          </div>
-          <div className="col-2">
-            <strong className="strong-list-event-pp">Celular</strong>
-          </div>
-          <div className="col-2 text-start">
-            <strong className="strong-list-event-acc">Acciones</strong>
-          </div>
-        </div>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead className="table-info">
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Email</th>
+              <th scope="col">Contraseña</th>
+              <th scope="col">Celular</th>
+              <th scope="col" className="text-start">Acciones</th>
+            </tr>
+          </thead>
+          <tbody >
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.last_name}</td>
+                <td>{user.email}</td>
+                <td>{user.password}</td>
+                <td>{user.phone}</td>
+                <td className="text-start">
+                  <button className="btn btn-outline-primary btn-sm me-2">
+                    <i className="fa-solid fa-pencil"></i>
+                  </button>
+                  <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(user.id)}>
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      {users.map((user) => (
-        <div className="row mb-3 align-items-center card" key={user.id}>
-          <div className="card-body d-flex">
-            <div className="col-2">{user.name}</div>
-            <div className="col-2">{user.last_name}</div>
-            <div className="col-2">{user.email}</div>
-            <div className="col-2">{user.password}</div>
-            <div className="col-2">{user.phone}</div>
-            <div className="col-2 text-start">
-              <button className="btn btn-list-event btn-outline-primary btn-sm me-2">
-                <i className="fa-solid fa-pencil"></i>
-              </button>
-              <button className="btn btn-list-event btn-outline-danger btn-sm" onClick={() => handleDelete(user.id)}>
-                <i className="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
     </div>
+
   );
 };
 

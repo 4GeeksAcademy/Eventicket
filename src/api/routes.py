@@ -54,7 +54,7 @@ def create_user():
         body = request.get_json()
         filter_user = User.query.filter_by(email=body.get("email")).first()
         if filter_user:
-            return jsonify({"message": "User already exists"}), 400
+            return jsonify({"message": "User already exists"}), 409
 
         if not body.get("name") or not body.get("email") or not body.get("password"):
             return jsonify({"message": "Error, name, email, and password must be completed"}), 400
@@ -330,9 +330,8 @@ def delete_event(event_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
 
-        if administrator and not user_logged:
+        if administrator:
             event = Event.query.get(event_id)
             if event:
                 db.session.delete(event)
@@ -354,8 +353,7 @@ def handle_tickets():
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged = User.query.get(current_admin)
-        if administrator and not user_logged:
+        if administrator:
             tickets = list(map(lambda ticket: ticket.serialize(), Ticket.query.all()))
         return jsonify(tickets), 200
     except Exception as e:
