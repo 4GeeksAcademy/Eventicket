@@ -54,7 +54,8 @@ const ComprasUser = () => {
             {tickets.map((ticket) => {
                 const event = events.find(evento => evento.id === ticket.event_id);
                 console.log(event);
-                return (<div className="card mb-3" key={ticket.numero_ticket}>
+                return (
+                <div className="card mb-3" key={ticket.numero_ticket}>
                     <div className="card-header bg-primary text-white">
                         <h5 className="card-title">Ticket #{ticket.numero_ticket}</h5>
                     </div>

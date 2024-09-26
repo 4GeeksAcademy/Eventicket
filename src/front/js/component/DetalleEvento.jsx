@@ -96,11 +96,11 @@ export const DetalleEvento = () => {
 
 
   return (
-    <div className="container">
+    <div className="container pt-5">
       <h1 className="text-center display-1 text-info-emphasis text-primary fw-semibold">{event.title}</h1>
       <div className="d-flex justify-content-start">
         <p className="text-center text-secondary me-3"><i className="fas fa-map-marker-alt text-primary"></i> {event.location}</p>
-        <p className="text-center text-secondary"><i className="fa fa-check-square text-primary" aria-hidden="true"></i> Evento Cultural</p>
+        <p className="text-center text-secondary"><i className="fa fa-check-square text-primary" aria-hidden="true"></i> {event.category}</p>
       </div>
       <div className="row">
         <div className="col-lg-6 rounded">
