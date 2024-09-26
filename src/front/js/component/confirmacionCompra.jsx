@@ -41,16 +41,16 @@ export const ConfirmacionCompra = () => {
             <hr />
             <div className="d-flex justify-content-between mb-2 fw-medium">
               <span className="fw-semibold">Cantidad:</span>
-              <span className="fw-semibold">x{quantity}</span>
+              <span className="fw-semibold"> x {quantity}</span>
             </div>
             <div className="d-flex justify-content-between mb-2 fw-medium">
               <span className="fw-semibold" >Precio por unidad:</span>
-              <span className="fw-semibold" >${(totalAmount / quantity).toFixed(2)}</span>
+              <span className="fw-semibold" >$ {(totalAmount / quantity).toFixed(2)}</span>
             </div>
             <hr />
             <div className="d-flex justify-content-between fw-bold">
               <span className="fw-bolder">Total:</span>
-              <span className="fw-bolder">${totalAmount.toFixed(2)}</span>
+              <span className="fw-bolder">$ {totalAmount.toFixed(2)}</span>
             </div>
           </div>
         </div>

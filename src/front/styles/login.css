@@ -1,0 +1,21 @@
+.form-control.login {
+    height: 45px;
+    width: 100%;
+    background-color: transparent !important;
+    border: none;
+    border-bottom: 3px solid blue;
+    outline: none;
+    margin-bottom: 20px;
+    color: #40414a;
+}
+
+.form-control.register {
+    height: 35px;
+    width: 100%;
+    background-color: transparent !important;
+    border: none;
+    border-bottom: 3px solid blue;
+    outline: none;
+    margin-bottom: 20px;
+    color: #40414a;
+}

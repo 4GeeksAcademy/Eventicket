@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import logito from "../../img/logito.png";
-import fondo from "../../img/fondo.png";
-import registro from "../../img/Registro.png";
+import fondo from "../../img/fondoazul.jpg";
+import registro from "../../img/fondoazul.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
+import "../../styles/login.css";
 
 export const Registro = () => {
 
@@ -87,7 +88,7 @@ export const Registro = () => {
                                         type="text"
                                         id="name"
                                         name="name"
-                                        className="form-control"
+                                        className="form-control register"
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
@@ -100,7 +101,7 @@ export const Registro = () => {
                                         type="text"
                                         id="last_name"
                                         name="last_name"
-                                        className="form-control"
+                                        className="form-control register"
                                         value={formData.last_name}
                                         onChange={handleChange}
                                         required
@@ -113,7 +114,7 @@ export const Registro = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    className="form-control"
+                                    className="form-control register"
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
@@ -125,7 +126,7 @@ export const Registro = () => {
                                 <input
                                     type="password"
                                     name="password"
-                                    className="form-control"
+                                    className="form-control register"
                                     value={formData.password}
                                     onChange={handleChange}
                                     required
