@@ -26,6 +26,7 @@ export const LoginAdmin = () => {
                 icon: 'success',
             });
             navigate("/demo");
+            window.location.reload()
         } else {
             Swal.fire({
                 title: 'Error',

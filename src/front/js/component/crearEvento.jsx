@@ -9,18 +9,18 @@ const CrearEvento = () => {
         title: "",
         location: "",
         category: "",
-        stock: "",  // Inicializado como número
+        stock: "",
         description: "",
         image_url: "",
         date: "",
-        price: "0",  // Inicializado como número
+        price: "0",
         time: "",
         administrator_id: 1
     });
-    const preset_name = "yu1h90st";  // Nombre del preset de carga
-    const cloud_name = "drlqmol4c";  // Nombre del cloud en Cloudinary
-    const [image, setImage] = useState('');  // Estado para guardar la URL de la imagen subida
-    const [loading, setLoading] = useState(false);  // Estado para mostrar si la imagen está cargando
+    const preset_name = "yu1h90st";
+    const cloud_name = "drlqmol4c"; 
+    const [image, setImage] = useState(''); 
+    const [loading, setLoading] = useState(false);
 
     const uploadImage = async (e) => {
         const files = e.target.files;
@@ -98,6 +98,19 @@ const CrearEvento = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
+            setFormData({
+                title: "",
+                location: "",
+                category: "",
+                stock: "",
+                description: "",
+                image_url: "",
+                date: "",
+                price: "0",
+                time: "",
+                administrator_id: 1
+            })
+            setImage("")
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -110,6 +123,7 @@ const CrearEvento = () => {
                 title: `Error: ${error.message}`,
             });
         }
+
     };
 
     return (

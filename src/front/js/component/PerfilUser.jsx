@@ -36,9 +36,10 @@ const PerfilUser = () => {
   };
 
   // Maneja el clic en el botón de guardar para actualizar los datos del usuario
-  const handleUpdateUser = () => {
+  const handleUpdateUser = async() => {
     const userId = currentUser.id;
-    actions.updateUser(userId, profileData);
+    const response=await actions.updateUser(userId, profileData);
+    alert(response)
   };
 
   return (
