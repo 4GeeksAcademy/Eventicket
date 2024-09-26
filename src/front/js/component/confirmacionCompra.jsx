@@ -44,7 +44,7 @@ export const ConfirmacionCompra = () => {
                 <div className="col-md-6 background-muted">
                   <div className="p-4 border-bottom">
                     <div className="mt-3">
-                      <h1 class="display-4">{eventName}</h1><br></br>
+                      <h1 className="display-4">{eventName}</h1><br></br>
                       <span className="d-block mb-0">{eventLocation}</span>
                       <small>{eventTime}</small><br></br>
                       <small>{eventDate}</small>

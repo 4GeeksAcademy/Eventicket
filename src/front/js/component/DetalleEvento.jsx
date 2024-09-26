@@ -28,6 +28,11 @@ export const DetalleEvento = () => {
     if(!store.currentUser){
       return alert("logeate para realizar la compra")
     }
+
+    if(quantityValue>event.stock){
+      setIsPaying(false);
+      return alert("No hay suficientes tickets para poder realizar la compra")
+    }
     setIsPaying(true);
   };
 
@@ -185,7 +190,7 @@ export const DetalleEvento = () => {
             </div>
             <div className="row  availability-section mt-3">
               <div className="row align-items-center mb-3">
-                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i class="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
+                <label htmlFor="quantityInput" className="fw-bold col-6 fs-5"><i className="fa fa-ticket ticket-icon" aria-hidden="true"></i> Cantidad : </label>
                 <div className="col-6 d-flex justify-content-center">
                   <div className="input-group  ">
                     <button

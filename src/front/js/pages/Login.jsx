@@ -25,7 +25,6 @@ export const Login = () => {
                 confirmButtonText: 'Ok'
             });
             navigate("/");
-            window.location.reload()
         } else {
             Swal.fire({
                 icon: 'error',

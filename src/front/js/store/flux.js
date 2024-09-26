@@ -111,6 +111,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					localStorage.setItem("access_token", data.access_token);
 					localStorage.setItem("currentUser", JSON.stringify(data));
+					setStore({currentUser:data,accessToken:data.access_token})
 					return "Usuario logueado exitosamente";
 				} catch (error) {
 					console.error("Error en la solicitud de inicio de sesión:", error);
@@ -165,17 +166,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// Deslogearte
+		
 			logout: () => {
 				if (localStorage.getItem("currentUser")) {
 					localStorage.removeItem("currentUser");
 					localStorage.removeItem("access_token");
-					window.location.reload();
+					setStore({accessToken:false,currentUser:false})
 					return "Usuario Deslogeado"
 				  } else if (localStorage.getItem("admin")) {
 					localStorage.removeItem("admin");
 					localStorage.removeItem("adminToken");
-					window.location.reload();
+					setStore({adminToken:false,admin:false})
 					return "Administrador deslogeado"
 				  }
 			},
