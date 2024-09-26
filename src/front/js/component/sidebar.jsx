@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/SideBar.css";
+import '../../styles/navbar.css';
 
 const Sidebar = ({ onViewChange }) => {
   const { store, actions } = useContext(Context);
@@ -28,19 +29,19 @@ const Sidebar = ({ onViewChange }) => {
       </div>
       <ul className="sidebar-nav">
         <li className="sidebar-item">
-          <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('users')}>
+          <a className="sidebar-link btn-sidebar nav-link-categorias  active" onClick={() => onViewChange('users')}>
             <i className="fa fa-user"></i>
             <span className='span-sidebar-user'>User List</span>
           </a>
         </li>
         <li className="sidebar-item">
-          <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('events')}>
+          <a className="sidebar-link btn-sidebar nav-link-categorias  active" onClick={() => onViewChange('events')}>
             <i className="fa fa-shopping-bag"></i>
             <span className='span-sidebar-user'>Eventos</span>
           </a>
         </li>
         <li className="sidebar-item">
-          <a className="sidebar-link btn-sidebar" onClick={() => onViewChange('create')}>
+          <a className="sidebar-link btn-sidebar nav-link-categorias  active" onClick={() => onViewChange('create')}>
             <i className="fa-solid fa-calendar-days"></i>
             <span className='span-sidebar-user'>Crear evento</span>
           </a>
