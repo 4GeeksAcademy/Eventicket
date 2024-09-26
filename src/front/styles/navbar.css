@@ -96,11 +96,12 @@
 .nav-link-categorias{
   position: relative;
 }
-/* input y lupa */
+
 .search-container {
-  position: relative; /* Relativo para posicionar la lupa dentro */
-  width: 100%; /* Ajusta el tamaño según necesites */
+  position: relative; 
+  width: 100%; 
   max-width: 600px; /* Máximo ancho opcional */
+  margin: 0 auto; /* Centrar el contenedor de búsqueda */
 }
 
 .search-input {
@@ -131,4 +132,9 @@
 /* search */
 .input-search {
   border:  3px solid #4038E6 !important;
+}
+
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
 }
