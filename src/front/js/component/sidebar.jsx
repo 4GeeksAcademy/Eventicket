@@ -20,7 +20,7 @@ const Sidebar = ({ onViewChange }) => {
           <i className="fa fa-bars"></i>
         </button>
         <div className="sidebar-logo">
-          <span className="span-sidebar-user text-white">Dashboard</span>
+          <span className="span-sidebar-user text-white fs-5">Dashboard</span>
         </div>
       </div>
       <hr className='text-white' />
@@ -31,7 +31,7 @@ const Sidebar = ({ onViewChange }) => {
         <li className="sidebar-item">
           <a className="sidebar-link btn-sidebar nav-link-categorias  active" onClick={() => onViewChange('users')}>
             <i className="fa fa-user"></i>
-            <span className='span-sidebar-user'>User List</span>
+            <span className='span-sidebar-user'>Usuarios</span>
           </a>
         </li>
         <li className="sidebar-item">
