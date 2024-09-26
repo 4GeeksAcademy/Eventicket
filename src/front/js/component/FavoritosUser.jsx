@@ -13,7 +13,7 @@ const FavoritosUser = () => {
     const favourites = store.favorites || [];
 
     return (
-        <div className="container py-5">
+        <div className="container py-1">
             <h1 className="text-center fs-1 text-primary">Mis Favoritos</h1>
             <div className="container mt-4">
                 <div className="row row-cols-1 row-cols-md-3 g-4 py-3">
@@ -28,17 +28,20 @@ const FavoritosUser = () => {
                                 />
                                 <div className="card-body">
                                     <h4 className="card-title text-primary mb-2">{favorito.title}</h4>
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <div className="d-flex align-items-center">
+
+                                    <div className=" row d-flex justify-content-between align-items-center mb-2">
+                                        <div className=" col-9 d-flex align-items-center">
                                             <i className="fa-solid fa-location-dot px-2 fs-4"></i>
                                             <span>{favorito.location}</span>
                                         </div>
-                                        <button
-                                            className="btn btn-outline-danger"
-                                            onClick={() => actions.deleteFavourite(favorito.id)}
-                                        >
-                                            <i className="fa fa-trash-o" aria-hidden="true"></i> Quitar
-                                        </button>
+                                        <div className="col-3">
+                                            <button
+                                                className="btn btn-outline-danger"
+                                                onClick={() => actions.deleteFavourite(favorito.id)}
+                                            >
+                                                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="d-flex align-items-center fs-5 mb-2">
                                         <i className="fa-regular fa-calendar px-2"></i>
