@@ -24,6 +24,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 app.url_map.strict_slashes = False
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -90,5 +91,4 @@ def serve_any_other_file(path):
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
