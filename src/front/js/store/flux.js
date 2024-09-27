@@ -74,6 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteUser: async (userId) => {
 				let adminToken = localStorage.getItem("adminToken")
+				console.log(userId)
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
 						method: "DELETE",
@@ -124,7 +125,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Acción para actualizar la información del usuario
 			updateUser: async (user_id, updatedData) => {
 				const accessToken = localStorage.getItem("access_token")
-				//console.log(accessToken)
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
 						method: "PUT",
