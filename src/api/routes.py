@@ -113,8 +113,8 @@ def log_in_user():
             "last_name": user.last_name,
             "email": user.email,
             "password": user.password,
-            "district": user.district,
-            "phone": user.phone
+            "phone": user.phone,
+            "date_of_birth":user.date_of_birth.isoformat() if user.date_of_birth else None
         }
         return jsonify(response), 200
 
@@ -474,7 +474,9 @@ def read_favourite(favourite_id):
 def delete_favourite(favourite_id):
     try:
         current_user = get_jwt_identity()
-        favourite = Favourite.query.filter_by(id=favourite_id, user_id=current_user).first()
+        event=Event.query.filter_by(id=favourite_id).first()
+        favourite = Favourite.query.filter_by(user_id=current_user,event_id=event.id).first()
+        
         if favourite:
             db.session.delete(favourite)
             db.session.commit()
