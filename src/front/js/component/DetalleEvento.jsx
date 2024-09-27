@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/detalleEvento.css";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 export const DetalleEvento = () => {
@@ -14,7 +15,6 @@ export const DetalleEvento = () => {
   const [isPaying, setIsPaying] = useState(false);
   const [quantityValue, setQuantityValue] = useState(0);
   const [state, setState] = useState("")
-  const crearcompra = actions
   const navigate = useNavigate();
 
 
@@ -66,9 +66,10 @@ export const DetalleEvento = () => {
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
             setState(order.status);
+            console.log(order.status)
 
             console.log("Pago realizado con éxito:", order);
-
+            if(order.status=="COMPLETED"){
             navigate("/confirmacionCompra", {
               state: {
                 eventName: event.title,
@@ -78,7 +79,16 @@ export const DetalleEvento = () => {
                 quantity: quantityValue,
                 totalAmount: event.price * quantityValue,
               },
-            });
+            })
+          }else{
+            Swal.fire({
+              title: 'ERROR EN LA COMPRA',
+              text: 'COMPRA NO COMPLETADA',
+              icon: 'error',
+          });
+          }
+
+
           },
           onError: (err) => {
             console.log("Error en el pago");

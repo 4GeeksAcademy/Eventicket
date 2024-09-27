@@ -6,7 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			ticket: [],
 			currentUser: JSON.parse(localStorage.getItem('currentUser')) || false,
 			accessToken: localStorage.getItem("access_token") || false,
-			admin: localStorage.getItem("admin") || false,
+			admin: JSON.parse(localStorage.getItem("admin")) || false,
 			adminToken: localStorage.getItem("adminToken") || false,
 			favourites: [{ user_id: "", event_id: "" }],
 			favorites: [],
@@ -21,7 +21,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 					});
 					const events = await response.json();
-					setStore({ events: [...events] });
+					setStore({ events: events });
+					localStorage.setItem("events",JSON.stringify(events))
 					console.log("Eventos obtenidos exitosamente:", events);
 					return "Eventos obtenidos exitosamente"
 				} catch (error) {
@@ -135,6 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
+						localStorage.setItem("currentUser", JSON.stringify(data))
 						setStore({ currentUser: data });
 						console.log("Usuario actualizado exitosamente", data);
 					} else {
@@ -164,6 +166,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					localStorage.setItem("adminToken", data.access_token);
 					localStorage.setItem("admin", JSON.stringify(data));
+					setStore({ admin: data, adminToken: data.access_token })
 					return "Administrador logueado exitosamente";
 				} catch (error) {
 					console.log("Error de conexión con el servidor" + "" + error)
@@ -446,6 +449,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+
+
+
 			getTicketsByUser: async () => {
 				try {
 					const token = localStorage.getItem("access_token");
@@ -470,6 +476,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error in getTicketsByUser:", error);
 					return null;
 				}
+			},
+
+			deleteFavourite: async (favouriteID) => {
+				try {
+					const store=getStore()
+					const currentUserToken = localStorage.getItem("access_token")
+					const request = await fetch(process.env.BACKEND_URL + `/api/favourites/${favouriteID}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${currentUserToken}`
+						}
+					})
+					const response = await request.json()
+					const eventFiltered = store.favorites.filter(event => event.id !== favouriteID);
+					setStore({ favorites: eventFiltered });
+					console.log(response)
+					return true
+				}
+				catch (error) {
+					return false
+				}
+
 			},
 
 		}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../../img/logito.png";
 import "../../styles/recuperarContraseña.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -39,6 +39,12 @@ export const RecuperarContraseña = () => {
     const handleInput = (e) => {
         setEmail(e.target.value)
     }
+
+    useEffect(()=>{
+        if(store.admin!==false){navigate("/demo");}
+        if(store.currentUser!==false){navigate("/");}
+    },[store.admin,store.currentUser])
+
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">

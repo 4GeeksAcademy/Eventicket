@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../../img/logito.png";
 import people from "../../img/people.png";
 import fondo from "../../img/fondoazul.jpg";
@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 
 export const Login = () => {
-    const { actions } = useContext(Context); // Acceder a las acciones del flux
+    const { actions,store } = useContext(Context); // Acceder a las acciones del flux
     const [email, setEmail] = useState(""); // Estado para el email
     const [password, setPassword] = useState(""); // Estado para la contraseña
     const navigate = useNavigate(); // Para redirigir después del login
@@ -24,7 +24,7 @@ export const Login = () => {
                 title: success,
                 confirmButtonText: 'Ok'
             });
-            navigate("/");
+                navigate("/");
         } else {
             Swal.fire({
                 icon: 'error',
@@ -34,6 +34,12 @@ export const Login = () => {
             });
         }
     };
+
+    useEffect(()=>{
+        if(store.admin!==false){navigate("/demo");}
+        if(store.currentUser!==false){navigate("/");}
+    },[store.admin,store.currentUser])
+
 
     return (
         <div

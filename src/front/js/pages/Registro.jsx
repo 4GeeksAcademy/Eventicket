@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logito from "../../img/logito.png";
 import fondo from "../../img/fondoazul.jpg";
 import registro from "../../img/fondoazul.jpg";
@@ -9,7 +9,7 @@ import "../../styles/login.css";
 
 export const Registro = () => {
 
-    const { actions } = useContext(Context); // Acceder a las acciones del flux
+    const { actions,store } = useContext(Context); // Acceder a las acciones del flux
     const navigate = useNavigate(); // Para redirigir después del registro
     const [formData, setFormData] = useState({
         name: "",
@@ -46,6 +46,12 @@ export const Registro = () => {
             });
         }
     };
+
+    useEffect(()=>{
+        if(store.admin!==false){navigate("/demo");}
+        if(store.currentUser!==false){navigate("/");}
+    },[store.admin,store.currentUser])
+ 
 
     return (
         <div className="login-background" style={{

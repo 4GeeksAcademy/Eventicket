@@ -6,40 +6,22 @@ const ComprasUser = () => {
     const [tickets, setTickets] = useState([]);
     const [error, setError] = useState(null);
     const { currentUser } = store;
-    const { events } = store;
-
-    const [profileData, setProfileData] = useState({
-        name: "",
-        last_name: "",
-        date_of_birth: "",
-        dni: "",
-        phone: "",
-        email: ""
-    });
-
+    const events=JSON.parse(localStorage.getItem("events"))
+  
     useEffect(() => {
-        if (currentUser) {
-            setProfileData({
-                name: currentUser.name || "",
-                last_name: currentUser.last_name || "",
-                date_of_birth: currentUser.date_of_birth || "",
-                dni: currentUser.dni || "",
-                phone: currentUser.phone || "",
-                email: currentUser.email || ""
-            });
+        if(currentUser){
+            const fetchTickets = async () => {
+                const fetchedTickets = await actions.getTicketsByUser();
+                if (fetchedTickets && fetchedTickets.length > 0) {
+                    setTickets(fetchedTickets);
+                } else {
+                    setError('No se encontraron tickets para este usuario.');
+                }
+            };
+            fetchTickets();
         }
 
-
-        const fetchTickets = async () => {
-            const fetchedTickets = await actions.getTicketsByUser();
-            if (fetchedTickets && fetchedTickets.length > 0) {
-                setTickets(fetchedTickets);
-            } else {
-                setError('No se encontraron tickets para este usuario.');
-            }
-        };
-        fetchTickets();
-    }, [actions, currentUser]);
+    }, [currentUser]);
 
     if (error) {
         return <div className="alert alert-danger">{error}</div>;
@@ -62,7 +44,7 @@ const ComprasUser = () => {
                         </div>
                         <div className="card-body">
                             <h6 className="card-subtitle mb-2 text-muted">Evento ID: {ticket.event_id}</h6>
-                            <h5 className='fs-bolder text-primary'>Evento: {event.title}</h5>
+                            <h5 className='fs-bolder text-primary'>Evento: {event.title?event.title:"None"}</h5>
                             <p className='card-text'>
                                 <strong className="text-primary">Fecha:</strong> {event.date}<br />
                                 <strong className="text-primary">Hora:</strong> {event.time}<br />
