@@ -26,7 +26,7 @@ jwt = JWTManager(app)
 app.url_map.strict_slashes = False
 
 # Enable CORS
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "https://eventicketpe.onrender.com/"}}, supports_credentials=True)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
