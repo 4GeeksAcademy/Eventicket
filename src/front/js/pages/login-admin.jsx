@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext"
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../img/logito.png";
@@ -25,8 +25,8 @@ export const LoginAdmin = () => {
                 text: 'Inicio de sesión exitoso',
                 icon: 'success',
             });
-            navigate("/demo");
-            window.location.reload()
+                navigate("/demo")
+  
         } else {
             Swal.fire({
                 title: 'Error',
@@ -35,6 +35,11 @@ export const LoginAdmin = () => {
             });
         }
     };
+
+    useEffect(()=>{
+        if(store.admin!==false){navigate("/demo");}
+        if(store.currentUser!==false){navigate("/");}
+    },[store.admin,store.currentUser])
 
     return (
         <div style={{

@@ -28,6 +28,7 @@ const PerfilUser = () => {
         email: currentUser.email || ""
       });
     }
+    console.log(currentUser)
   }, [currentUser]);
 
   // Maneja el cambio en los campos de entrada

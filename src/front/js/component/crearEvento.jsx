@@ -15,8 +15,9 @@ const CrearEvento = () => {
         date: "",
         price: "0",
         time: "",
-        administrator_id: 1
+        administrator_id: store.admin.id
     });
+
     const preset_name = "yu1h90st";
     const cloud_name = "drlqmol4c"; 
     const [image, setImage] = useState(''); 

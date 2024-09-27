@@ -37,7 +37,7 @@ const FavoritosUser = () => {
                                         <div className="col-3">
                                             <button
                                                 className="btn btn-outline-danger"
-                                                onClick={() => actions.deleteFavourite(favorito.id)}
+                                                onClick={async() => await actions.deleteFavourite(favorito.id)}
                                             >
                                                 <i className="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
