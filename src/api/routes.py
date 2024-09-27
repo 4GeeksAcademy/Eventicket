@@ -23,6 +23,29 @@ mail = Mail()  # Inicializar Mail sin configuraciones
 # Allow CORS requests to this API
 CORS(api)
 
+@api.route("/createadmin",methods=["POST"])
+def create_admin():
+    try:
+        body=request.get_json()
+        name=body.get("name")
+        email=body.get("email")
+        password=body.get("password")
+
+        if not name or not email or not password:
+            return jsonify({"error":"Data have been completed"})
+    
+        new_admin = Administrator(
+            name=body.get("name"),
+            email=body.get("email"),
+            password=bcrypt.generate_password_hash(body.get("password")).decode('utf-8'),
+
+        )
+        db.session.add(new_admin)
+        db.session.commit()
+
+        return jsonify({"message":"admin createad","admin":new_admin.serialize()}), 200
+    except Exception as e:    
+        return jsonify({"error": f"{e}"}), 400
 
 #OBTENER LOS EVENTOS (TODOS)
 @api.route("/events", methods=["GET"])
@@ -143,20 +166,27 @@ def log_in_admin():
         data = request.get_json()
         email = data.get("email")
         password = data.get("password")
+        if not email and not password:
+            return jsonify({"message": "data has be completed"}), 404
         administrator = Administrator.query.filter_by(email=email).first()
-        if administrator:
+        if not administrator:
+                return jsonify({"message": "Your Email not is email´s administrator"}), 404
+
+        admin_password = administrator.password
+        checking_password = bcrypt.check_password_hash(admin_password, password)
+
+        if checking_password:
             access_token = create_access_token(identity=administrator.id)
             response = {
                 "access_token": access_token,
                 "id": administrator.id,
                 "name": administrator.name,
-                "last_name": administrator.last_name,
                 "email": administrator.email,
                 "password": administrator.password
             }
             return jsonify(response), 200
         else:
-            return jsonify({"error": "Invalid email or password"}), 401
+            return jsonify({"error": "Invalid  password"}), 401
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
@@ -171,7 +201,10 @@ def handle_users():
         administrator = Administrator.query.get(current_admin)
         if administrator:
             users = list(map(lambda user: user.serialize(), User.query.all()))
-            return jsonify(users), 200
+            if len(users)<0:
+                return jsonify({"message": "Without Users"}), 200 
+            else:
+                return jsonify(users), 200
         else:
             return jsonify({"error": "Unauthorized"}), 400
     except Exception as e:
@@ -235,10 +268,7 @@ def delete_user(user_id):
     try:
         current_admin = get_jwt_identity()
         administrator = Administrator.query.get(current_admin)
-        user_logged=User.query.get(current_admin)
-        if not administrator and user_logged:
-            return jsonify({"error": "Unauthorized"}), 403
-        elif administrator and not user_logged:
+        if  administrator:
             user = User.query.get(user_id)
             if user:
                 db.session.delete(user)
@@ -246,8 +276,6 @@ def delete_user(user_id):
                 return jsonify({"message": "User deleted successfully"}), 200
             else:
                 return jsonify({"error": "User not found"}), 404
-
-
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400

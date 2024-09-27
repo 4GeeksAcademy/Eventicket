@@ -18,7 +18,7 @@ const EditarEvento = () => {
         date: "",
         price: "0",
         time: "",
-        administrator_id: 1
+        administrator_id:store.admin.id
     });
     const preset_name = "yu1h90st";  // Nombre del preset de carga
     const cloud_name = "drlqmol4c";  // Nombre del cloud en Cloudinary
