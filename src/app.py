@@ -24,6 +24,8 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 app.url_map.strict_slashes = False
+
+# Enable CORS
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # database condiguration
