@@ -21,19 +21,6 @@ class Administrator(db.Model):
             "last_name": self.last_name,
             "email": self.email,
         }
-    
-    @staticmethod
-    def create_default_admin():
-        if not Administrator.query.filter_by(email='admin@email.com').first():
-            default_admin = Administrator(
-                name='Default',
-                last_name='Admin',
-                email='admin@email.com',
-                password='defaultpassword' 
-            )
-            db.session.add(default_admin)
-            db.session.commit()
-            print("Administrador por defecto creado.")
 
             
 class User(db.Model):
