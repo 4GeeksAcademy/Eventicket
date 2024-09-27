@@ -9,7 +9,10 @@ services:
       buildCommand: |
         pip install --upgrade pip
         pip install -r requirements.txt
+        which npx || npm install -g npx
+        which yarn || npm install -g yarn
         npx browserslist@latest --update-db
+        yarn build
       startCommand: "gunicorn wsgi --chdir ./src/"
       plan: free # optional; defaults to starter
       numInstances: 1
