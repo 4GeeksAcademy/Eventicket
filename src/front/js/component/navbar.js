@@ -71,7 +71,7 @@ export const Navbar = () => {
                         <img src={event.image_url} alt={event.title} style={{ width: '40px', height: '40px', marginRight: '10px' }} />
                         <div className="flex-grow-1">
                           <strong>{event.title}</strong>
-                          <p style={{ margin: 0, fontSize: '0.9em' }}>{event.description.substring(0, 70)}...</p>
+                          <p style={{ margin: 0, fontSize: '0.9em' }}>{event.description.substring(0, 40)}...</p>
                         </div>
                         <div className="text-end">
                           <strong>${event.price}</strong>
