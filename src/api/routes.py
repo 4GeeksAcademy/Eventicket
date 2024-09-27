@@ -638,7 +638,10 @@ def modify_password():
         return jsonify({"Error":f"Just Happened this error:{e}"})
     
 
-
+#RUTA DE PRUEBA
+@api.route("/test", methods=["GET"])
+def test():
+    return jsonify({"message": "Hello, World!"}), 200 
 
 
 ####################################################################################################################################################
