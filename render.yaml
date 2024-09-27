@@ -6,7 +6,10 @@ services:
       region: ohio
       name: sample-service-name
       env: python # valid values: https://render.com/docs/yaml-spec#environment
-      buildCommand: "./render_build.sh pip install --upgrade pip  pip install -r requirements.txt"
+      buildCommand: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        npx browserslist@latest --update-db
       startCommand: "gunicorn wsgi --chdir ./src/"
       plan: free # optional; defaults to starter
       numInstances: 1
