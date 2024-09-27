@@ -14,7 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			getEvents: async () => {
 				try {
-					const response = await fetch("https://eventicket-backend.onrender.com" + '/events', {
+					const response = await fetch(process.env.BACKEND_URL + '/events', {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUsers: async () => {
 				try {
 					let adminToken = localStorage.getItem("adminToken")
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/getusers", {
+					const response = await fetch(process.env.BACKEND_URL + "/getusers", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
@@ -51,7 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			createUser: async (userData) => {
 				try {
-					const response = await fetch("https://eventicket-backend.onrender.com" + '/users', {
+					const response = await fetch(process.env.BACKEND_URL + '/users', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteUser: async (userId) => {
 				let adminToken = localStorage.getItem("adminToken")
 				try {
-					const response = await fetch(`${"https://eventicket-backend.onrender.com"}/users/${userId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/users/${userId}`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json",
@@ -95,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loginUser: async (email, password) => {
 				try {
-					const response = await fetch("https://eventicket-backend.onrender.com" + '/login', {
+					const response = await fetch(process.env.BACKEND_URL + '/login', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const accessToken = localStorage.getItem("access_token")
 				//console.log(accessToken)
 				try {
-					const response = await fetch(`${"https://eventicket-backend.onrender.com"}/users/${user_id}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/users/${user_id}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
@@ -148,7 +148,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loginAdmin: async (email, password) => {
 				try {
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/loginadmin", {
+					const response = await fetch(process.env.BACKEND_URL + "/loginadmin", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
@@ -190,7 +190,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			createEvent: async (eventData) => {
 				let adminToken = localStorage.getItem("adminToken")
 				try {
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/events", {
+					const response = await fetch(process.env.BACKEND_URL + "/events", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -212,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let adminToken = localStorage.getItem("adminToken");
 
 				try {
-					const response = await fetch(`${"https://eventicket-backend.onrender.com"}/events/${eventId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/events/${eventId}`, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
@@ -234,7 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteEvent: async (eventId) => {
 				try {
 					const adminToken = localStorage.getItem("adminToken")
-					const response = await fetch(`${"https://eventicket-backend.onrender.com"}/events/${eventId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/events/${eventId}`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json",
@@ -258,7 +258,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateEvent: async (eventId, eventData) => {
 				const adminToken = localStorage.getItem("adminToken")
 				try {
-					const response = await fetch(`${"https://eventicket-backend.onrender.com"}/events/${eventId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/events/${eventId}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
@@ -294,7 +294,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					// Realiza la llamada POST al backend para agregar el favorito
-					const response = await fetch("https://eventicket-backend.onrender.com" + '/favourites', {
+					const response = await fetch(process.env.BACKEND_URL + '/favourites', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -331,7 +331,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					// Realiza la llamada GET al backend para obtener los favoritos del usuario
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/favourites", {
+					const response = await fetch(process.env.BACKEND_URL + "/favourites", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
@@ -342,7 +342,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const favourites = await response.json();
 						const eventDetailsPromises = favourites.map(async (favourite) => {
-							const eventResponse = await fetch("https://eventicket-backend.onrender.com" + `/events/${favourite.event_id}`, {
+							const eventResponse = await fetch(process.env.BACKEND_URL + `/events/${favourite.event_id}`, {
 								method: "GET",
 								headers: {
 									"Content-Type": "application/json",
@@ -372,7 +372,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			sendEmailToRecover: async (email) => {
 				try {
-					const data = await fetch("https://eventicket-backend.onrender.com" + '/recovery', {
+					const data = await fetch(process.env.BACKEND_URL + '/recovery', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -387,7 +387,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			changepass: async (token, new_password) => {
 				try {
-					const data = await fetch("https://eventicket-backend.onrender.com" + '/changepass', {
+					const data = await fetch(process.env.BACKEND_URL + '/changepass', {
 						method: 'PUT',
 						headers: {
 							'Content-Type': 'application/json',
@@ -416,7 +416,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					// Realizamos la solicitud POST al backend
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/purchases", {
+					const response = await fetch(process.env.BACKEND_URL + "/purchases", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -449,7 +449,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getTicketsByUser: async () => {
 				try {
 					const token = localStorage.getItem("access_token");
-					const response = await fetch("https://eventicket-backend.onrender.com" + "/tickets/user", {
+					const response = await fetch(process.env.BACKEND_URL + "/tickets/user", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
